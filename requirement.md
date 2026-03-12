@@ -163,7 +163,7 @@ The module enforces strict role-based access. Each role has a distinct set of pe
 | Bulk import employees (CSV) | No | No | No | No |
 | Configure global system settings | No | No | No | No |
 | Reset any user's password (admin-triggered) | No | No | No | No |
-
+//
 > **Super Admin Note:** The Super Admin role has unrestricted access to every feature in the table above plus the exclusive capabilities shown in the last five rows. Super Admin enforcement is applied at both the API and UI layers.
 
 5.3 Role Hierarchy
