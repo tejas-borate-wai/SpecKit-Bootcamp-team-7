@@ -84,7 +84,7 @@ Core principles to enforce:
 
 ## PHASE 1 — FEATURE: Mock Authentication & Role-Based Navigation
 > Covers: Login screen, mock auth against users.json, session management, dynamic sidebar, route guards, post-login redirect, unauthorized page
-> req.md Sections: 7A (all subsections), 22 (users.json)
+> requirement.md Sections: 7A (all subsections), 22 (users.json)
 
 ### Step 1.1 — Specify
 
@@ -168,7 +168,7 @@ Stack: Angular 17, NgRx, Angular Router, Angular Material or PrimeNG, SCSS
 
 ## PHASE 2 — FEATURE: Skill Framework & Structure (Admin)
 > Covers: Skill categories CRUD, subcategories CRUD, skill definitions CRUD, proficiency framework, rating weight configuration
-> req.md Sections: 2 (Skill Structure), 3 (Proficiency Framework), 7 (Admin controls for framework), 7A.2 (admin routes)
+> requirement.md Sections: 2 (Skill Structure), 3 (Proficiency Framework), 7 (Admin controls for framework), 7A.2 (admin routes)
 
 ### Step 2.1 — Specify
 
@@ -250,7 +250,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, SCSS, mock data via interc
 
 ## PHASE 3 — FEATURE: Employee Skill Profile & Dashboard
 > Covers: Add/edit/delete skills, self-rating, skill profile tabs, skill progress tracking, employee dashboard widgets, profile completion, skill expiry, achievement badges
-> req.md Sections: 6 (Employee Skill Profile), 13 (Progress Tracking), 3 (Proficiency levels display)
+> requirement.md Sections: 6 (Employee Skill Profile), 13 (Progress Tracking), 3 (Proficiency levels display)
 
 ### Step 3.1 — Specify
 
@@ -367,7 +367,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, ngx-charts or Chart.js (pr
 
 ## PHASE 4 — FEATURE: Skill Assessments
 > Covers: Take assessment, timer, difficulty levels, scoring with difficulty weighting, retake rules, post-assessment score card, test history
-> req.md Sections: 5 (Assessment Methods), 11 (Skill Assessments), 12 (Rating Calculation — Layer 1)
+> requirement.md Sections: 5 (Assessment Methods), 11 (Skill Assessments), 12 (Rating Calculation — Layer 1)
 
 ### Step 4.1 — Specify
 
@@ -469,7 +469,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, SCSS
 
 ## PHASE 5 — FEATURE: Certifications
 > Covers: Upload certifications, certification data, certified badge, +10% rating bonus, expiry tracking
-> req.md Sections: 5 (Certification Uploads), 6 (Upload Certifications in profile)
+> requirement.md Sections: 5 (Certification Uploads), 6 (Upload Certifications in profile)
 
 ### Step 5.1 — Specify
 
@@ -539,7 +539,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, SCSS
 
 ## PHASE 6 — FEATURE: Peer Validation & Manager/Admin Controls
 > Covers: Peer validation workflow, manager approve/reject skills, validation queue, team skills overview, manager/admin dashboard actions
-> req.md Sections: 4.5 (Peer Validation Workflow), 7 (Manager/Admin Controls), 7A.3 (UI element visibility)
+> requirement.md Sections: 4.5 (Peer Validation Workflow), 7 (Manager/Admin Controls), 7A.3 (UI element visibility)
 
 ### Step 6.1 — Specify
 
@@ -628,7 +628,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, SCSS
 
 ## PHASE 7 — FEATURE: Project Management, Candidate Matching & Team Builder
 > Covers: Create projects, project statuses, candidate matching with match score, team builder, skill gap detection, employee availability, project alignment
-> req.md Sections: 14 (Project Creation), 15 (Candidate Matching), 16 (Team Builder), 17 (Availability & Alignment)
+> requirement.md Sections: 14 (Project Creation), 15 (Candidate Matching), 16 (Team Builder), 17 (Availability & Alignment)
 
 ### Step 7.1 — Specify
 
@@ -723,7 +723,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, SCSS
 
 ## PHASE 8 — FEATURE: Reporting & Analytics
 > Covers: Skill gap analysis, team capability reports, org skill heatmap, skill trend analysis, report exports
-> req.md Sections: 8 (Reporting & Insights)
+> requirement.md Sections: 8 (Reporting & Insights)
 
 ### Step 8.1 — Specify
 
@@ -808,7 +808,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, ngx-charts or Chart.js, SC
 
 ## PHASE 9 — FEATURE: Notifications & Alerts
 > Covers: All notification events, in-app notification bell, notification list screen, reminders
-> req.md Sections: 10 (Notifications and Reminders)
+> requirement.md Sections: 10 (Notifications and Reminders)
 
 ### Step 9.1 — Specify
 
@@ -834,7 +834,7 @@ Notifications List (/notifications):
 - Click a notification → marks as read + navigates to relevant screen (if applicable)
 - "Mark All as Read" button
 
-Notification Events (Section 10 of req.md):
+Notification Events (Section 10 of requirement.md):
 - Skill approval received → Employee → "Your [Skill Name] has been approved by [Manager Name]."
 - Skill rejection received → Employee → "Your [Skill Name] was rejected. Reason: [reason]."
 - Assessment result available → Employee → "Your [Skill Name] assessment score: [score]%."
@@ -878,7 +878,7 @@ Stack: Angular 17, NgRx, Angular Material or PrimeNG, SCSS
 
 ## PHASE 10 — FEATURE: Responsive Design, Animations & Error Handling
 > Covers: Full responsive implementation (Section 18), animations (Section 19), error states (Section 23), search and filtering (Section 10)
-> req.md Sections: 18 (complete), 19, 23, 10
+> requirement.md Sections: 18 (complete), 19, 23, 10
 
 ### Step 10.1 — Specify
 
@@ -1115,7 +1115,7 @@ specs/
 
 ## MOCK DATA FILES COVERAGE CHECK
 
-| Mock Data File (req.md Section 22) | Covered In Phase |
+| Mock Data File (requirement.md Section 22) | Covered In Phase |
 |---|---|
 | users.json | Phase 1 (auth, session, role) |
 | skill-categories.json | Phase 2 (framework CRUD) |
@@ -1132,7 +1132,7 @@ specs/
 
 ## REQUIREMENT SECTIONS COVERAGE CHECK
 
-| req.md Section | What it covers | Covered in Phase |
+| requirement.md Section | What it covers | Covered in Phase |
 |---|---|---|
 | Section 1 — Overview | Key goals, mock data strategy | Phase 0 (constitution) |
 | Section 2 — Skill Structure | Categories, subcategories, skill names, definitions | Phase 2 |
