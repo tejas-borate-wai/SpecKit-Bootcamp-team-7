@@ -1,0 +1,123 @@
+@use 'breakpoints' as bp;
+
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-surface);
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+  height: var(--header-height);
+  padding: 0 var(--spacing-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  .hamburger-btn {
+    display: none;
+
+    @include bp.mobile {
+      display: inline-flex;
+    }
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .page-title {
+    font-size: 14px;
+    color: #9ca3af;
+    margin-left: var(--spacing-sm);
+
+    @include bp.mobile {
+      display: none;
+    }
+  }
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 400px;
+  margin: 0 var(--spacing-lg);
+
+  @include bp.tablet {
+    display: none;
+  }
+
+  @include bp.mobile {
+    display: none;
+  }
+
+  .search-placeholder {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: #f3f4f6;
+    border-radius: var(--radius-full);
+    width: 100%;
+    color: #9ca3af;
+    font-size: 14px;
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.avatar-btn {
+  min-width: auto;
+  padding: 0;
+  line-height: 1;
+}
+
+.user-menu-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  pointer-events: none;
+
+  strong {
+    font-size: 14px;
+    color: #1f2937;
+  }
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+
+  &.role-employee {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  &.role-manager {
+    background-color: #ede9fe;
+    color: #6d28d9;
+  }
+
+  &.role-admin {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+}
