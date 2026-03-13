@@ -1,9 +1,23 @@
 [
-  { "assignmentId": "asgn-001", "userId": "u001", "projectId": "proj-001", "role": "Frontend Developer" },
-  { "assignmentId": "asgn-002", "userId": "u001", "projectId": "proj-002", "role": "Angular Developer" },
-  { "assignmentId": "asgn-003", "userId": "u002", "projectId": "proj-002", "role": "Java Developer" },
-  { "assignmentId": "asgn-004", "userId": "u003", "projectId": "proj-003", "role": "Mobile Developer" },
-  { "assignmentId": "asgn-005", "userId": "u004", "projectId": "proj-004", "role": "DevOps Engineer" },
-  { "assignmentId": "asgn-006", "userId": "u005", "projectId": "proj-005", "role": "Data Engineer" },
-  { "assignmentId": "asgn-007", "userId": "u006", "projectId": "proj-001", "role": "JavaScript Developer" }
+  {
+    "assignmentId": "asgn-001",
+    "projectId": "proj-002",
+    "userId": "u005",
+    "role": "ML Engineer",
+    "assignedDate": "2026-01-12"
+  },
+  {
+    "assignmentId": "asgn-002",
+    "projectId": "proj-002",
+    "userId": "u002",
+    "role": "Backend Developer",
+    "assignedDate": "2026-01-15"
+  },
+  {
+    "assignmentId": "asgn-003",
+    "projectId": "proj-004",
+    "userId": "u004",
+    "role": "DevOps Engineer",
+    "assignedDate": "2026-01-22"
+  }
 ]

@@ -1,0 +1,149 @@
+<div class="project-create-page">
+  <header class="page-header">
+    <h1 class="page-title">Create Project</h1>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="create-form" novalidate>
+    <div class="form-grid">
+      <!-- Left column -->
+      <div class="col">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Project Name</mat-label>
+          <input matInput formControlName="name" placeholder="e.g. Banking App Modernization"
+                 aria-label="Project name" />
+          @if (form.get('name')?.errors?.['required'] && form.get('name')?.touched) {
+            <mat-error>Project name is required.</mat-error>
+          }
+          @if (form.get('name')?.errors?.['maxlength']) {
+            <mat-error>Name cannot exceed 120 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3"
+                    aria-label="Project description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" aria-label="Project status">
+            @for (s of statusOptions; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <div class="date-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Start Date</mat-label>
+            <input matInput formControlName="startDate" type="date"
+                   aria-label="Project start date" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Deadline</mat-label>
+            <input matInput formControlName="deadline" type="date"
+                   aria-label="Project deadline" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="col">
+        <!-- Required Roles -->
+        <div class="section-header">
+          <h2>Required Roles</h2>
+          <button type="button" mat-stroked-button (click)="addRole()"
+                  aria-label="Add role slot">
+            <mat-icon>add</mat-icon> Add Role
+          </button>
+        </div>
+
+        <div formArrayName="requiredRoles">
+          @for (role of rolesArray.controls; track $index) {
+            <div [formGroupName]="$index" class="array-row">
+              <mat-form-field appearance="outline" class="flex-grow">
+                <mat-label>Role Title</mat-label>
+                <input matInput formControlName="roleTitle" placeholder="e.g. Backend Developer"
+                       [attr.aria-label]="'Role title ' + ($index + 1)" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="headcount-field">
+                <mat-label>Headcount</mat-label>
+                <input matInput formControlName="headcount" type="number" min="1" max="50"
+                       [attr.aria-label]="'Headcount for role ' + ($index + 1)" />
+              </mat-form-field>
+
+              @if (rolesArray.length > 1) {
+                <button type="button" mat-icon-button color="warn"
+                        (click)="removeRole($index)"
+                        [attr.aria-label]="'Remove role ' + ($index + 1)">
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Required Skills -->
+        <div class="section-header">
+          <h2>Required Skills</h2>
+          <button type="button" mat-stroked-button (click)="addSkill()"
+                  aria-label="Add required skill">
+            <mat-icon>add</mat-icon> Add Skill
+          </button>
+        </div>
+
+        <div formArrayName="requiredSkills">
+          @for (skill of skillsArray.controls; track $index) {
+            <div [formGroupName]="$index" class="array-row">
+              <mat-form-field appearance="outline" class="flex-grow">
+                <mat-label>Skill</mat-label>
+                <mat-select formControlName="skillId"
+                            [attr.aria-label]="'Skill ' + ($index + 1)">
+                  @for (def of skillDefinitions; track def.skillId) {
+                    <mat-option [value]="def.skillId">{{ def.skillName }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="level-field">
+                <mat-label>Min. Level</mat-label>
+                <mat-select formControlName="minimumLevel"
+                            [attr.aria-label]="'Minimum proficiency for skill ' + ($index + 1)">
+                  @for (opt of proficiencyOptions; track opt.value) {
+                    <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              @if (skillsArray.length > 1) {
+                <button type="button" mat-icon-button color="warn"
+                        (click)="removeSkill($index)"
+                        [attr.aria-label]="'Remove skill ' + ($index + 1)">
+                  <mat-icon>remove_circle_outline</mat-icon>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="form-actions">
+      <button type="button" mat-stroked-button (click)="onCancel()"
+              aria-label="Cancel and go back to projects list">Cancel</button>
+      <button type="submit" mat-flat-button color="primary"
+              [disabled]="(loading$ | async) ?? false"
+              aria-label="Submit create project form">
+        @if (loading$ | async) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Create Project
+        }
+      </button>
+    </div>
+  </form>
+</div>

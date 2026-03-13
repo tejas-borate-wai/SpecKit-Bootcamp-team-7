@@ -1,32 +1,99 @@
 [
   {
     "projectId": "proj-001",
-    "projectName": "E-Commerce Platform",
-    "status": "Completed",
-    "requiredSkills": ["skill-001", "skill-006", "skill-007"]
+    "name": "Banking App Modernization",
+    "description": "Modernize the legacy banking application to a cloud-native architecture",
+    "status": "Open",
+    "startDate": "2026-02-01",
+    "deadline": "2026-08-31",
+    "requiredSkills": [
+      { "skillId": "skill-002", "minimumLevel": 3 },
+      { "skillId": "skill-007", "minimumLevel": 2 },
+      { "skillId": "skill-015", "minimumLevel": 2 },
+      { "skillId": "skill-020", "minimumLevel": 3 }
+    ],
+    "requiredRoles": [
+      { "roleTitle": "Frontend Developer", "headcount": 2 },
+      { "roleTitle": "Backend Developer", "headcount": 1 },
+      { "roleTitle": "QA Engineer", "headcount": 1 }
+    ],
+    "createdBy": "u007",
+    "createdDate": "2026-01-15"
   },
   {
     "projectId": "proj-002",
-    "projectName": "Internal HR System",
-    "status": "Completed",
-    "requiredSkills": ["skill-002", "skill-008", "skill-019"]
+    "name": "AI Recommendation Engine",
+    "description": "Build an AI-powered recommendation engine using Python and machine learning",
+    "status": "In Progress",
+    "startDate": "2026-01-10",
+    "deadline": "2026-07-30",
+    "requiredSkills": [
+      { "skillId": "skill-010", "minimumLevel": 3 },
+      { "skillId": "skill-019", "minimumLevel": 2 },
+      { "skillId": "skill-015", "minimumLevel": 2 }
+    ],
+    "requiredRoles": [
+      { "roleTitle": "ML Engineer", "headcount": 2 },
+      { "roleTitle": "Backend Developer", "headcount": 1 }
+    ],
+    "createdBy": "u007",
+    "createdDate": "2025-12-20"
   },
   {
     "projectId": "proj-003",
-    "projectName": "Mobile Banking App",
-    "status": "Completed",
-    "requiredSkills": ["skill-013", "skill-014"]
+    "name": "Mobile Banking App",
+    "description": "Cross-platform mobile app for retail banking customers",
+    "status": "Draft",
+    "startDate": "2026-04-01",
+    "deadline": "2026-10-31",
+    "requiredSkills": [
+      { "skillId": "skill-013", "minimumLevel": 3 },
+      { "skillId": "skill-009", "minimumLevel": 2 },
+      { "skillId": "skill-020", "minimumLevel": 2 }
+    ],
+    "requiredRoles": [
+      { "roleTitle": "Flutter Developer", "headcount": 2 },
+      { "roleTitle": "Backend Developer", "headcount": 1 }
+    ],
+    "createdBy": "u008",
+    "createdDate": "2026-02-05"
   },
   {
     "projectId": "proj-004",
-    "projectName": "DevOps Pipeline",
-    "status": "Completed",
-    "requiredSkills": ["skill-015", "skill-016", "skill-018"]
+    "name": "DevOps Pipeline Automation",
+    "description": "Automate CI/CD pipelines and infrastructure provisioning using Docker and Kubernetes",
+    "status": "In Progress",
+    "startDate": "2026-01-20",
+    "deadline": "2026-06-30",
+    "requiredSkills": [
+      { "skillId": "skill-015", "minimumLevel": 3 },
+      { "skillId": "skill-016", "minimumLevel": 2 },
+      { "skillId": "skill-018", "minimumLevel": 2 }
+    ],
+    "requiredRoles": [
+      { "roleTitle": "DevOps Engineer", "headcount": 2 },
+      { "roleTitle": "Cloud Architect", "headcount": 1 }
+    ],
+    "createdBy": "u008",
+    "createdDate": "2026-01-05"
   },
   {
     "projectId": "proj-005",
-    "projectName": "Data Analytics Dashboard",
-    "status": "In Progress",
-    "requiredSkills": ["skill-019", "skill-020", "skill-021"]
+    "name": "Data Analytics Dashboard",
+    "description": "Real-time analytics dashboard with PostgreSQL and Python data pipelines",
+    "status": "Completed",
+    "startDate": "2025-10-01",
+    "deadline": "2025-12-31",
+    "requiredSkills": [
+      { "skillId": "skill-019", "minimumLevel": 3 },
+      { "skillId": "skill-020", "minimumLevel": 3 },
+      { "skillId": "skill-010", "minimumLevel": 2 }
+    ],
+    "requiredRoles": [
+      { "roleTitle": "Data Engineer", "headcount": 2 },
+      { "roleTitle": "Backend Developer", "headcount": 1 }
+    ],
+    "createdBy": "u007",
+    "createdDate": "2025-09-15"
   }
 ]

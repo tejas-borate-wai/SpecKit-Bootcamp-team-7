@@ -302,15 +302,47 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     return handleDeleteCertification(certIdMatch[1]);
   }
 
-  // ── Project Assignments ──────────────────────────────────────────────────
+  // ── Feature 007: Project Management ─────────────────────────────────────
+  // GET /api/project-assignments?userId=...  or all
   if (url === '/api/project-assignments' && req.method === 'GET') {
     const params = new URL(req.url, 'http://localhost').searchParams;
     return handleGetProjectAssignments(params.get('userId'));
   }
+  // POST /api/project-assignments
+  if (url === '/api/project-assignments' && req.method === 'POST') {
+    return handleCreateProjectAssignment(req);
+  }
+  // DELETE /api/project-assignments/:assignmentId
+  const assignmentDeleteMatch = url.match(/^\/api\/project-assignments\/([^/]+)$/);
+  if (assignmentDeleteMatch && req.method === 'DELETE') {
+    return handleDeleteProjectAssignment(assignmentDeleteMatch[1]);
+  }
+
+  // PATCH /api/users/:userId/availability
+  const availabilityMatch = url.match(/^\/api\/users\/([^/]+)\/availability$/);
+  if (availabilityMatch && req.method === 'PATCH') {
+    return handleOverrideAvailability(req, availabilityMatch[1]);
+  }
+
+  // GET /api/projects/:projectId (before GET /api/projects)
+  const projectDetailMatch = url.match(/^\/api\/projects\/([^/]+)$/);
+  if (projectDetailMatch && req.method === 'GET') {
+    return handleGetProjectById(projectDetailMatch[1]);
+  }
+  if (projectDetailMatch && req.method === 'PUT') {
+    return handleUpdateProject(req, projectDetailMatch[1]);
+  }
+  if (projectDetailMatch && req.method === 'DELETE') {
+    return handleDeleteProject(req, projectDetailMatch[1]);
+  }
 
   // GET /api/projects
-  if (req.url === '/api/projects' && req.method === 'GET') {
+  if (url === '/api/projects' && req.method === 'GET') {
     return handleGetProjects();
+  }
+  // POST /api/projects
+  if (url === '/api/projects' && req.method === 'POST') {
+    return handleCreateProject(req);
   }
 
   // ── Read-only skill library (all authenticated roles) ──────────────────
@@ -1113,7 +1145,221 @@ function handleGetProjects(): Observable<HttpResponse<unknown>> {
   }).pipe(delay(getSimulatedDelay()));
 }
 
-// ── Feature 006: Team Management Handler Functions ──────────────────────────
+function handleGetProjectById(projectId: string): Observable<HttpResponse<unknown>> {
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    loadProjects().then((projects) => {
+      const project = projects.find((p) => p['projectId'] === projectId);
+      if (!project) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
+      } else {
+        sub.next(new HttpResponse({ status: 200, body: project }));
+      }
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleCreateProject(req: HttpRequest<unknown>): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const userId = getCurrentUserId();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    loadProjects().then((projects) => {
+      const body = req.body as Record<string, unknown>;
+      const name = (body['name'] as string) ?? '';
+      const startDate = body['startDate'] as string;
+      const deadline = body['deadline'] as string;
+      const requiredSkills = body['requiredSkills'] as unknown[];
+
+      if (!name.trim()) {
+        sub.next(new HttpResponse({ status: 400, body: { error: 'Project name is required.' } }));
+        sub.complete();
+        return;
+      }
+      const duplicate = projects.some((p) => (p['name'] as string).toLowerCase() === name.toLowerCase().trim());
+      if (duplicate) {
+        sub.next(new HttpResponse({ status: 409, body: { error: 'A project with this name already exists.' } }));
+        sub.complete();
+        return;
+      }
+      if (startDate && deadline && new Date(startDate) >= new Date(deadline)) {
+        sub.next(new HttpResponse({ status: 400, body: { error: 'Start date must be before deadline.' } }));
+        sub.complete();
+        return;
+      }
+      if (!requiredSkills || (requiredSkills as unknown[]).length === 0) {
+        sub.next(new HttpResponse({ status: 400, body: { error: 'Add at least one required skill to create a project.' } }));
+        sub.complete();
+        return;
+      }
+      const newProject = {
+        ...body,
+        projectId: 'proj-' + Date.now(),
+        createdBy: userId ?? 'unknown',
+        createdDate: new Date().toISOString().split('T')[0],
+      };
+      projects.push(newProject as typeof projects[0]);
+      sub.next(new HttpResponse({ status: 201, body: newProject }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleUpdateProject(req: HttpRequest<unknown>, projectId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const userId = getCurrentUserId();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    Promise.all([loadProjects(), loadProjectAssignments()]).then(([projects, assignments]) => {
+      const idx = projects.findIndex((p) => p['projectId'] === projectId);
+      if (idx === -1) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
+        sub.complete();
+        return;
+      }
+      const existing = projects[idx];
+      if (role === 'Manager' && existing['createdBy'] !== userId) {
+        sub.next(new HttpResponse({ status: 403, body: { error: 'You do not have permission to perform this action.' } }));
+        sub.complete();
+        return;
+      }
+      const body = req.body as Record<string, unknown>;
+      const newName = (body['name'] as string) ?? existing['name'];
+      const notSelf = projects.filter((_, i) => i !== idx);
+      if (notSelf.some((p) => (p['name'] as string).toLowerCase() === newName.toLowerCase().trim())) {
+        sub.next(new HttpResponse({ status: 409, body: { error: 'A project with this name already exists.' } }));
+        sub.complete();
+        return;
+      }
+      const startDate = (body['startDate'] as string) ?? existing['startDate'];
+      const deadline = (body['deadline'] as string) ?? existing['deadline'];
+      if (startDate && deadline && new Date(startDate) >= new Date(deadline)) {
+        sub.next(new HttpResponse({ status: 400, body: { error: 'Start date must be before deadline.' } }));
+        sub.complete();
+        return;
+      }
+      const updated = { ...existing, ...body };
+      projects[idx] = updated;
+      // If project completed, note it (availability handled by effect)
+      sub.next(new HttpResponse({ status: 200, body: updated }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleDeleteProject(req: HttpRequest<unknown>, projectId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const userId = getCurrentUserId();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    loadProjects().then((projects) => {
+      const idx = projects.findIndex((p) => p['projectId'] === projectId);
+      if (idx === -1) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
+        sub.complete();
+        return;
+      }
+      if (role === 'Manager' && projects[idx]['createdBy'] !== userId) {
+        sub.next(new HttpResponse({ status: 403, body: { error: 'You do not have permission to perform this action.' } }));
+        sub.complete();
+        return;
+      }
+      projects.splice(idx, 1);
+      sub.next(new HttpResponse({ status: 200, body: { projectId } }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleCreateProjectAssignment(req: HttpRequest<unknown>): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    Promise.all([loadProjectAssignments(), loadProjects()]).then(([assignments, projects]) => {
+      const body = req.body as { projectId: string; userId: string; role: string };
+      const project = projects.find((p) => p['projectId'] === body.projectId) as Record<string, unknown> | undefined;
+      if (!project) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
+        sub.complete();
+        return;
+      }
+      // Check if user is already assigned to an active project
+      const activeProjects = projects
+        .filter((p) => p['status'] !== 'Completed')
+        .map((p) => p['projectId'] as string);
+      const alreadyBusy = assignments.some(
+        (a) => a.userId === body.userId && activeProjects.includes(a.projectId)
+      );
+      if (alreadyBusy) {
+        sub.next(new HttpResponse({ status: 409, body: { error: 'Employee is already assigned to an active project.' } }));
+        sub.complete();
+        return;
+      }
+      // Check role slot headcount
+      const requiredRoles = (project['requiredRoles'] as Array<{ roleTitle: string; headcount: number }>) ?? [];
+      const slot = requiredRoles.find((r) => r.roleTitle === body.role);
+      if (slot) {
+        const filled = assignments.filter((a) => a.projectId === body.projectId && a.role === body.role).length;
+        if (filled >= slot.headcount) {
+          sub.next(new HttpResponse({ status: 409, body: { error: 'Role slot is already full.' } }));
+          sub.complete();
+          return;
+        }
+      }
+      const newAssignment = {
+        assignmentId: 'asgn-' + Date.now(),
+        projectId: body.projectId,
+        userId: body.userId,
+        role: body.role,
+        assignedDate: new Date().toISOString().split('T')[0],
+      };
+      assignments.push(newAssignment);
+      sub.next(new HttpResponse({ status: 201, body: newAssignment }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleDeleteProjectAssignment(assignmentId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    loadProjectAssignments().then((assignments) => {
+      const idx = assignments.findIndex((a) => a.assignmentId === assignmentId);
+      if (idx === -1) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Assignment not found.' } }));
+      } else {
+        assignments.splice(idx, 1);
+        sub.next(new HttpResponse({ status: 200, body: { assignmentId } }));
+      }
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleOverrideAvailability(req: HttpRequest<unknown>, userId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  const body = req.body as { status?: string; reason?: string };
+  if (!body?.reason?.trim()) {
+    return makeError(400, 'Reason is required for availability override.');
+  }
+  return ok({ userId, status: body.status ?? 'Available', reason: body.reason });
+}
+
+
 
 function handleGetTeamEmployees(): Observable<HttpResponse<unknown>> {
   const role = getCurrentUserRole();

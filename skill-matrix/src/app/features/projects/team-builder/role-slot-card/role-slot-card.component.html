@@ -1,0 +1,60 @@
+<div class="role-card" [class.is-full]="isFull">
+  <div class="card-header">
+    <h3 class="role-title">{{ roleTitle }}</h3>
+    <span class="slot-badge" [class.full]="isFull" [attr.aria-label]="filledCount + ' of ' + headcount + ' filled'">
+      {{ filledCount }}/{{ headcount }}
+    </span>
+  </div>
+
+  <!-- Assigned employees -->
+  @if (assignedEmployees.length > 0) {
+    <ul class="assigned-list" aria-label="Assigned employees">
+      @for (emp of assignedEmployees; track emp.assignmentId) {
+        <li class="assigned-item">
+          <div class="emp-avatar" aria-hidden="true">{{ emp.name[0] }}</div>
+          <span class="emp-name">{{ emp.name }}</span>
+          <button mat-icon-button color="warn" (click)="onRemove(emp.assignmentId)"
+                  [attr.aria-label]="'Remove ' + emp.name + ' from ' + roleTitle">
+            <mat-icon>close</mat-icon>
+          </button>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="empty-slots" aria-label="No employees assigned yet">No employees assigned yet.</p>
+  }
+
+  <!-- Assign action -->
+  @if (!isFull) {
+    @if (!showAssignSelect) {
+      <button mat-stroked-button class="assign-btn"
+              (click)="showAssignSelect = true"
+              aria-label="Add employee to {{ roleTitle }}">
+        <mat-icon>add</mat-icon> Assign Employee
+      </button>
+    } @else {
+      <div class="assign-row">
+        <mat-select [(ngModel)]="selectedUserId" class="candidate-select"
+                    aria-label="Select candidate to assign to {{ roleTitle }}">
+          <mat-option value="">Select candidate...</mat-option>
+          @for (c of availableToAssign; track c.userId) {
+            <mat-option [value]="c.userId">
+              {{ c.userName }} — {{ c.matchScore }}%
+            </mat-option>
+          }
+        </mat-select>
+        <button mat-flat-button color="primary" (click)="onAssignClick()"
+                [disabled]="!selectedUserId"
+                [attr.aria-label]="'Confirm assign to ' + roleTitle">
+          Add
+        </button>
+        <button mat-icon-button (click)="showAssignSelect = false; selectedUserId = ''"
+                aria-label="Cancel assignment">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    }
+  } @else {
+    <p class="full-notice" aria-live="polite">Role slot is full.</p>
+  }
+</div>

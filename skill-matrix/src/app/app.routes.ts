@@ -96,13 +96,10 @@ export const routes: Routes = [
     path: 'projects',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['Manager', 'Admin'] },
-    children: [
-      { path: '', loadComponent: placeholder },
-      { path: 'create', loadComponent: placeholder },
-      { path: ':projectId', loadComponent: placeholder },
-      { path: ':projectId/match', loadComponent: placeholder },
-      { path: ':projectId/team-builder', loadComponent: placeholder },
-    ],
+    loadChildren: () =>
+      import('./features/projects/projects.routes').then(
+        (m) => m.projectsRoutes
+      ),
   },
 
   // Reports — Manager/Admin for main, Admin only for heatmap

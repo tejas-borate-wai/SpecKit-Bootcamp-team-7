@@ -1,0 +1,66 @@
+<div class="team-builder-page">
+  @if (loading$ | async) {
+    <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+  } @else if (project$ | async; as project) {
+    <header class="page-header">
+      <div class="header-left">
+        <a [routerLink]="['/projects', project.projectId]" mat-icon-button aria-label="Back to project">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div>
+          <h1 class="page-title">Team Builder</h1>
+          <p class="page-subtitle">
+            {{ project.name }}
+            <span class="status-badge" [ngClass]="getStatusCssClass(project.status)">
+              {{ project.status }}
+            </span>
+          </p>
+        </div>
+      </div>
+      <a [routerLink]="['/projects', project.projectId, 'match']" mat-stroked-button
+         aria-label="Go to candidate matching">
+        <mat-icon>manage_search</mat-icon> Find Candidates
+      </a>
+    </header>
+
+    <!-- Role Slot Cards -->
+    @if (roleSlotVMs$ | async; as slots) {
+      @if (slots.length === 0) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">work_outline</mat-icon>
+          <p>No roles defined for this project. <a [routerLink]="['/projects', project.projectId]">Add roles</a> first.</p>
+        </div>
+      } @else {
+        <div class="roles-grid">
+          @for (vm of slots; track vm.role.roleTitle) {
+            @if (candidates$ | async; as candidates) {
+              <app-role-slot-card
+                [roleTitle]="vm.role.roleTitle"
+                [headcount]="vm.role.headcount"
+                [filledCount]="vm.filled"
+                [assignedEmployees]="vm.assignedEmployees"
+                [availableCandidates]="candidates"
+                (assign)="onAssign($event)"
+                (remove)="onRemove($event)" />
+            }
+          }
+        </div>
+      }
+    }
+
+    <!-- Skill Gap Panel -->
+    @if (skillGaps$ | async; as gaps) {
+      @if (gaps.length > 0) {
+        <div class="skill-gap-section">
+          <h2 class="section-title">
+            <mat-icon class="gap-icon">warning</mat-icon>
+            Skill Gaps Detected
+          </h2>
+          <app-skill-gap-panel [gaps]="gaps" />
+        </div>
+      }
+    }
+  } @else {
+    <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+</div>
