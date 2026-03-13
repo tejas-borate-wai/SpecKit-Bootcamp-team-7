@@ -14,6 +14,7 @@ export interface CandidateMatchResult {
   userId: string;
   userName: string;
   department: string;
+  avatarUrl?: string;
   matchScore: number;
   matchedCount: number;
   totalRequired: number;

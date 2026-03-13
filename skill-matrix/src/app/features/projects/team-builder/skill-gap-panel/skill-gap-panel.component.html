@@ -4,7 +4,7 @@
       <div class="gap-header">
         <span class="skill-name">{{ gap.skillName }}</span>
         <div class="level-badges">
-          <span class="level-badge required" aria-label="Required level: {{ levelLabel(gap.requiredLevel) }}">
+          <span class="level-badge required" [attr.aria-label]="'Required level: ' + levelLabel(gap.requiredLevel)">
             Required: {{ levelLabel(gap.requiredLevel) }}
           </span>
           <span class="level-badge available" [attr.aria-label]="'Highest available: ' + levelLabel(gap.highestAvailableLevel)">

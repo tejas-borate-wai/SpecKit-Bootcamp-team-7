@@ -1,8 +1,9 @@
 <div class="project-detail-page">
   @if (loading$ | async) {
     <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
-  } @else if (project$ | async; as project) {
-    @if (currentUser$ | async; as user) {
+  } @else {
+    @if (project$ | async; as project) {
+      @if (currentUser$ | async; as user) {
       <header class="page-header">
         <div class="header-left">
           <a routerLink="/projects" mat-icon-button aria-label="Back to projects">
@@ -193,9 +194,10 @@
         </form>
       }
     }
-  } @else {
-    <div class="not-found">
-      <p>Project not found. <a routerLink="/projects">Back to Projects</a></p>
-    </div>
+    } @else {
+      <div class="not-found">
+        <p>Project not found. <a routerLink="/projects">Back to Projects</a></p>
+      </div>
+    }
   }
 </div>

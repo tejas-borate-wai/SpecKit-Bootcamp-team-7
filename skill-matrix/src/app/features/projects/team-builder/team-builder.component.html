@@ -1,7 +1,8 @@
 <div class="team-builder-page">
   @if (loading$ | async) {
     <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
-  } @else if (project$ | async; as project) {
+  } @else {
+    @if (project$ | async; as project) {
     <header class="page-header">
       <div class="header-left">
         <a [routerLink]="['/projects', project.projectId]" mat-icon-button aria-label="Back to project">
@@ -60,7 +61,8 @@
         </div>
       }
     }
-  } @else {
-    <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+    } @else {
+      <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+    }
   }
 </div>
