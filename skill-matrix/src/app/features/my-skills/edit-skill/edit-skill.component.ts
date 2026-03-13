@@ -30,6 +30,7 @@ export class EditSkillComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   skillId = '';
+  userId = '';
   loading$ = this.store.select(selectSkillsLoading);
 
   form = this.fb.group({
@@ -43,6 +44,7 @@ export class EditSkillComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
         if (user) {
+          this.userId = user.id;
           this.store.dispatch(SkillsActions.loadMySkills({ userId: user.id }));
         }
       });
@@ -65,7 +67,7 @@ export class EditSkillComponent implements OnInit, OnDestroy {
     if (this.form.invalid) return;
     const selfRating = this.form.value.selfRating as number;
     this.store.dispatch(
-      SkillsActions.updateSkillRating({ skillId: this.skillId, selfRating })
+      SkillsActions.updateSkillRating({ userId: this.userId, skillId: this.skillId, selfRating })
     );
     // Navigate back after a short delay for the effect to process
     setTimeout(() => {
