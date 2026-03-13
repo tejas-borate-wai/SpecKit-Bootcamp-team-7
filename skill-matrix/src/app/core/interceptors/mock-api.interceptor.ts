@@ -855,7 +855,7 @@ function handleGetCertifications(
 }
 
 function handleGetCertificationById(certId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCertifications().then((certs) => {
       const cert = certs.find((c) => c.certId === certId);
       if (!cert) {
@@ -871,7 +871,7 @@ function handleGetCertificationById(certId: string): Observable<HttpResponse<unk
 function handlePostCertification(
   body: Record<string, unknown>
 ): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCertifications().then((certs) => {
       const raw = localStorage.getItem('session');
       const userId: string = raw ? (JSON.parse(raw) as { id?: string }).id ?? 'unknown' : 'unknown';
@@ -893,7 +893,7 @@ function handlePostCertification(
 }
 
 function handleDeleteCertification(certId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCertifications().then((certs) => {
       const idx = certs.findIndex((c) => c.certId === certId);
       if (idx === -1) {
