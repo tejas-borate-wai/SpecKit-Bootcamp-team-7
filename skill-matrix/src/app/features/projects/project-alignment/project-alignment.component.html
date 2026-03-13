@@ -45,7 +45,7 @@
                   <td>
                     <button mat-stroked-button
                             (click)="openOverride(entry)"
-                            aria-label="Override availability for {{ entry.employeeName }}">
+                            [attr.aria-label]="'Override availability for ' + entry.employeeName">
                       Override
                     </button>
                   </td>

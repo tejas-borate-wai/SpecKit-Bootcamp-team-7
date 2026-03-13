@@ -29,13 +29,13 @@
     @if (!showAssignSelect) {
       <button mat-stroked-button class="assign-btn"
               (click)="showAssignSelect = true"
-              aria-label="Add employee to {{ roleTitle }}">
+              [attr.aria-label]="'Add employee to ' + roleTitle">
         <mat-icon>add</mat-icon> Assign Employee
       </button>
     } @else {
       <div class="assign-row">
         <mat-select [(ngModel)]="selectedUserId" class="candidate-select"
-                    aria-label="Select candidate to assign to {{ roleTitle }}">
+                    [attr.aria-label]="'Select candidate to assign to ' + roleTitle">
           <mat-option value="">Select candidate...</mat-option>
           @for (c of availableToAssign; track c.userId) {
             <mat-option [value]="c.userId">

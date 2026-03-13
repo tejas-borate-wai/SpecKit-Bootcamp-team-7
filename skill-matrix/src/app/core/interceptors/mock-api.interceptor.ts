@@ -1224,7 +1224,7 @@ function handleCreateProject(req: HttpRequest<unknown>): Observable<HttpResponse
         createdBy: userId ?? 'unknown',
         createdDate: new Date().toISOString().split('T')[0],
       };
-      projects.push(newProject as typeof projects[0]);
+      projects.push(newProject as unknown as typeof projects[0]);
       sub.next(new HttpResponse({ status: 201, body: newProject }));
       sub.complete();
     });
@@ -1331,7 +1331,7 @@ function handleCreateProjectAssignment(req: HttpRequest<unknown>): Observable<Ht
       const requiredRoles = (project['requiredRoles'] as Array<{ roleTitle: string; headcount: number }>) ?? [];
       const slot = requiredRoles.find((r) => r.roleTitle === body.role);
       if (slot) {
-        const filled = assignments.filter((a) => a.projectId === body.projectId && a.role === body.role).length;
+        const filled = assignments.filter((a) => a.projectId === body.projectId && a['role'] === body.role).length;
         if (filled >= slot.headcount) {
           sub.next(new HttpResponse({ status: 409, body: { error: 'Role slot is already full.' } }));
           sub.complete();

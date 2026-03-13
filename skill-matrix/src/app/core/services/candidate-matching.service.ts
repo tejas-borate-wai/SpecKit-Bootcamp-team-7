@@ -120,7 +120,7 @@ export class CandidateMatchingService {
         matchedCount,
         totalRequired: project.requiredSkills.length,
         availability,
-        breakdown,
+        skillBreakdown: breakdown,
       });
     }
 

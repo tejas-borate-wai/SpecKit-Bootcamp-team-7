@@ -1,5 +1,5 @@
 .sidebar-nav {
-  padding: var(--spacing-sm) 0;
+  padding: 8px 0;
   height: 100%;
   overflow-y: auto;
 
@@ -10,37 +10,41 @@
 
     a[mat-list-item] {
       justify-content: center;
-      padding: 0 var(--spacing-sm);
+      padding: 0 8px;
     }
   }
 }
 
 .section-header {
-  padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
-  font-size: 11px;
-  font-weight: 700;
+  padding: 20px 16px 6px;
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: #6b7280;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
 }
 
 a[mat-list-item] {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: 12px;
   height: 44px;
-  border-radius: var(--radius-sm);
-  margin: 2px var(--spacing-sm);
-  color: #4b5563;
+  border-radius: 8px;
+  margin: 2px 8px;
+  color: #475569;
   text-decoration: none;
+  transition: all 0.15s ease;
 
   mat-icon {
-    color: #6b7280;
+    color: #64748b;
     flex-shrink: 0;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
   }
 
   .nav-label {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
@@ -48,17 +52,26 @@ a[mat-list-item] {
   }
 
   &.active {
-    background-color: rgba(59, 130, 246, 0.08);
-    color: var(--color-primary);
-    font-weight: 600;
+    background: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(60, 131, 246, 0.3);
 
     mat-icon {
-      color: var(--color-primary);
+      color: #fff;
+    }
+
+    .nav-label {
+      font-weight: 600;
     }
   }
 
   &:hover:not(.active) {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: #f1f5f9;
+    color: #1e293b;
+
+    mat-icon {
+      color: #475569;
+    }
   }
 }
 
@@ -71,13 +84,13 @@ a[mat-list-item] {
   }
 
   mat-expansion-panel-header {
-    padding: 0 var(--spacing-md);
+    padding: 0 16px;
     height: 44px;
-    font-size: 14px;
+    font-size: 0.875rem;
 
     mat-icon {
-      margin-right: var(--spacing-sm);
-      color: #6b7280;
+      margin-right: 8px;
+      color: #64748b;
     }
   }
 }

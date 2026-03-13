@@ -37,8 +37,7 @@
   } @else {
     @if (currentUser$ | async; as user) {
       @if (filteredProjects$ | async; as allProjects) {
-        @let projects = applyFilter(allProjects);
-        @if (projects.length === 0) {
+        @if (applyFilter(allProjects).length === 0) {
           <div class="empty-state">
             <mat-icon class="empty-icon">folder_open</mat-icon>
             <p>No projects found. <a routerLink="/projects/create">Create the first one.</a></p>
@@ -59,7 +58,7 @@
                 </tr>
               </thead>
               <tbody>
-                @for (project of projects; track project.projectId) {
+                @for (project of applyFilter(allProjects); track project.projectId) {
                   <tr>
                     <td>
                       <a [routerLink]="['/projects', project.projectId]" class="project-link">
@@ -80,27 +79,27 @@
                         <button
                           mat-icon-button
                           (click)="onEdit(project)"
-                          aria-label="Edit project {{ project.name }}">
+                          [attr.aria-label]="'Edit project ' + project.name">
                           <mat-icon>edit</mat-icon>
                         </button>
                         <button
                           mat-icon-button
                           color="warn"
                           (click)="onDelete(project, user)"
-                          aria-label="Delete project {{ project.name }}">
+                          [attr.aria-label]="'Delete project ' + project.name">
                           <mat-icon>delete</mat-icon>
                         </button>
                       }
                       <a
                         [routerLink]="['/projects', project.projectId, 'match']"
                         mat-icon-button
-                        aria-label="Match candidates for {{ project.name }}">
+                        [attr.aria-label]="'Match candidates for ' + project.name">
                         <mat-icon>manage_search</mat-icon>
                       </a>
                       <a
                         [routerLink]="['/projects', project.projectId, 'team-builder']"
                         mat-icon-button
-                        aria-label="Open team builder for {{ project.name }}">
+                        [attr.aria-label]="'Open team builder for ' + project.name">
                         <mat-icon>engineering</mat-icon>
                       </a>
                     </td>
@@ -112,7 +111,7 @@
 
           <!-- Mobile cards -->
           <div class="mobile-cards" aria-label="Projects cards">
-            @for (project of projects; track project.projectId) {
+            @for (project of applyFilter(allProjects); track project.projectId) {
               <div class="project-card">
                 <div class="card-header">
                   <a [routerLink]="['/projects', project.projectId]" class="project-link">

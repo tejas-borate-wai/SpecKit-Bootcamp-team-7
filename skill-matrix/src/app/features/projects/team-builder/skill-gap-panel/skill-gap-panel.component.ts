@@ -14,7 +14,8 @@ import { ProficiencyLevel } from '../../../../shared/models/project.model';
 export class SkillGapPanelComponent {
   @Input() gaps: SkillGapResult[] = [];
 
-  levelLabel(level: ProficiencyLevel): string {
+  levelLabel(level: ProficiencyLevel | null): string {
+    if (level === null) return 'None';
     const map: Record<ProficiencyLevel, string> = {
       1: 'Beginner',
       2: 'Intermediate',

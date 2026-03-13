@@ -21,13 +21,13 @@ import { AchievementBadge } from '../../models/achievement.model';
       align-items: center;
       gap: 4px;
       padding: 8px 12px;
-      background: var(--color-surface, #fff);
-      border: 1px solid var(--color-border, #e5e7eb);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       cursor: default;
     }
     .badge-icon {
-      color: var(--color-primary, #f59e0b);
+      color: #f59e0b;
       font-size: 1.75rem;
       height: 1.75rem;
       width: 1.75rem;
@@ -35,7 +35,7 @@ import { AchievementBadge } from '../../models/achievement.model';
     .badge-label {
       font-size: 0.7rem;
       font-weight: 600;
-      color: var(--color-text-secondary, #6b7280);
+      color: #64748b;
       text-align: center;
       white-space: nowrap;
     }

@@ -1,11 +1,21 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Skill Matrix</mat-card-title>
-      <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
-    </mat-card-header>
+<div class="login-page">
+  <!-- Top bar -->
+  <header class="login-header">
+    <div class="login-header__brand">
+      <mat-icon class="brand-icon">query_stats</mat-icon>
+      <span class="brand-name">Skill Matrix</span>
+    </div>
+  </header>
 
-    <mat-card-content>
+  <!-- Login card -->
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-card__icon">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <h1 class="login-card__title">Sign in to Skill Matrix</h1>
+      <p class="login-card__subtitle">Enter your credentials to access your dashboard</p>
+
       @if (error$ | async; as error) {
         <div class="error-banner">
           <mat-icon>error_outline</mat-icon>
@@ -13,31 +23,39 @@
         </div>
       }
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email" autocomplete="email" />
-          @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-            <mat-error>This field is required</mat-error>
-          }
-        </mat-form-field>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput formControlName="email" type="email" autocomplete="email"
+                   placeholder="name@company.com" />
+            @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
+              <mat-error>This field is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput formControlName="password"
-                 [type]="hidePassword ? 'password' : 'text'"
-                 autocomplete="current-password" />
-          <button mat-icon-button matSuffix type="button"
-                  (click)="hidePassword = !hidePassword"
-                  [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-            <mat-error>This field is required</mat-error>
-          }
-        </mat-form-field>
+        <div class="form-field">
+          <div class="form-label-row">
+            <label class="form-label">Password</label>
+          </div>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput formControlName="password"
+                   [type]="hidePassword ? 'password' : 'text'"
+                   autocomplete="current-password"
+                   placeholder="••••••••" />
+            <button mat-icon-button matSuffix type="button"
+                    (click)="hidePassword = !hidePassword"
+                    [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
+              <mat-error>This field is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-        <button mat-raised-button color="primary" type="submit"
+        <button mat-flat-button color="primary" type="submit"
                 class="full-width submit-btn"
                 [disabled]="(loading$ | async)">
           @if (loading$ | async) {
@@ -47,6 +65,6 @@
           }
         </button>
       </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>
