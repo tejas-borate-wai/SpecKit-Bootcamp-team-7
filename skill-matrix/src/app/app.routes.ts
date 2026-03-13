@@ -73,11 +73,10 @@ export const routes: Routes = [
   {
     path: 'certifications',
     canActivate: [authGuard],
-    children: [
-      { path: '', loadComponent: placeholder },
-      { path: 'upload', loadComponent: placeholder },
-      { path: ':certId', loadComponent: placeholder },
-    ],
+    loadChildren: () =>
+      import('./features/certifications/certifications.routes').then(
+        (m) => m.certificationsRoutes
+      ),
   },
   {
     path: 'notifications',

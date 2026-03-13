@@ -21,7 +21,7 @@ let ratingWeightsCache: RatingWeightConfig | null = null;
 let employeeSkillsCache: EmployeeSkillRecord[] | null = null;
 let testAttemptsCache: SkillTestAttempt[] | null = null;
 let skillExamsCache: SkillExam[] | null = null;
-let certificationsCache: { certificationId: string; userId: string; skillId: string; expiryDate: string; [key: string]: unknown }[] | null = null;
+let certificationsCache: { certId: string; userId: string; skillId: string; certName: string; issuingOrg: string; issueDate: string; expiryDate: string; filePath: string }[] | null = null;
 let projectsCache: { projectId: string; status: string; requiredSkills: string[]; [key: string]: unknown }[] | null = null;
 let projectAssignmentsCache: { assignmentId: string; userId: string; projectId: string; [key: string]: unknown }[] | null = null;
 
@@ -81,7 +81,7 @@ async function loadSkillExams(): Promise<SkillExam[]> {
   return skillExamsCache!;
 }
 
-async function loadCertifications(): Promise<typeof certificationsCache extends null ? never : NonNullable<typeof certificationsCache>> {
+async function loadCertifications(): Promise<NonNullable<typeof certificationsCache>> {
   if (certificationsCache) return certificationsCache;
   try {
     const response = await fetch('/assets/mock-data/certifications.json');
@@ -207,6 +207,22 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   if (url === '/api/certifications' && req.method === 'GET') {
     const params = new URL(req.url, 'http://localhost').searchParams;
     return handleGetCertifications(params.get('userId'), params.get('skillId'));
+  }
+
+  // GET /api/certifications/:certId
+  const certIdMatch = url.match(/^\/api\/certifications\/([^/]+)$/);
+  if (certIdMatch && req.method === 'GET') {
+    return handleGetCertificationById(certIdMatch[1]);
+  }
+
+  // POST /api/certifications
+  if (url === '/api/certifications' && req.method === 'POST') {
+    return handlePostCertification(req.body as Record<string, unknown>);
+  }
+
+  // DELETE /api/certifications/:certId
+  if (certIdMatch && req.method === 'DELETE') {
+    return handleDeleteCertification(certIdMatch[1]);
   }
 
   // ── Project Assignments ──────────────────────────────────────────────────
@@ -833,6 +849,59 @@ function handleGetCertifications(
       if (userId) filtered = filtered.filter((c) => c.userId === userId);
       if (skillId) filtered = filtered.filter((c) => c.skillId === skillId);
       sub.next(new HttpResponse({ status: 200, body: filtered }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetCertificationById(certId: string): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadCertifications().then((certs) => {
+      const cert = certs.find((c) => c.certId === certId);
+      if (!cert) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Certification not found.' } }));
+      } else {
+        sub.next(new HttpResponse({ status: 200, body: cert }));
+      }
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handlePostCertification(
+  body: Record<string, unknown>
+): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadCertifications().then((certs) => {
+      const raw = localStorage.getItem('session');
+      const userId: string = raw ? (JSON.parse(raw) as { id?: string }).id ?? 'unknown' : 'unknown';
+      const newCert = {
+        certId: `cert-${Date.now()}`,
+        userId,
+        skillId: String(body['skillId'] ?? ''),
+        certName: String(body['certName'] ?? ''),
+        issuingOrg: String(body['issuingOrg'] ?? ''),
+        issueDate: String(body['issueDate'] ?? ''),
+        expiryDate: String(body['expiryDate'] ?? ''),
+        filePath: String(body['filePath'] ?? ''),
+      };
+      certs.push(newCert);
+      sub.next(new HttpResponse({ status: 201, body: newCert }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleDeleteCertification(certId: string): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadCertifications().then((certs) => {
+      const idx = certs.findIndex((c) => c.certId === certId);
+      if (idx === -1) {
+        sub.next(new HttpResponse({ status: 404, body: { error: 'Certification not found.' } }));
+      } else {
+        certs.splice(idx, 1);
+        sub.next(new HttpResponse({ status: 204, body: null }));
+      }
       sub.complete();
     });
   }).pipe(delay(getSimulatedDelay()));

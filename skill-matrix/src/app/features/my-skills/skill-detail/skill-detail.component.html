@@ -5,6 +5,7 @@
       <h1 class="page-title">{{ definition?.skillName ?? skillId }}</h1>
       @if (skill) {
         <app-rating-badge [level]="skill.level"/>
+        <app-certified-badge [isVisible]="(hasValidCert(skillId) | async) ?? false"/>
       }
     </div>
     <button mat-raised-button color="primary" (click)="onEdit()">

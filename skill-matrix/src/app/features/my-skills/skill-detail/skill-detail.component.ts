@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Subject, takeUntil, combineLatest } from 'rxjs';
+import { Subject, takeUntil, combineLatest, Observable } from 'rxjs';
 import { selectMyActiveSkills, selectTestAttempts, selectSkillDefinitions } from '../../../core/store/skills/skills.selectors';
 import * as SkillsActions from '../../../core/store/skills/skills.actions';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
@@ -17,15 +17,18 @@ import { RatingBadgeComponent } from '../../../shared/components/rating-badge/ra
 import { ConfidenceIndicatorComponent } from '../../../shared/components/confidence-indicator/confidence-indicator.component';
 import { ProgressChartComponent } from '../../../shared/components/progress-chart/progress-chart.component';
 import { AchievementBadgeComponent } from '../../../shared/components/achievement-badge/achievement-badge.component';
+import { CertifiedBadgeComponent } from '../../../shared/components/certified-badge/certified-badge.component';
 import { AchievementService } from '../../../core/services/achievement.service';
 import { computeConfidence, ratingToPercentage } from '../../../shared/utils/skill-utils';
+import * as CertificationsActions from '../../../core/store/certifications/certifications.actions';
+import { selectHasValidCertForSkill } from '../../../core/store/certifications/certifications.selectors';
 
 @Component({
   selector: 'app-skill-detail',
   standalone: true,
   imports: [
     CommonModule, RouterModule, MatIconModule, MatButtonModule,
-    RatingBadgeComponent, ConfidenceIndicatorComponent, ProgressChartComponent, AchievementBadgeComponent,
+    RatingBadgeComponent, ConfidenceIndicatorComponent, ProgressChartComponent, AchievementBadgeComponent, CertifiedBadgeComponent,
   ],
   templateUrl: './skill-detail.component.html',
   styleUrls: ['./skill-detail.component.scss'],
@@ -47,6 +50,8 @@ export class SkillDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.skillId = this.route.snapshot.paramMap.get('skillId') ?? '';
+
+    this.store.dispatch(CertificationsActions.loadCertifications());
 
     combineLatest([
       this.store.select(selectCurrentUser),
@@ -97,5 +102,9 @@ export class SkillDetailComponent implements OnInit, OnDestroy {
 
   onBack(): void {
     this.router.navigate(['/my-skills']);
+  }
+
+  hasValidCert(skillId: string): Observable<boolean> {
+    return this.store.select(selectHasValidCertForSkill(skillId));
   }
 }

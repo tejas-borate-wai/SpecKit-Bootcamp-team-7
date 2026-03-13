@@ -74,3 +74,43 @@
   color: #555;
   margin-bottom: 12px;
 }
+
+.alert-icon {
+  color: #f59e0b;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.expiry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.expiry-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 6px;
+  flex-wrap: wrap;
+
+  .expiry-cert-name {
+    font-weight: 500;
+    flex: 1 1 auto;
+  }
+
+  .expiry-date {
+    font-size: 0.85rem;
+    color: #777;
+  }
+
+  .expiry-link {
+    font-size: 0.85rem;
+    color: #1976d2;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}

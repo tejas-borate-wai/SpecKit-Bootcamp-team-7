@@ -1,47 +1,102 @@
 [
   {
-    "certificationId": "cert-001",
+    "certId": "cert-001",
     "userId": "u001",
     "skillId": "skill-002",
-    "certificationName": "Angular Certified Developer",
-    "issuedDate": "2025-01-15",
+    "certName": "Angular Certified Developer",
+    "issuingOrg": "Google",
+    "issueDate": "2025-01-15",
     "expiryDate": "2027-01-15",
-    "issuingBody": "Google"
+    "filePath": "assets/uploads/angular-cert.pdf"
   },
   {
-    "certificationId": "cert-002",
+    "certId": "cert-002",
     "userId": "u001",
     "skillId": "skill-007",
-    "certificationName": "TypeScript Professional",
-    "issuedDate": "2025-03-10",
-    "expiryDate": "2027-03-10",
-    "issuingBody": "Microsoft"
+    "certName": "TypeScript Professional",
+    "issuingOrg": "Microsoft",
+    "issueDate": "2025-03-10",
+    "expiryDate": "2026-03-25",
+    "filePath": "assets/uploads/typescript-cert.pdf"
   },
   {
-    "certificationId": "cert-003",
+    "certId": "cert-003",
+    "userId": "u001",
+    "skillId": "skill-001",
+    "certName": "React Developer Certification",
+    "issuingOrg": "Meta",
+    "issueDate": "2024-06-20",
+    "expiryDate": "2026-02-28",
+    "filePath": "assets/uploads/react-cert.pdf"
+  },
+  {
+    "certId": "cert-004",
     "userId": "u002",
     "skillId": "skill-008",
-    "certificationName": "Oracle Certified Java Developer",
-    "issuedDate": "2024-06-20",
-    "expiryDate": "2026-06-20",
-    "issuingBody": "Oracle"
+    "certName": "Oracle Certified Java Developer",
+    "issuingOrg": "Oracle",
+    "issueDate": "2024-06-20",
+    "expiryDate": "2027-06-20",
+    "filePath": "assets/uploads/java-cert.pdf"
   },
   {
-    "certificationId": "cert-004",
+    "certId": "cert-005",
+    "userId": "u002",
+    "skillId": "skill-012",
+    "certName": "Spring Professional Certification",
+    "issuingOrg": "VMware",
+    "issueDate": "2025-09-01",
+    "expiryDate": "2026-04-05",
+    "filePath": "assets/uploads/spring-cert.pdf"
+  },
+  {
+    "certId": "cert-006",
     "userId": "u003",
     "skillId": "skill-015",
-    "certificationName": "Docker Certified Associate",
-    "issuedDate": "2025-02-01",
+    "certName": "Docker Certified Associate",
+    "issuingOrg": "Docker Inc.",
+    "issueDate": "2025-02-01",
     "expiryDate": "2027-02-01",
-    "issuingBody": "Docker Inc."
+    "filePath": "assets/uploads/docker-cert.pdf"
   },
   {
-    "certificationId": "cert-005",
-    "userId": "u005",
+    "certId": "cert-007",
+    "userId": "u003",
+    "skillId": "skill-016",
+    "certName": "Certified Kubernetes Administrator",
+    "issuingOrg": "CNCF",
+    "issueDate": "2023-11-01",
+    "expiryDate": "2025-11-01",
+    "filePath": "assets/uploads/cka-cert.pdf"
+  },
+  {
+    "certId": "cert-008",
+    "userId": "u004",
     "skillId": "skill-019",
-    "certificationName": "SQL Fundamentals Certified",
-    "issuedDate": "2025-05-01",
+    "certName": "SQL Fundamentals Certified",
+    "issuingOrg": "w3schools",
+    "issueDate": "2025-05-01",
     "expiryDate": "2027-05-01",
-    "issuingBody": "w3schools"
+    "filePath": "assets/uploads/sql-cert.pdf"
+  },
+  {
+    "certId": "cert-009",
+    "userId": "u004",
+    "skillId": "skill-010",
+    "certName": "Python PCEP Certified",
+    "issuingOrg": "Python Institute",
+    "issueDate": "2024-03-15",
+    "expiryDate": "2026-04-10",
+    "filePath": "assets/uploads/python-cert.pdf"
+  },
+  {
+    "certId": "cert-010",
+    "userId": "u005",
+    "skillId": "skill-018",
+    "certName": "Terraform Associate",
+    "issuingOrg": "HashiCorp",
+    "issueDate": "2025-08-20",
+    "expiryDate": "2027-08-20",
+    "filePath": "assets/uploads/terraform-cert.pdf"
   }
 ]

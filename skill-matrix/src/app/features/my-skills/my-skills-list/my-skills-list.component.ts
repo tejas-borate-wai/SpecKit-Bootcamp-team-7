@@ -10,16 +10,19 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Subject, takeUntil, filter } from 'rxjs';
+import { Subject, takeUntil, filter, Observable } from 'rxjs';
 import { selectMyActiveSkills, selectMyStaleSkills, selectSkillDefinitions, selectSkillsError } from '../../../core/store/skills/skills.selectors';
 import * as SkillsActions from '../../../core/store/skills/skills.actions';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
 import { EmployeeSkill } from '../../../shared/models/employee-skill.model';
 import { SkillDefinition } from '../../../shared/models/skill-definition.model';
 import { RatingBadgeComponent } from '../../../shared/components/rating-badge/rating-badge.component';
+import { CertifiedBadgeComponent } from '../../../shared/components/certified-badge/certified-badge.component';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
 import { BREAKPOINTS } from '../../../core/breakpoints';
 import { isStale } from '../../../shared/utils/skill-utils';
+import * as CertificationsActions from '../../../core/store/certifications/certifications.actions';
+import { selectHasValidCertForSkill } from '../../../core/store/certifications/certifications.selectors';
 
 @Component({
   selector: 'app-my-skills-list',
@@ -27,7 +30,7 @@ import { isStale } from '../../../shared/utils/skill-utils';
   imports: [
     CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatMenuModule,
-    MatDialogModule, MatTooltipModule, MatSnackBarModule, RatingBadgeComponent,
+    MatDialogModule, MatTooltipModule, MatSnackBarModule, RatingBadgeComponent, CertifiedBadgeComponent,
   ],
   templateUrl: './my-skills-list.component.html',
   styleUrls: ['./my-skills-list.component.scss'],
@@ -69,6 +72,7 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
         this.store.dispatch(SkillsActions.loadMySkills({ userId: user.id }));
         this.store.dispatch(SkillsActions.loadSkillLibrary());
         this.store.dispatch(SkillsActions.loadTestAttempts({ userId: user.id }));
+        this.store.dispatch(CertificationsActions.loadCertifications());
       }
     });
 
@@ -118,5 +122,9 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
 
   onAddSkill(): void {
     this.router.navigate(['/my-skills', 'add']);
+  }
+
+  hasValidCert(skillId: string): Observable<boolean> {
+    return this.store.select(selectHasValidCertForSkill(skillId));
   }
 }

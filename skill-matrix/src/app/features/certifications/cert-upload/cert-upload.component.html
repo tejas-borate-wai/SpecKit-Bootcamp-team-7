@@ -1,0 +1,127 @@
+<div class="upload-page">
+  <div class="page-header">
+    <button mat-icon-button (click)="onCancel()" aria-label="Back to certifications">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Upload Certification</h1>
+  </div>
+
+  <!-- No skills warning -->
+  <div *ngIf="(hasSkills$ | async) === false" class="no-skills-notice">
+    <mat-icon aria-hidden="true">info_outline</mat-icon>
+    <span>No skill definitions are available. Please add skills to your profile before uploading a certification.</span>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="upload-form" novalidate>
+
+    <div class="form-grid">
+      <!-- Certification Name -->
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Certification Name</mat-label>
+        <input matInput formControlName="certName" placeholder="e.g. AWS Certified Developer" maxlength="200" />
+        <mat-error *ngIf="form.get('certName')?.hasError('required')">Certification name is required.</mat-error>
+        <mat-error *ngIf="form.get('certName')?.hasError('maxlength')">Max 200 characters.</mat-error>
+      </mat-form-field>
+
+      <!-- Skill -->
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Associated Skill</mat-label>
+        <mat-select formControlName="skillId">
+          <mat-option *ngFor="let def of skillDefinitions$ | async" [value]="def.skillId">
+            {{ def.skillName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('skillId')?.hasError('required')">Please select a skill.</mat-error>
+      </mat-form-field>
+
+      <!-- Issuing Organization -->
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Issuing Organization</mat-label>
+        <input matInput formControlName="issuingOrg" placeholder="e.g. Amazon Web Services" maxlength="200" />
+        <mat-error *ngIf="form.get('issuingOrg')?.hasError('required')">Issuing organization is required.</mat-error>
+      </mat-form-field>
+
+      <!-- Issue Date -->
+      <mat-form-field appearance="outline" class="field-half">
+        <mat-label>Issue Date</mat-label>
+        <input matInput [matDatepicker]="issuePicker" formControlName="issueDate" readonly />
+        <mat-datepicker-toggle matIconSuffix [for]="issuePicker"></mat-datepicker-toggle>
+        <mat-datepicker #issuePicker></mat-datepicker>
+        <mat-error *ngIf="form.get('issueDate')?.hasError('required')">Issue date is required.</mat-error>
+      </mat-form-field>
+
+      <!-- Expiry Date -->
+      <mat-form-field appearance="outline" class="field-half">
+        <mat-label>Expiry Date</mat-label>
+        <input matInput [matDatepicker]="expiryPicker" formControlName="expiryDate" readonly />
+        <mat-datepicker-toggle matIconSuffix [for]="expiryPicker"></mat-datepicker-toggle>
+        <mat-datepicker #expiryPicker></mat-datepicker>
+        <mat-error *ngIf="form.get('expiryDate')?.hasError('required')">Expiry date is required.</mat-error>
+      </mat-form-field>
+
+      <!-- Cross-field error -->
+      <div class="field-full cross-error" *ngIf="form.hasError('expiryBeforeIssue') && form.get('expiryDate')?.touched" role="alert">
+        <mat-icon>error_outline</mat-icon>
+        Expiry date must be after the issue date.
+      </div>
+
+      <!-- File Upload -->
+      <div class="field-full file-field">
+        <label class="file-label">Certificate File</label>
+
+        <input
+          #fileInput
+          type="file"
+          accept=".pdf,image/jpeg,image/png"
+          class="file-input-hidden"
+          aria-label="Select certificate file"
+          (change)="onFileSelected($event)" />
+
+        <div class="file-drop-zone" [class.has-file]="fileMeta">
+          <ng-container *ngIf="!fileMeta">
+            <mat-icon aria-hidden="true">cloud_upload</mat-icon>
+            <span>PDF, JPEG or PNG · max 5 MB</span>
+            <button type="button" mat-stroked-button color="primary" (click)="triggerFileInput()">
+              Browse file
+            </button>
+          </ng-container>
+          <ng-container *ngIf="fileMeta">
+            <mat-icon aria-hidden="true" class="file-ok-icon">check_circle</mat-icon>
+            <span class="file-name">{{ fileMeta.fileName }}</span>
+            <span class="file-size">{{ formatBytes(fileMeta.fileSize) }}</span>
+            <button type="button" mat-icon-button color="warn" (click)="triggerFileInput()" aria-label="Replace file">
+              <mat-icon>swap_horiz</mat-icon>
+            </button>
+          </ng-container>
+        </div>
+
+        <div *ngIf="form.get('fileMetadata')?.touched">
+          <mat-error *ngIf="form.get('fileMetadata')?.hasError('required')" role="alert">
+            Please select a certificate file.
+          </mat-error>
+          <mat-error *ngIf="form.get('fileMetadata')?.hasError('fileTooLarge')" role="alert">
+            File exceeds the 5 MB limit.
+          </mat-error>
+          <mat-error *ngIf="form.get('fileMetadata')?.hasError('invalidFileFormat')" role="alert">
+            Only PDF, JPEG, and PNG files are accepted.
+          </mat-error>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="button" mat-stroked-button (click)="onCancel()">Cancel</button>
+      <button
+        type="submit"
+        mat-raised-button
+        color="primary"
+        [disabled]="form.invalid || (uploadInProgress$ | async)">
+        <mat-spinner *ngIf="uploadInProgress$ | async" diameter="18"></mat-spinner>
+        <span *ngIf="!(uploadInProgress$ | async)">Upload Certification</span>
+        <span *ngIf="uploadInProgress$ | async">Uploading…</span>
+      </button>
+    </div>
+
+  </form>
+</div>
