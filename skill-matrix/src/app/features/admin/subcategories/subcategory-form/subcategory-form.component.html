@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Edit Subcategory' : 'Add Subcategory' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="subcategory-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Parent Category</mat-label>
+      <mat-select formControlName="categoryId">
+        @for (cat of data.categories; track cat.categoryId) {
+          <mat-option [value]="cat.categoryId">{{ cat.categoryName }}</mat-option>
+        }
+      </mat-select>
+      @if (categoryControl.hasError('required') && categoryControl.touched) {
+        <mat-error>Please select a parent category.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Subcategory Name</mat-label>
+      <input matInput formControlName="subCategoryName" placeholder="e.g. Frontend" />
+      @if (nameControl.hasError('required') && nameControl.touched) {
+        <mat-error>This field is required.</mat-error>
+      } @else if (nameControl.hasError('maxlength')) {
+        <mat-error>Max 60 characters.</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary"
+    [disabled]="form.invalid"
+    (click)="submit()">
+    {{ isEdit ? 'Save Changes' : 'Add Subcategory' }}
+  </button>
+</mat-dialog-actions>
