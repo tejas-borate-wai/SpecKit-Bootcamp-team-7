@@ -1,0 +1,37 @@
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 8px;
+
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  th {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+}
+
+.stale-badge {
+  font-size: 0.7rem;
+  color: #999;
+  margin-left: 4px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &.pill-exceeds { background: #c8e6c9; color: #1b5e20; }
+  &.pill-meets { background: #bbdefb; color: #0d47a1; }
+  &.pill-below { background: #ffcdd2; color: #b71c1c; }
+}

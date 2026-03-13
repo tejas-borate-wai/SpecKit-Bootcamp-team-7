@@ -1,0 +1,102 @@
+.team-capability {
+  padding: var(--spacing-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+
+  h1 { font-size: 24px; font-weight: 600; }
+  .subtitle { color: #6B7280; margin-top: 4px; }
+  .header-actions { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+
+  mat-form-field { min-width: 200px; }
+}
+
+.locked-dept {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: #F3F4F6;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: #374151;
+
+  mat-icon { font-size: 18px; }
+}
+
+.table-container { overflow-x: auto; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    background: #F3F4F6;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #E5E7EB;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #E5E7EB;
+    color: #111827;
+  }
+
+  tr:hover td { background: #F9FAFB; }
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+
+  &.level-beginner { background: #F3F4F6; color: #6B7280; }
+  &.level-intermediate { background: #DBEAFE; color: #1D4ED8; }
+  &.level-advanced { background: #EDE9FE; color: #6D28D9; }
+  &.level-expert { background: #FEF9C3; color: #854D0E; }
+}
+
+.loading-state,
+.empty-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-2xl);
+  color: #6B7280;
+  text-align: center;
+
+  mat-icon { font-size: 48px; height: 48px; width: 48px; }
+}
+
+.error-state mat-icon { color: var(--color-rejected); }
+
+@media (max-width: 767px) {
+  .team-capability { padding: var(--spacing-md); }
+
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}

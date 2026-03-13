@@ -1,0 +1,210 @@
+@use '../../../../styles/variables' as v;
+
+.candidate-match-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .page-subtitle {
+    margin: 4px 0 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.filters-panel {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  .filter-field {
+    min-width: 180px;
+  }
+
+  .score-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 200px;
+
+    .score-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .score-slider {
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 64px 0;
+  color: #666;
+
+  .empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    opacity: 0.4;
+    margin-bottom: 16px;
+  }
+
+  h2 { font-size: 1.25rem; margin-bottom: 8px; }
+}
+
+.candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.candidate-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+
+  &.is-busy {
+    opacity: 0.65;
+    filter: grayscale(30%);
+  }
+
+  .card-rank {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #999;
+  }
+
+  .card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .candidate-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e3f2fd;
+    color: #1565c0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .name-dept {
+    display: flex;
+    flex-direction: column;
+
+    .candidate-name { font-size: 1rem; }
+    .department { font-size: 0.8rem; color: #666; }
+  }
+
+  .card-scores {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .match-score {
+      font-size: 1.4rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 8px;
+
+      &.high { background: #c8e6c9; color: #2e7d32; }
+      &.medium { background: #fff3e0; color: #e65100; }
+      &.low { background: #ffebee; color: #c62828; }
+    }
+
+    .skills-met { font-size: 0.85rem; color: #555; }
+  }
+
+  .availability-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    .avail-icon { font-size: 1rem; width: 1rem; height: 1rem; }
+
+    &.avail-available { color: #2e7d32; }
+    &.avail-partial { color: #e65100; }
+    &.avail-busy { color: #c62828; }
+  }
+
+  .card-footer {
+    padding: 8px 16px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .breakdown-container {
+    padding: 0 16px 16px;
+    border-top: 1px solid #f0f0f0;
+  }
+}

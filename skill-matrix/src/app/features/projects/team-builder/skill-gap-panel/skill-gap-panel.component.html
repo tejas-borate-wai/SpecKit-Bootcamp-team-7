@@ -1,0 +1,52 @@
+<div class="gap-panel" role="region" aria-label="Skill gaps">
+  @for (gap of gaps; track gap.skillId) {
+    <div class="gap-item">
+      <div class="gap-header">
+        <span class="skill-name">{{ gap.skillName }}</span>
+        <div class="level-badges">
+          <span class="level-badge required" [attr.aria-label]="'Required level: ' + levelLabel(gap.requiredLevel)">
+            Required: {{ levelLabel(gap.requiredLevel) }}
+          </span>
+          <span class="level-badge available" [attr.aria-label]="'Highest available: ' + levelLabel(gap.highestAvailableLevel)">
+            Highest: {{ levelLabel(gap.highestAvailableLevel) }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Gap bar -->
+      <div class="gap-bar-container" role="progressbar"
+           [attr.aria-valuenow]="gap.gapPercentage"
+           aria-valuemin="0" aria-valuemax="100"
+           [attr.aria-label]="gap.gapPercentage + '% skill gap'">
+        <div class="gap-bar-bg">
+          <div class="gap-bar-fill" [style.width.%]="gap.gapPercentage"></div>
+        </div>
+        <span class="gap-label">{{ gap.gapPercentage }}% gap</span>
+      </div>
+
+      <!-- Nearest employees -->
+      @if (gap.nearestEmployees.length > 0) {
+        <div class="nearest-section">
+          <p class="nearest-title">
+            <mat-icon class="near-icon">trending_up</mat-icon>
+            Nearest employees — recommend training:
+          </p>
+          <ul class="nearest-list" aria-label="Employees nearest to required level">
+            @for (emp of gap.nearestEmployees; track emp.userId) {
+              <li class="nearest-item">
+                <div class="emp-avatar" aria-hidden="true">{{ emp.name[0] }}</div>
+                <div class="emp-info">
+                  <span class="emp-name">{{ emp.name }}</span>
+                  <span class="emp-level">Current: {{ levelLabel(emp.currentLevel) }} · Gap: {{ emp.levelGap }} level(s)</span>
+                </div>
+                <span class="training-suggestion">Recommend Training</span>
+              </li>
+            }
+          </ul>
+        </div>
+      } @else {
+        <p class="no-candidates">No employees currently have this skill.</p>
+      }
+    </div>
+  }
+</div>

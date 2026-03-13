@@ -1,0 +1,203 @@
+<div class="project-detail-page">
+  @if (loading$ | async) {
+    <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+  } @else {
+    @if (project$ | async; as project) {
+      @if (currentUser$ | async; as user) {
+      <header class="page-header">
+        <div class="header-left">
+          <a routerLink="/projects" mat-icon-button aria-label="Back to projects">
+            <mat-icon>arrow_back</mat-icon>
+          </a>
+          @if (!editMode) {
+            <h1 class="page-title">{{ project.name }}</h1>
+            <span class="status-badge" [ngClass]="getStatusClass(project.status)">{{ project.status }}</span>
+          } @else {
+            <h1 class="page-title">Edit Project</h1>
+          }
+        </div>
+        <div class="header-actions">
+          @if (!editMode) {
+            <a [routerLink]="['/projects', project.projectId, 'match']" mat-stroked-button aria-label="Find matching candidates">
+              <mat-icon>manage_search</mat-icon> Find Candidates
+            </a>
+            <a [routerLink]="['/projects', project.projectId, 'team-builder']" mat-stroked-button aria-label="Open team builder">
+              <mat-icon>engineering</mat-icon> Team Builder
+            </a>
+            @if (canEdit(project, user)) {
+              <button mat-stroked-button (click)="enterEditMode(project)" aria-label="Edit project">
+                <mat-icon>edit</mat-icon> Edit
+              </button>
+              <button mat-stroked-button color="warn" (click)="onDelete(user, project)" aria-label="Delete project">
+                <mat-icon>delete</mat-icon> Delete
+              </button>
+            }
+          }
+        </div>
+      </header>
+
+      @if (!editMode) {
+        <!-- View mode -->
+        <div class="detail-grid">
+          <div class="info-card">
+            <h2>Project Info</h2>
+            <dl class="info-list">
+              <dt>Description</dt>
+              <dd>{{ project.description || '—' }}</dd>
+              <dt>Start Date</dt>
+              <dd>{{ project.startDate | date:'mediumDate' }}</dd>
+              <dt>Deadline</dt>
+              <dd>{{ project.deadline | date:'mediumDate' }}</dd>
+              <dt>Created By</dt>
+              <dd>{{ project.createdBy }}</dd>
+            </dl>
+          </div>
+
+          <div class="info-card">
+            <h2>Required Skills</h2>
+            @if (project.requiredSkills.length === 0) {
+              <p class="empty-text">No skills defined.</p>
+            } @else {
+              <ul class="skill-list">
+                @for (s of project.requiredSkills; track s.skillId) {
+                  <li class="skill-item">
+                    <span class="skill-name">{{ getSkillName(s.skillId) }}</span>
+                    <span class="level-badge">Min: {{ getProficiencyLabel(s.minimumLevel) }}</span>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+
+          <div class="info-card">
+            <h2>Required Roles</h2>
+            @if (project.requiredRoles.length === 0) {
+              <p class="empty-text">No roles defined.</p>
+            } @else {
+              <ul class="role-list">
+                @for (r of project.requiredRoles; track r.roleTitle) {
+                  <li class="role-item">
+                    <span class="role-title">{{ r.roleTitle }}</span>
+                    <span class="headcount-badge">×{{ r.headcount }}</span>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- Edit mode (reuse create form layout) -->
+        <form [formGroup]="form" (ngSubmit)="onSave()" class="edit-form" novalidate>
+          <div class="form-grid">
+            <div class="col">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Project Name</mat-label>
+                <input matInput formControlName="name" aria-label="Project name" />
+                @if (form.get('name')?.errors?.['required'] && form.get('name')?.touched) {
+                  <mat-error>Project name is required.</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="3" aria-label="Description"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status" aria-label="Status">
+                  @for (s of statusOptions; track s) {
+                    <mat-option [value]="s">{{ s }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <div class="date-row">
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Start Date</mat-label>
+                  <input matInput formControlName="startDate" type="date" aria-label="Start date" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="half-width">
+                  <mat-label>Deadline</mat-label>
+                  <input matInput formControlName="deadline" type="date" aria-label="Deadline" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="section-header">
+                <h2>Required Roles</h2>
+                <button type="button" mat-stroked-button (click)="addRole()" aria-label="Add role">
+                  <mat-icon>add</mat-icon> Add
+                </button>
+              </div>
+              <div formArrayName="requiredRoles">
+                @for (role of rolesArray.controls; track $index) {
+                  <div [formGroupName]="$index" class="array-row">
+                    <mat-form-field appearance="outline" class="flex-grow">
+                      <mat-label>Role</mat-label>
+                      <input matInput formControlName="roleTitle" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="headcount-field">
+                      <mat-label>Count</mat-label>
+                      <input matInput formControlName="headcount" type="number" min="1" />
+                    </mat-form-field>
+                    <button type="button" mat-icon-button color="warn" (click)="removeRole($index)"
+                            [attr.aria-label]="'Remove role ' + ($index + 1)">
+                      <mat-icon>remove_circle_outline</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <div class="section-header">
+                <h2>Required Skills</h2>
+                <button type="button" mat-stroked-button (click)="addSkill()" aria-label="Add skill">
+                  <mat-icon>add</mat-icon> Add
+                </button>
+              </div>
+              <div formArrayName="requiredSkills">
+                @for (skill of skillsArray.controls; track $index) {
+                  <div [formGroupName]="$index" class="array-row">
+                    <mat-form-field appearance="outline" class="flex-grow">
+                      <mat-label>Skill</mat-label>
+                      <mat-select formControlName="skillId">
+                        @for (def of skillDefinitions; track def.skillId) {
+                          <mat-option [value]="def.skillId">{{ def.skillName }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="level-field">
+                      <mat-label>Min Level</mat-label>
+                      <mat-select formControlName="minimumLevel">
+                        @for (opt of proficiencyOptions; track opt.value) {
+                          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <button type="button" mat-icon-button color="warn" (click)="removeSkill($index)"
+                            [attr.aria-label]="'Remove skill ' + ($index + 1)">
+                      <mat-icon>remove_circle_outline</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" mat-stroked-button (click)="cancelEdit()" aria-label="Cancel edit">Cancel</button>
+            <button type="submit" mat-flat-button color="primary"
+                    [disabled]="(loading$ | async) ?? false"
+                    aria-label="Save project changes">Save Changes</button>
+          </div>
+        </form>
+      }
+    }
+    } @else {
+      <div class="not-found">
+        <p>Project not found. <a routerLink="/projects">Back to Projects</a></p>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,126 @@
+<div class="team-capability">
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Team Capability Report</h1>
+      <p class="subtitle">Average skill proficiency across departments and categories.</p>
+    </div>
+    <div class="header-actions">
+      @if (currentUser$ | async; as user) {
+        @if (snapshots$ | async; as snaps) {
+          @if (snaps.length > 0) {
+            <button mat-stroked-button (click)="exportPdf(snaps, user)">
+              <mat-icon>picture_as_pdf</mat-icon> Export PDF
+            </button>
+            <button mat-stroked-button color="primary" (click)="exportExcel(snaps, user)">
+              <mat-icon>table_chart</mat-icon> Export Excel
+            </button>
+            <button mat-stroked-button (click)="exportSkillListCsv(snaps, user)">
+              <mat-icon>download</mat-icon> Skill List CSV
+            </button>
+            <button mat-stroked-button (click)="exportSkillListExcel(snaps, user)">
+              <mat-icon>download</mat-icon> Skill List Excel
+            </button>
+          }
+        }
+      }
+    </div>
+  </header>
+
+  @if (currentUser$ | async; as user) {
+    @if (snapshots$ | async; as allSnaps) {
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        @if (user.role === 'Admin') {
+          <mat-form-field appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select [ngModel]="selectedDepartment$ | async" (ngModelChange)="onDepartmentChange($event)">
+              <mat-option [value]="null">All Departments</mat-option>
+              @for (dept of getUniqueDepartments(allSnaps); track dept) {
+                <mat-option [value]="dept">{{ dept }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        } @else {
+          <div class="locked-dept">
+            <mat-icon>lock</mat-icon>
+            <span>Department: {{ user.department }}</span>
+          </div>
+        }
+
+        <mat-form-field appearance="outline">
+          <mat-label>Skill Category</mat-label>
+          <mat-select [ngModel]="selectedCategoryId$ | async" (ngModelChange)="onCategoryChange($event)">
+            <mat-option [value]="null">All Categories</mat-option>
+            @for (cat of getUniqueCategories(allSnaps); track cat.categoryId) {
+              <mat-option [value]="cat.categoryId">{{ cat.categoryName }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-button-toggle-group
+          [ngModel]="viewMode$ | async"
+          (ngModelChange)="onViewModeChange($event)"
+          aria-label="View mode"
+        >
+          <mat-button-toggle value="byDepartment">By Department</mat-button-toggle>
+          <mat-button-toggle value="byCategory">By Skill Category</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    }
+  }
+
+  @if (loading$ | async) {
+    <div class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading team capability data…</p>
+    </div>
+  } @else {
+    @if (error$ | async; as err) {
+      <div class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ err }}</p>
+        <button mat-button color="primary" (click)="reload()">Retry</button>
+      </div>
+    } @else {
+      @if (snapshots$ | async; as snapshots) {
+        @if (snapshots.length === 0) {
+          <div class="empty-state">
+            <mat-icon>groups</mat-icon>
+            <p>No team capability data available for the selected filters.</p>
+          </div>
+        } @else {
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Category</th>
+                  <th>Department</th>
+                  <th>Avg Proficiency</th>
+                  <th>Level</th>
+                  <th>Employee Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (snap of snapshots; track snap.skillId + snap.department) {
+                  <tr>
+                    <td>{{ snap.skillName }}</td>
+                    <td>{{ snap.categoryName }}</td>
+                    <td>{{ snap.department }}</td>
+                    <td>{{ formatPercent(snap.averageProficiencyPercent) }}</td>
+                    <td>
+                      <span class="level-badge level-{{ snap.proficiencyLevel | lowercase }}">
+                        {{ snap.proficiencyLevel }}
+                      </span>
+                    </td>
+                    <td>{{ snap.employeeCount }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      }
+    }
+  }
+</div>

@@ -1,0 +1,32 @@
+@if (unreadCount$ | async; as unreadCount) {
+  <button
+    mat-icon-button
+    routerLink="/notifications"
+    aria-label="Notifications"
+    [matBadge]="unreadCount > 0 ? unreadCount : null"
+    matBadgeColor="warn"
+    matBadgeSize="small"
+    [matBadgeHidden]="unreadCount === 0"
+    [attr.aria-describedby]="unreadCount > 0 ? 'bell-unread-count' : null"
+    class="notification-bell-btn"
+  >
+    <mat-icon>notifications</mat-icon>
+  </button>
+  @if (unreadCount > 0) {
+    <span
+      id="bell-unread-count"
+      class="sr-only"
+      aria-live="polite"
+      aria-atomic="true"
+    >{{ unreadCount }} unread notification{{ unreadCount !== 1 ? 's' : '' }}</span>
+  }
+} @else {
+  <button
+    mat-icon-button
+    routerLink="/notifications"
+    aria-label="Notifications"
+    class="notification-bell-btn"
+  >
+    <mat-icon>notifications</mat-icon>
+  </button>
+}

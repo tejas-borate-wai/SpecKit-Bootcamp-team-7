@@ -1,0 +1,48 @@
+@if (user$ | async; as user) {
+  <div class="dashboard">
+    <h1 class="page-title">Manager Dashboard — {{ user.department }}</h1>
+
+    <div class="stat-grid">
+      <app-stat-card title="Pending Approvals" [value]="(pendingCount$ | async)?.toString() ?? '0'" icon="pending_actions"/>
+      <app-stat-card title="Team Members" [value]="(totalEmployees$ | async)?.toString() ?? '0'" icon="group"/>
+      <app-stat-card title="Stale Skills" [value]="(staleCount$ | async)?.toString() ?? '0'" icon="warning" subtitle="> 6 months old"/>
+      <app-stat-card title="Team Skill Count" [value]="(teamSkillCount$ | async)?.toString() ?? '0'" icon="school"/>
+    </div>
+
+    <!-- Incomplete Profiles -->
+    <section class="section">
+      <h2 class="section-title">Employees with Incomplete Profiles</h2>
+      @if (incompleteProfiles$ | async; as profiles) {
+        @if (profiles.length === 0) {
+          <p class="all-good">All team members have complete profiles ✓</p>
+        } @else {
+          <div class="profile-list">
+            @for (record of profiles; track record.userId) {
+              <div class="profile-item">
+                <span class="user-id">{{ record.userId }}</span>
+                <span class="skill-count">{{ record.skills.length }} skills</span>
+              </div>
+            }
+          </div>
+        }
+      }
+    </section>
+
+    <!-- Stale Skills Alert -->
+    @if (staleCount$ | async; as stale) {
+      @if (stale > 0) {
+        <section class="section alert-section">
+          <h2 class="section-title">Stale Skills Needing Attention</h2>
+          <p class="stale-hint">{{ stale }} skill(s) across your team haven't been updated in 6+ months.</p>
+          <a routerLink="/team" class="section-link">Review Team Skills →</a>
+        </section>
+      }
+    }
+
+    <!-- Team Activity Feed placeholder -->
+    <section class="section">
+      <h2 class="section-title">Recent Team Activity</h2>
+      <p class="placeholder-text">Activity feed will show the last 5 team skill updates.</p>
+    </section>
+  </div>
+}

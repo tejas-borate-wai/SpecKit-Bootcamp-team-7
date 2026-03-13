@@ -1,0 +1,27 @@
+<div class="reports-landing">
+  <header class="reports-header">
+    <h1>Reports & Analytics</h1>
+    <p class="subtitle">Select a report to view skill insights for your organisation.</p>
+  </header>
+
+  @if (currentUser$ | async; as user) {
+    <div class="reports-grid">
+      @for (card of getVisibleCards(user); track card.route) {
+        <a class="report-card" [routerLink]="card.route">
+          <div class="card-icon-wrap">
+            <span class="material-icons card-icon">{{ card.icon }}</span>
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">{{ card.title }}</h2>
+            <p class="card-desc">{{ card.description }}</p>
+          </div>
+          <div class="card-footer">
+            <button mat-button color="primary" tabindex="-1" type="button">
+              View Report <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </a>
+      }
+    </div>
+  }
+</div>

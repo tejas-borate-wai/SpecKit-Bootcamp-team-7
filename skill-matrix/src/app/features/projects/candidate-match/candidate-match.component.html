@@ -1,0 +1,148 @@
+<div class="candidate-match-page">
+  @if (project$ | async; as project) {
+    <header class="page-header">
+      <div class="header-left">
+        <a [routerLink]="['/projects', project.projectId]" mat-icon-button aria-label="Back to project">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div>
+          <h1 class="page-title">Candidate Matching</h1>
+          <p class="page-subtitle">{{ project.name }}</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        @if (results$ | async; as results) {
+          <button mat-stroked-button
+                  (click)="onExportPdf(project, results)"
+                  aria-label="Export candidate matches as PDF">
+            <mat-icon>picture_as_pdf</mat-icon> Export as PDF
+          </button>
+        }
+        <button mat-stroked-button
+                (click)="showFilters = !showFilters"
+                aria-label="Toggle filters panel"
+                [attr.aria-expanded]="showFilters">
+          <mat-icon>filter_list</mat-icon> Filters
+        </button>
+      </div>
+    </header>
+
+    <!-- Filters panel -->
+    @if (showFilters) {
+      <div class="filters-panel" role="region" aria-label="Filter candidates">
+        <mat-select [(ngModel)]="filters.department"
+                    (ngModelChange)="applyFilters()"
+                    class="filter-field"
+                    aria-label="Filter by department">
+          <mat-option [value]="null">All Departments</mat-option>
+          @for (dept of departmentOptions; track dept) {
+            <mat-option [value]="dept">{{ dept }}</mat-option>
+          }
+        </mat-select>
+
+        <mat-select [(ngModel)]="filters.availability"
+                    (ngModelChange)="applyFilters()"
+                    class="filter-field"
+                    aria-label="Filter by availability">
+          <mat-option [value]="null">All Availability</mat-option>
+          @for (av of availabilityOptions; track av) {
+            <mat-option [value]="av">{{ av }}</mat-option>
+          }
+        </mat-select>
+
+        <div class="score-filter">
+          <label class="score-label" id="score-filter-label">
+            Min Score: {{ filters.minimumMatchScore }}%
+          </label>
+          <input type="range"
+                 [(ngModel)]="filters.minimumMatchScore"
+                 (ngModelChange)="applyFilters()"
+                 min="0" max="100" step="5"
+                 class="score-slider"
+                 aria-labelledby="score-filter-label"
+                 aria-label="Minimum match score filter" />
+        </div>
+
+        <button mat-stroked-button (click)="resetFilters()" aria-label="Reset all filters">
+          Reset
+        </button>
+      </div>
+    }
+
+    @if (loading$ | async) {
+      <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+    } @else {
+      @if (results$ | async; as results) {
+        @if (results.length === 0) {
+          <div class="empty-state" role="status">
+            <mat-icon class="empty-icon">group_off</mat-icon>
+            <h2>No candidates found</h2>
+            <p>Try adjusting your filters or ensure employees have relevant skills in their profiles.</p>
+          </div>
+        } @else {
+          <div class="candidates-grid" role="list">
+            @for (candidate of results; track candidate.userId; let rank = $index) {
+              <div class="candidate-card"
+                   role="listitem"
+                   [class.is-busy]="candidate.availability === 'Busy'"
+                   [attr.aria-disabled]="candidate.availability === 'Busy' ? 'true' : null">
+                <div class="card-rank">#{{ rank + 1 }}</div>
+                <div class="card-body">
+                  <div class="candidate-info">
+                    @if (candidate.avatarUrl) {
+                      <img [src]="candidate.avatarUrl" [alt]="candidate.userName + ' avatar'"
+                           class="avatar" loading="lazy" />
+                    } @else {
+                      <div class="avatar-placeholder">{{ candidate.userName[0] }}</div>
+                    }
+                    <div class="name-dept">
+                      <strong class="candidate-name">{{ candidate.userName }}</strong>
+                      <span class="department">{{ candidate.department }}</span>
+                    </div>
+                  </div>
+
+                  <div class="card-scores">
+                    <div class="match-score" [class.high]="candidate.matchScore >= 75"
+                         [class.medium]="candidate.matchScore >= 50 && candidate.matchScore < 75"
+                         [class.low]="candidate.matchScore < 50">
+                      {{ candidate.matchScore }}%
+                    </div>
+                    <span class="skills-met">
+                      {{ candidate.matchedCount }}/{{ candidate.totalRequired }} skills
+                    </span>
+                  </div>
+
+                  <div class="availability-indicator"
+                       [ngClass]="getAvailabilityClass(candidate.availability)"
+                       [attr.aria-label]="'Availability: ' + candidate.availability">
+                    <mat-icon class="avail-icon">{{ getAvailabilityIcon(candidate.availability) }}</mat-icon>
+                    <span>{{ candidate.availability }}</span>
+                  </div>
+                </div>
+
+                <div class="card-footer">
+                  <button mat-stroked-button
+                          (click)="toggleBreakdown(candidate.userId)"
+                          [attr.aria-label]="'Toggle skill breakdown for ' + candidate.userName"
+                          [attr.aria-expanded]="expandedUserId === candidate.userId">
+                    {{ expandedUserId === candidate.userId ? 'Hide' : 'View' }} Breakdown
+                    <mat-icon>{{ expandedUserId === candidate.userId ? 'expand_less' : 'expand_more' }}</mat-icon>
+                  </button>
+                </div>
+
+                @if (expandedUserId === candidate.userId) {
+                  <div class="breakdown-container" role="region"
+                       [attr.aria-label]="'Skill breakdown for ' + candidate.userName">
+                    <app-match-breakdown [entries]="candidate.skillBreakdown" />
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+    }
+  } @else {
+    <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+  }
+</div>
