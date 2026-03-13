@@ -86,6 +86,11 @@ export const routes: Routes = [
         (m) => m.NotificationsListComponent
       ),
   },
+  {
+    path: 'settings',
+    canActivate: [authGuard],
+    loadComponent: placeholder,
+  },
 
   // AuthGuard + RoleGuard — Manager, Admin
   {

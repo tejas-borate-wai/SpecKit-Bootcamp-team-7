@@ -11,8 +11,9 @@ const NAVIGATION_CONFIG: NavItem[] = [
   { label: 'My Skills', icon: 'star', route: '/my-skills', roles: ['Employee', 'Manager', 'Admin'] },
   { label: 'Assessments', icon: 'assignment', route: '/assessments', roles: ['Employee', 'Manager', 'Admin'] },
   { label: 'Certifications', icon: 'workspace_premium', route: '/certifications', roles: ['Employee', 'Manager', 'Admin'] },
-  
-  // Settings or other common items... 
+  { label: 'Notifications', icon: 'notifications', route: '/notifications', roles: ['Employee', 'Manager', 'Admin'] },
+
+  // Settings — all roles
   { label: 'Settings', icon: 'settings', route: '/settings', roles: ['Employee', 'Manager', 'Admin'], section: 'SETTINGS' },
 
   // TEAM section — Manager + Admin
@@ -30,11 +31,11 @@ const NAVIGATION_CONFIG: NavItem[] = [
 
   // SETTINGS section — Admin only
   {
-    label: 'Skill Framework', icon: 'account_tree', route: '/admin/framework', roles: ['Admin'], section: 'SETTINGS',
+    label: 'Skill Framework', icon: 'account_tree', route: '/admin/skill-framework/categories', roles: ['Admin'], section: 'SETTINGS',
     children: [
-      { label: 'Categories', icon: 'category', route: '/admin/framework', roles: ['Admin'] },
-      { label: 'Subcategories', icon: 'subdirectory_arrow_right', route: '/admin/framework', roles: ['Admin'] },
-      { label: 'Skill Definitions', icon: 'description', route: '/admin/framework', roles: ['Admin'] },
+      { label: 'Categories', icon: 'category', route: '/admin/skill-framework/categories', roles: ['Admin'] },
+      { label: 'Subcategories', icon: 'subdirectory_arrow_right', route: '/admin/skill-framework/subcategories', roles: ['Admin'] },
+      { label: 'Skill Definitions', icon: 'description', route: '/admin/skill-framework/skills', roles: ['Admin'] },
     ],
   },
   { label: 'Rating Configuration', icon: 'tune', route: '/admin/rating-config', roles: ['Admin'], section: 'SETTINGS' },
