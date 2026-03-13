@@ -1,0 +1,10 @@
+.add-skill-page { max-width: 600px; margin: 0 auto; }
+.page-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.page-title { margin: 0; font-size: 1.5rem; font-weight: 700; color: #0f172a; letter-spacing: -0.025em; }
+.form-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 32px; }
+.field-full { width: 100%; margin-bottom: 8px; }
+.rating-group { margin-bottom: 24px; }
+.rating-label { display: block; font-size: 0.875rem; font-weight: 500; color: #334155; margin-bottom: 12px; }
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.error-text { font-size: 0.75rem; color: #ef4444; margin-top: 4px; }
+.form-actions { display: flex; gap: 12px; justify-content: flex-end; }

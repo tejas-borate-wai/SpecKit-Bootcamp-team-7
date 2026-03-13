@@ -1,0 +1,109 @@
+<div class="assessments-page">
+  <header class="page-header">
+    <h1>Skill Assessments</h1>
+    <p class="subtitle">Test your skills and track your progress</p>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-group">
+      <label for="category-filter">Category</label>
+      <select id="category-filter" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="status-filter">Status</label>
+      <select id="status-filter" [(ngModel)]="selectedStatus" (ngModelChange)="onFilterChange()">
+        <option value="">All Statuses</option>
+        <option value="Not Attempted">Not Attempted</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <ng-container *ngIf="(examsLoading$ | async) || (attemptsLoading$ | async); else content">
+    <div class="loading-state">
+      <div class="skeleton-row" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+  </ng-container>
+
+  <ng-template #content>
+    <ng-container *ngIf="filteredRows$ | async as rows">
+      <!-- Empty state -->
+      <div *ngIf="rows.length === 0" class="empty-state">
+        <span class="empty-icon">📋</span>
+        <p>No assessments available for the selected filters.</p>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="rows.length > 0" class="table-container">
+        <table class="assessments-table" aria-label="Skill assessments">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Last Score</th>
+              <th>Last Attempt</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of rows">
+              <td class="skill-name">{{ row.skillName }}</td>
+              <td>
+                <span class="category-badge">{{ row.category }}</span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="'status-' + row.status.toLowerCase().replace(' ', '-')">
+                  {{ row.status }}
+                </span>
+              </td>
+              <td class="score-cell">
+                <span *ngIf="row.lastScore !== null">{{ row.lastScore }}%</span>
+                <span *ngIf="row.lastScore === null" class="muted">—</span>
+              </td>
+              <td class="date-cell">{{ formatDate(row.lastAttemptDate) }}</td>
+              <td class="action-cell">
+                <!-- No exam available -->
+                <ng-container *ngIf="!row.hasExam">
+                  <span class="no-exam">Assessment not available yet for this skill.</span>
+                </ng-container>
+
+                <!-- Not attempted -->
+                <ng-container *ngIf="row.hasExam && row.status === 'Not Attempted'">
+                  <button class="btn btn-primary" (click)="startAssessment(row.skillId)" [attr.aria-label]="'Start assessment for ' + row.skillName">
+                    Start Assessment
+                  </button>
+                </ng-container>
+
+                <!-- Completed + can retake -->
+                <ng-container *ngIf="row.status === 'Completed' && row.canRetake">
+                  <button class="btn btn-secondary" (click)="startAssessment(row.skillId)" [attr.aria-label]="'Retake assessment for ' + row.skillName">
+                    Retake
+                  </button>
+                  <a [routerLink]="['/assessments', row.skillId, 'result']" class="btn btn-ghost">
+                    View Result
+                  </a>
+                </ng-container>
+
+                <!-- Completed + in cooldown -->
+                <ng-container *ngIf="row.status === 'Completed' && !row.canRetake">
+                  <span class="cooldown-msg">
+                    You can retake this assessment in {{ formatCooldown(row.cooldownRemaining) }}.
+                  </span>
+                  <a [routerLink]="['/assessments', row.skillId, 'result']" class="btn btn-ghost btn-sm">
+                    View Result
+                  </a>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </ng-template>
+</div>

@@ -23,12 +23,12 @@
 
 **Purpose**: TypeScript models, interfaces, and shared utilities required by all user stories
 
-- [ ] T001 [P] Create SkillSubmission and SubmissionStatus interfaces in src/app/shared/models/skill-submission.model.ts
-- [ ] T002 [P] Create PeerValidationRequest, PeerValidationStatus, and PeerResponse interfaces in src/app/shared/models/peer-validation.model.ts
-- [ ] T003 [P] Create ManagerAssessment interface in src/app/shared/models/manager-assessment.model.ts
-- [ ] T004 [P] Create AdminOverride interface in src/app/shared/models/admin-override.model.ts
-- [ ] T005 [P] Create RatingInput, RatingResult, ConfidenceLevel, and ProficiencyLevel types in src/app/shared/models/rating-calculation.model.ts
-- [ ] T006 [P] Create TeamMember projected interface in src/app/shared/models/team-member.model.ts
+- [x] T001 [P] Create SkillSubmission and SubmissionStatus interfaces in src/app/shared/models/skill-submission.model.ts
+- [x] T002 [P] Create PeerValidationRequest, PeerValidationStatus, and PeerResponse interfaces in src/app/shared/models/peer-validation.model.ts
+- [x] T003 [P] Create ManagerAssessment interface in src/app/shared/models/manager-assessment.model.ts
+- [x] T004 [P] Create AdminOverride interface in src/app/shared/models/admin-override.model.ts
+- [x] T005 [P] Create RatingInput, RatingResult, ConfidenceLevel, and ProficiencyLevel types in src/app/shared/models/rating-calculation.model.ts
+- [x] T006 [P] Create TeamMember projected interface in src/app/shared/models/team-member.model.ts
 
 ---
 
@@ -38,23 +38,23 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Implement calculateFinalRating pure function with proportional weight redistribution in src/app/core/services/rating-calculation.service.ts — accepts RatingInput, returns RatingResult with finalRating, sourceCount, confidence, effectiveWeights, and level
-- [ ] T008 Write unit tests for rating calculation: all 4 sources present (Self=3,Manager=4,Peer=3,System=3.5→3.475), no Peer (weight redistribution to Self=0.235,Manager=0.353,System=0.412), Self+Manager only (0.40/0.60), Self only (weight=1.0), all null (Final=0), confidence derivation, proficiency level boundary mapping in src/app/core/services/rating-calculation.service.spec.ts
-- [ ] T009 Create TeamService with HttpClient calls for GET /api/team/employees, GET /api/team/employees/:userId, GET /api/team/validation-queue, GET /api/team/validation-queue/:submissionId, POST approve, POST reject, POST override in src/app/core/services/team.service.ts
-- [ ] T010 Create PeerValidationService with HttpClient calls for POST /api/peer-validation/request, GET /api/peer-validation/eligible-peers/:skillId, POST /api/peer-validation/:requestId/respond in src/app/core/services/peer-validation.service.ts
-- [ ] T011 Extend MockApiInterceptor with 10 new URL patterns for team skills, validation queue CRUD, peer validation endpoints (GET/POST /api/team/*, /api/peer-validation/*) with in-memory data operations and department-scoped filtering in src/app/core/interceptors/mock-api.interceptor.ts
-- [ ] T012 Add in-memory peer validation seed data (2–3 pre-populated PeerValidationRequests with responses) to MockApiInterceptor for demo purposes in src/app/core/interceptors/mock-api.interceptor.ts
-- [ ] T013 Create NgRx TeamState interface with employees, selectedEmployee, validationQueue, selectedSubmission, peerValidations, loading, and error fields in src/app/core/store/team/team.state.ts
-- [ ] T014 Create NgRx team actions: loadEmployees, loadEmployeesSuccess/Failure, loadValidationQueue, loadValidationQueueSuccess/Failure, loadSubmissionDetail, approveSubmission, rejectSubmission, overrideRating, createPeerRequest, submitPeerResponse, and their success/failure variants in src/app/core/store/team/team.actions.ts
-- [ ] T015 Create NgRx team reducer handling all team actions with proper state transitions (approve→Approved+finalRating, reject→Rejected+reason, override→updated rating) in src/app/core/store/team/team.reducer.ts
-- [ ] T016 Create NgRx team effects wiring actions to TeamService and PeerValidationService HTTP calls, dispatching success/failure actions, and triggering notification creation on approve/reject in src/app/core/store/team/team.effects.ts
-- [ ] T017 Create NgRx team selectors: selectTeamEmployees (role-scoped: Manager=own department, Admin=all), selectValidationQueue (role-scoped), selectSelectedSubmission, selectEligiblePeers(requesterId, skillId) factory selector, selectPeerValidationWithExpiry (7-day date-comparison for expired status) in src/app/core/store/team/team.selectors.ts
-- [ ] T018 Register team NgRx feature slice in the application store configuration in src/app/app.config.ts
-- [ ] T019 Write unit tests for team selectors: Manager sees own department only, Admin sees all, eligible peers filtered by department+skillId, peer validation expiry detection (>7 days + <2 responses → expired) in src/app/core/store/team/team.selectors.spec.ts
-- [ ] T020 Write unit tests for team reducer: approve updates status+managerRating+finalRating, reject updates status+rejectionReason, override updates rating+preserves previous in src/app/core/store/team/team.reducer.spec.ts
-- [ ] T021 [P] Create ConfidenceIndicatorComponent standalone component accepting sourceCount input, rendering 🟢 High (3+), 🟡 Medium (2), 🔴 Low (1) with aria-labels in src/app/shared/components/confidence-indicator/confidence-indicator.component.ts
-- [ ] T022 [P] Write unit tests for ConfidenceIndicatorComponent: sourceCount=4→High, 3→High, 2→Medium, 1→Low, verify aria-labels present in src/app/shared/components/confidence-indicator/confidence-indicator.component.spec.ts
-- [ ] T023 Extend notification service to support approval, rejection, and peer validation notification types in src/app/core/services/notification.service.ts
+- [x] T007 Implement calculateFinalRating pure function with proportional weight redistribution in src/app/core/services/rating-calculation.service.ts — accepts RatingInput, returns RatingResult with finalRating, sourceCount, confidence, effectiveWeights, and level
+- [x] T008 Write unit tests for rating calculation: all 4 sources present (Self=3,Manager=4,Peer=3,System=3.5→3.475), no Peer (weight redistribution to Self=0.235,Manager=0.353,System=0.412), Self+Manager only (0.40/0.60), Self only (weight=1.0), all null (Final=0), confidence derivation, proficiency level boundary mapping in src/app/core/services/rating-calculation.service.spec.ts
+- [x] T009 Create TeamService with HttpClient calls for GET /api/team/employees, GET /api/team/employees/:userId, GET /api/team/validation-queue, GET /api/team/validation-queue/:submissionId, POST approve, POST reject, POST override in src/app/core/services/team.service.ts
+- [x] T010 Create PeerValidationService with HttpClient calls for POST /api/peer-validation/request, GET /api/peer-validation/eligible-peers/:skillId, POST /api/peer-validation/:requestId/respond in src/app/core/services/peer-validation.service.ts
+- [x] T011 Extend MockApiInterceptor with 10 new URL patterns for team skills, validation queue CRUD, peer validation endpoints (GET/POST /api/team/*, /api/peer-validation/*) with in-memory data operations and department-scoped filtering in src/app/core/interceptors/mock-api.interceptor.ts
+- [x] T012 Add in-memory peer validation seed data (2–3 pre-populated PeerValidationRequests with responses) to MockApiInterceptor for demo purposes in src/app/core/interceptors/mock-api.interceptor.ts
+- [x] T013 Create NgRx TeamState interface with employees, selectedEmployee, validationQueue, selectedSubmission, peerValidations, loading, and error fields in src/app/core/store/team/team.state.ts
+- [x] T014 Create NgRx team actions: loadEmployees, loadEmployeesSuccess/Failure, loadValidationQueue, loadValidationQueueSuccess/Failure, loadSubmissionDetail, approveSubmission, rejectSubmission, overrideRating, createPeerRequest, submitPeerResponse, and their success/failure variants in src/app/core/store/team/team.actions.ts
+- [x] T015 Create NgRx team reducer handling all team actions with proper state transitions (approve→Approved+finalRating, reject→Rejected+reason, override→updated rating) in src/app/core/store/team/team.reducer.ts
+- [x] T016 Create NgRx team effects wiring actions to TeamService and PeerValidationService HTTP calls, dispatching success/failure actions, and triggering notification creation on approve/reject in src/app/core/store/team/team.effects.ts
+- [x] T017 Create NgRx team selectors: selectTeamEmployees (role-scoped: Manager=own department, Admin=all), selectValidationQueue (role-scoped), selectSelectedSubmission, selectEligiblePeers(requesterId, skillId) factory selector, selectPeerValidationWithExpiry (7-day date-comparison for expired status) in src/app/core/store/team/team.selectors.ts
+- [x] T018 Register team NgRx feature slice in the application store configuration in src/app/app.config.ts
+- [x] T019 Write unit tests for team selectors: Manager sees own department only, Admin sees all, eligible peers filtered by department+skillId, peer validation expiry detection (>7 days + <2 responses → expired) in src/app/core/store/team/team.selectors.spec.ts
+- [x] T020 Write unit tests for team reducer: approve updates status+managerRating+finalRating, reject updates status+rejectionReason, override updates rating+preserves previous in src/app/core/store/team/team.reducer.spec.ts
+- [x] T021 [P] Create ConfidenceIndicatorComponent standalone component accepting sourceCount input, rendering 🟢 High (3+), 🟡 Medium (2), 🔴 Low (1) with aria-labels in src/app/shared/components/confidence-indicator/confidence-indicator.component.ts
+- [x] T022 [P] Write unit tests for ConfidenceIndicatorComponent: sourceCount=4→High, 3→High, 2→Medium, 1→Low, verify aria-labels present in src/app/shared/components/confidence-indicator/confidence-indicator.component.spec.ts
+- [x] T023 Extend notification service to support approval, rejection, and peer validation notification types in src/app/core/services/notification.service.ts
 
 **Checkpoint**: Foundation ready — all models, services, NgRx state, interceptor, and shared components are in place. User story screens can now be implemented.
 
@@ -68,11 +68,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T024 [US1] Create TeamSkillsOverviewComponent standalone component with sortable/filterable data table displaying Employee Name, Department, Skills Count, Avg Rating, Profile Completion %, and Actions columns in src/app/features/team/team-skills-overview/team-skills-overview.component.ts
-- [ ] T025 [US1] Create TeamSkillsOverviewComponent template with Angular Material/PrimeNG table, "View Profile" link navigating to /team/skills/:employeeId, "Send Validation Request" button, loading spinner, and empty state in src/app/features/team/team-skills-overview/team-skills-overview.component.html
-- [ ] T026 [US1] Create TeamSkillsOverviewComponent responsive SCSS styles: desktop=full table, tablet=condensed columns, mobile=card list layout per Section 18.3 in src/app/features/team/team-skills-overview/team-skills-overview.component.scss
-- [ ] T027 [US1] Create team feature routes in src/app/features/team/team.routes.ts with routes for '' (overview), 'skills/:employeeId' (profile), 'validation' (queue), 'validation/:submissionId' (detail)
-- [ ] T028 [US1] Update app.routes.ts to add lazy-loaded team route with AuthGuard + RoleGuard(['Manager','Admin']) at path 'team' in src/app/app.routes.ts
+- [x] T024 [US1] Create TeamSkillsOverviewComponent standalone component with sortable/filterable data table displaying Employee Name, Department, Skills Count, Avg Rating, Profile Completion %, and Actions columns in src/app/features/team/team-skills-overview/team-skills-overview.component.ts
+- [x] T025 [US1] Create TeamSkillsOverviewComponent template with Angular Material/PrimeNG table, "View Profile" link navigating to /team/skills/:employeeId, "Send Validation Request" button, loading spinner, and empty state in src/app/features/team/team-skills-overview/team-skills-overview.component.html
+- [x] T026 [US1] Create TeamSkillsOverviewComponent responsive SCSS styles: desktop=full table, tablet=condensed columns, mobile=card list layout per Section 18.3 in src/app/features/team/team-skills-overview/team-skills-overview.component.scss
+- [x] T027 [US1] Create team feature routes in src/app/features/team/team.routes.ts with routes for '' (overview), 'skills/:employeeId' (profile), 'validation' (queue), 'validation/:submissionId' (detail)
+- [x] T028 [US1] Update app.routes.ts to add lazy-loaded team route with AuthGuard + RoleGuard(['Manager','Admin']) at path 'team' in src/app/app.routes.ts
 
 **Checkpoint**: User Story 1 complete — Team Skills Overview renders with role-scoped data, navigation works, Employee role blocked.
 
@@ -86,13 +86,13 @@
 
 ### Implementation for User Story 2
 
-- [ ] T029 [US2] Create ValidationQueueComponent standalone component with sortable list of pending submissions (sortable by employee name, skill name, submit date) in src/app/features/team/validation-queue/validation-queue.component.ts
-- [ ] T030 [US2] Create ValidationQueueComponent template with table rows showing Employee name, Skill name, Self Rating, Submit Date, Status; "Approve"/"Reject" buttons for Manager (own team) and Admin (all); loading/empty states in src/app/features/team/validation-queue/validation-queue.component.html
-- [ ] T031 [US2] Create ValidationQueueComponent responsive SCSS styles in src/app/features/team/validation-queue/validation-queue.component.scss
-- [ ] T032 [US2] Create ValidationDetailComponent standalone component displaying full submission detail: employee name, skill name, self rating, certification evidence, project experience, peer validation responses/average rating in src/app/features/team/validation-detail/validation-detail.component.ts
-- [ ] T033 [US2] Create ValidationDetailComponent template with Manager Rating input (1–4 scale), "Approve" button triggering final rating calculation, confirmation dialog, and notification dispatch in src/app/features/team/validation-detail/validation-detail.component.html
-- [ ] T034 [US2] Create ValidationDetailComponent responsive SCSS styles (desktop=centered card, mobile=full-width form) in src/app/features/team/validation-detail/validation-detail.component.scss
-- [ ] T035 [US2] Write unit tests for ValidationDetailComponent: approve dispatches correct action with managerRating, final rating computed on approval, notification sent to employee in src/app/features/team/validation-detail/validation-detail.component.spec.ts
+- [x] T029 [US2] Create ValidationQueueComponent standalone component with sortable list of pending submissions (sortable by employee name, skill name, submit date) in src/app/features/team/validation-queue/validation-queue.component.ts
+- [x] T030 [US2] Create ValidationQueueComponent template with table rows showing Employee name, Skill name, Self Rating, Submit Date, Status; "Approve"/"Reject" buttons for Manager (own team) and Admin (all); loading/empty states in src/app/features/team/validation-queue/validation-queue.component.html
+- [x] T031 [US2] Create ValidationQueueComponent responsive SCSS styles in src/app/features/team/validation-queue/validation-queue.component.scss
+- [x] T032 [US2] Create ValidationDetailComponent standalone component displaying full submission detail: employee name, skill name, self rating, certification evidence, project experience, peer validation responses/average rating in src/app/features/team/validation-detail/validation-detail.component.ts
+- [x] T033 [US2] Create ValidationDetailComponent template with Manager Rating input (1–4 scale), "Approve" button triggering final rating calculation, confirmation dialog, and notification dispatch in src/app/features/team/validation-detail/validation-detail.component.html
+- [x] T034 [US2] Create ValidationDetailComponent responsive SCSS styles (desktop=centered card, mobile=full-width form) in src/app/features/team/validation-detail/validation-detail.component.scss
+- [x] T035 [US2] Write unit tests for ValidationDetailComponent: approve dispatches correct action with managerRating, final rating computed on approval, notification sent to employee in src/app/features/team/validation-detail/validation-detail.component.spec.ts
 
 **Checkpoint**: User Story 2 complete — Manager can view queue, open detail, approve with rating, final rating auto-calculated.
 
@@ -106,9 +106,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T036 [US3] Add rejection workflow to ValidationDetailComponent: "Reject" button showing mandatory rejection reason textarea, validation preventing empty submission, dispatching reject action with reason in src/app/features/team/validation-detail/validation-detail.component.ts
-- [ ] T037 [US3] Update ValidationDetailComponent template with rejection reason field, inline validation error "Rejection reason is required.", and confirmation dialog for rejection in src/app/features/team/validation-detail/validation-detail.component.html
-- [ ] T038 [US3] Write unit tests for rejection: reject without reason shows validation error, reject with reason dispatches action, employee receives notification "Your [Skill Name] was rejected. Reason: [reason]." in src/app/features/team/validation-detail/validation-detail.component.spec.ts
+- [x] T036 [US3] Add rejection workflow to ValidationDetailComponent: "Reject" button showing mandatory rejection reason textarea, validation preventing empty submission, dispatching reject action with reason in src/app/features/team/validation-detail/validation-detail.component.ts
+- [x] T037 [US3] Update ValidationDetailComponent template with rejection reason field, inline validation error "Rejection reason is required.", and confirmation dialog for rejection in src/app/features/team/validation-detail/validation-detail.component.html
+- [x] T038 [US3] Write unit tests for rejection: reject without reason shows validation error, reject with reason dispatches action, employee receives notification "Your [Skill Name] was rejected. Reason: [reason]." in src/app/features/team/validation-detail/validation-detail.component.spec.ts
 
 **Checkpoint**: User Story 3 complete — Rejection workflow with mandatory reason and notification works.
 
@@ -122,9 +122,9 @@
 
 ### Implementation for User Story 9
 
-- [ ] T039 [US9] Integrate rating-calculation.service.ts into the team effects approve flow: on successful approval, call calculateFinalRating with available sources, store finalRating, level, and confidence on the skill record in src/app/core/store/team/team.effects.ts
-- [ ] T040 [US9] Update MockApiInterceptor approve endpoint to invoke the rating calculation utility and return computed finalRating, level, confidence, effectiveWeights in the response in src/app/core/interceptors/mock-api.interceptor.ts
-- [ ] T041 [US9] Write integration-level unit tests verifying end-to-end approval flow: dispatch approve → effect calls service → interceptor computes finalRating → store updated with correct values for multiple source combinations in src/app/core/store/team/team.effects.spec.ts
+- [x] T039 [US9] Integrate rating-calculation.service.ts into the team effects approve flow: on successful approval, call calculateFinalRating with available sources, store finalRating, level, and confidence on the skill record in src/app/core/store/team/team.effects.ts
+- [x] T040 [US9] Update MockApiInterceptor approve endpoint to invoke the rating calculation utility and return computed finalRating, level, confidence, effectiveWeights in the response in src/app/core/interceptors/mock-api.interceptor.ts
+- [x] T041 [US9] Write integration-level unit tests verifying end-to-end approval flow: dispatch approve → effect calls service → interceptor computes finalRating → store updated with correct values for multiple source combinations in src/app/core/store/team/team.effects.spec.ts
 
 **Checkpoint**: User Story 9 complete — Final rating calculated correctly on every approval with proper weight redistribution.
 
@@ -138,10 +138,10 @@
 
 ### Implementation for User Story 4
 
-- [ ] T042 [P] [US4] Create PeerValidationFormComponent standalone component with two modes: initiation (employee selects peers) and response (peer submits rating) in src/app/features/team/peer-validation-form/peer-validation-form.component.ts
-- [ ] T043 [US4] Create PeerValidationFormComponent initiation template: eligible peer list (filtered by department+skill from selectEligiblePeers selector), multi-select chips/dropdown, min 2 / max 3 validation, submit button, error messages ("Select at least 2 peers." / "Maximum 3 peers allowed.") in src/app/features/team/peer-validation-form/peer-validation-form.component.html
-- [ ] T044 [US4] Create PeerValidationFormComponent SCSS styles in src/app/features/team/peer-validation-form/peer-validation-form.component.scss
-- [ ] T045 [US4] Write unit tests for peer initiation: eligible peers correctly filtered, cannot submit with <2 peers, cannot select >3 peers, submit dispatches createPeerRequest action, peers receive notifications in src/app/features/team/peer-validation-form/peer-validation-form.component.spec.ts
+- [x] T042 [P] [US4] Create PeerValidationFormComponent standalone component with two modes: initiation (employee selects peers) and response (peer submits rating) in src/app/features/team/peer-validation-form/peer-validation-form.component.ts
+- [x] T043 [US4] Create PeerValidationFormComponent initiation template: eligible peer list (filtered by department+skill from selectEligiblePeers selector), multi-select chips/dropdown, min 2 / max 3 validation, submit button, error messages ("Select at least 2 peers." / "Maximum 3 peers allowed.") in src/app/features/team/peer-validation-form/peer-validation-form.component.html
+- [x] T044 [US4] Create PeerValidationFormComponent SCSS styles in src/app/features/team/peer-validation-form/peer-validation-form.component.scss
+- [x] T045 [US4] Write unit tests for peer initiation: eligible peers correctly filtered, cannot submit with <2 peers, cannot select >3 peers, submit dispatches createPeerRequest action, peers receive notifications in src/app/features/team/peer-validation-form/peer-validation-form.component.spec.ts
 
 **Checkpoint**: User Story 4 complete — Employee can initiate peer validation with proper eligibility filtering and peer notifications.
 
@@ -155,9 +155,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T046 [US5] Add response mode to PeerValidationFormComponent: display skill name being validated, proficiency rating selector (1–4 radio buttons), optional comment textarea, Submit button dispatching submitPeerResponse action in src/app/features/team/peer-validation-form/peer-validation-form.component.ts
-- [ ] T047 [US5] Add validation to response mode: rating required ("Proficiency rating is required."), guard against peers who don't have the skill ("You cannot validate this skill as it is not in your profile.") in src/app/features/team/peer-validation-form/peer-validation-form.component.html
-- [ ] T048 [US5] Write unit tests for peer response: rating required validation, successful submission dispatches action, employee receives notification "[Peer Name] has validated your [Skill Name] skill." in src/app/features/team/peer-validation-form/peer-validation-form.component.spec.ts
+- [x] T046 [US5] Add response mode to PeerValidationFormComponent: display skill name being validated, proficiency rating selector (1–4 radio buttons), optional comment textarea, Submit button dispatching submitPeerResponse action in src/app/features/team/peer-validation-form/peer-validation-form.component.ts
+- [x] T047 [US5] Add validation to response mode: rating required ("Proficiency rating is required."), guard against peers who don't have the skill ("You cannot validate this skill as it is not in your profile.") in src/app/features/team/peer-validation-form/peer-validation-form.component.html
+- [x] T048 [US5] Write unit tests for peer response: rating required validation, successful submission dispatches action, employee receives notification "[Peer Name] has validated your [Skill Name] skill." in src/app/features/team/peer-validation-form/peer-validation-form.component.spec.ts
 
 **Checkpoint**: User Story 5 complete — Peers can submit validation ratings via the structured form.
 
@@ -171,10 +171,10 @@
 
 ### Implementation for User Story 6
 
-- [ ] T049 [US6] Implement peer rating aggregation logic: compute average of PeerResponse ratings when responses.length ≥ 2, update peerRating on SkillSubmission in src/app/core/store/team/team.reducer.ts
-- [ ] T050 [US6] Implement 7-day expiry detection in selectPeerValidationWithExpiry selector: if status is 'awaiting_responses' and createdDate > 7 days ago and responses < 2, project status as 'expired' in src/app/core/store/team/team.selectors.ts
-- [ ] T051 [US6] Ensure rating-calculation.service.ts handles null peerRating correctly: when peer is null (expired or insufficient responses), redistribute 0.15 weight proportionally to present sources in src/app/core/services/rating-calculation.service.ts
-- [ ] T052 [US6] Write unit tests: 3 peers rate 2,3,4 → average=3.0; 2 peers minimum threshold met; <2 responses + >7 days → expired status; weight redistribution when peer is null in src/app/core/store/team/team.selectors.spec.ts
+- [x] T049 [US6] Implement peer rating aggregation logic: compute average of PeerResponse ratings when responses.length ≥ 2, update peerRating on SkillSubmission in src/app/core/store/team/team.reducer.ts
+- [x] T050 [US6] Implement 7-day expiry detection in selectPeerValidationWithExpiry selector: if status is 'awaiting_responses' and createdDate > 7 days ago and responses < 2, project status as 'expired' in src/app/core/store/team/team.selectors.ts
+- [x] T051 [US6] Ensure rating-calculation.service.ts handles null peerRating correctly: when peer is null (expired or insufficient responses), redistribute 0.15 weight proportionally to present sources in src/app/core/services/rating-calculation.service.ts
+- [x] T052 [US6] Write unit tests: 3 peers rate 2,3,4 → average=3.0; 2 peers minimum threshold met; <2 responses + >7 days → expired status; weight redistribution when peer is null in src/app/core/store/team/team.selectors.spec.ts
 
 **Checkpoint**: User Story 6 complete — Peer rating aggregation and 7-day expiry with weight redistribution work correctly.
 
@@ -188,9 +188,9 @@
 
 ### Implementation for User Story 7
 
-- [ ] T053 [US7] Add override workflow to ValidationDetailComponent: "Override Rating" button rendered via @if(user.role === 'Admin') removing from DOM for non-Admins, override form with rating input (1–4) and mandatory justification textarea in src/app/features/team/validation-detail/validation-detail.component.ts
-- [ ] T054 [US7] Update ValidationDetailComponent template with override form, validation error "Override justification is required.", confirmation dialog, and logic to preserve previousFinalRating for audit in src/app/features/team/validation-detail/validation-detail.component.html
-- [ ] T055 [US7] Write unit tests for override: Admin sees override button, Manager does not (DOM check), override without justification shows error, override with rating+justification dispatches action, previous rating preserved in src/app/features/team/validation-detail/validation-detail.component.spec.ts
+- [x] T053 [US7] Add override workflow to ValidationDetailComponent: "Override Rating" button rendered via @if(user.role === 'Admin') removing from DOM for non-Admins, override form with rating input (1–4) and mandatory justification textarea in src/app/features/team/validation-detail/validation-detail.component.ts
+- [x] T054 [US7] Update ValidationDetailComponent template with override form, validation error "Override justification is required.", confirmation dialog, and logic to preserve previousFinalRating for audit in src/app/features/team/validation-detail/validation-detail.component.html
+- [x] T055 [US7] Write unit tests for override: Admin sees override button, Manager does not (DOM check), override without justification shows error, override with rating+justification dispatches action, previous rating preserved in src/app/features/team/validation-detail/validation-detail.component.spec.ts
 
 **Checkpoint**: User Story 7 complete — Admin override with mandatory justification and audit trail works.
 
@@ -204,10 +204,10 @@
 
 ### Implementation for User Story 8
 
-- [ ] T056 [P] [US8] Create EmployeeProfileComponent standalone component displaying employee info + all skills with: Skill Name, Self/Manager/Peer/System/Final ratings, Level badge, Status pill, ConfidenceIndicator in src/app/features/team/employee-profile/employee-profile.component.ts
-- [ ] T057 [US8] Create EmployeeProfileComponent template with skill detail table/cards, back button to /team/skills, loading spinner, and integration with ConfidenceIndicatorComponent in src/app/features/team/employee-profile/employee-profile.component.html
-- [ ] T058 [US8] Create EmployeeProfileComponent responsive SCSS styles (desktop=full table, tablet=condensed, mobile=cards) in src/app/features/team/employee-profile/employee-profile.component.scss
-- [ ] T059 [US8] Write unit tests for EmployeeProfileComponent: renders all skill columns, confidence indicator shows correct level based on sourceCount (4→High, 2→Medium, 1→Low), back navigation works in src/app/features/team/employee-profile/employee-profile.component.spec.ts
+- [x] T056 [P] [US8] Create EmployeeProfileComponent standalone component displaying employee info + all skills with: Skill Name, Self/Manager/Peer/System/Final ratings, Level badge, Status pill, ConfidenceIndicator in src/app/features/team/employee-profile/employee-profile.component.ts
+- [x] T057 [US8] Create EmployeeProfileComponent template with skill detail table/cards, back button to /team/skills, loading spinner, and integration with ConfidenceIndicatorComponent in src/app/features/team/employee-profile/employee-profile.component.html
+- [x] T058 [US8] Create EmployeeProfileComponent responsive SCSS styles (desktop=full table, tablet=condensed, mobile=cards) in src/app/features/team/employee-profile/employee-profile.component.scss
+- [x] T059 [US8] Write unit tests for EmployeeProfileComponent: renders all skill columns, confidence indicator shows correct level based on sourceCount (4→High, 2→Medium, 1→Low), back navigation works in src/app/features/team/employee-profile/employee-profile.component.spec.ts
 
 **Checkpoint**: User Story 8 complete — Employee skill profile displays full rating details with confidence indicators.
 

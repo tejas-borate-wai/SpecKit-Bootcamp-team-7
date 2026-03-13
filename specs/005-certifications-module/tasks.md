@@ -24,9 +24,9 @@
 
 **Purpose**: Create TypeScript interfaces, constants, and mock data files used across all user stories
 
-- [ ] T001 Create certification TypeScript interfaces (Certification, CertificationStatus, FileMetadata, CreateCertificationPayload, CertificationWithStatus) in src/app/shared/models/certification.model.ts
-- [ ] T002 [P] Create file-validation model with ALLOWED_FORMATS (application/pdf, image/jpeg, image/png) and MAX_FILE_SIZE (5242880) constants in src/app/shared/models/file-validation.model.ts
-- [ ] T003 [P] Create certifications mock data JSON with sample entries (valid, expiring soon, expired) in assets/mock-data/certifications.json
+- [X] T001 Create certification TypeScript interfaces (Certification, CertificationStatus, FileMetadata, CreateCertificationPayload, CertificationWithStatus) in src/app/shared/models/certification.model.ts
+- [X] T002 [P] Create file-validation model with ALLOWED_FORMATS (application/pdf, image/jpeg, image/png) and MAX_FILE_SIZE (5242880) constants in src/app/shared/models/file-validation.model.ts
+- [X] T003 [P] Create certifications mock data JSON with sample entries (valid, expiring soon, expired) in assets/mock-data/certifications.json
 
 ---
 
@@ -36,18 +36,18 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Create certification utility functions (computeCertificationStatus, hasValidCertification, getActiveCertForSkill, applyRatingBonus, getCertificationBonusWeight) with date-only comparison and referenceDate parameter in src/app/shared/utils/certification.util.ts
-- [ ] T005 [P] Create CertificationStatusPipe (standalone, pure) that transforms an expiryDate string to a CertificationStatus using computeCertificationStatus in src/app/shared/pipes/certification-status.pipe.ts
-- [ ] T006 Extend MockApiInterceptor with certifications CRUD endpoints: GET /api/certifications?userId=:userId (filter by userId), GET /api/certifications/:certId (find by ID, 404 if missing), POST /api/certifications (generate certId, attach userId from session, return 201), DELETE /api/certifications/:certId (remove from array) in src/app/core/interceptors/mock-api.interceptor.ts
-- [ ] T007 Create CertificationService with getCertifications(userId), getCertification(certId), and createCertification(payload) methods wrapping HttpClient calls in src/app/core/services/certification.service.ts
-- [ ] T008 [P] Create NgRx certifications actions: loadCertifications, loadCertificationsSuccess, loadCertificationsFailure, uploadCertification, uploadCertificationSuccess, uploadCertificationFailure in src/app/core/store/certifications/certifications.actions.ts
-- [ ] T009 Create NgRx certifications reducer handling all action types with CertificationsState (certifications[], loading, error, uploadInProgress) and initialCertificationsState in src/app/core/store/certifications/certifications.reducer.ts
-- [ ] T010 Create NgRx certifications effects: loadCertifications$ calls CertificationService.getCertifications; uploadCertification$ calls CertificationService.createCertification with success toast and navigation to /certifications in src/app/core/store/certifications/certifications.effects.ts
-- [ ] T011 Create NgRx certifications selectors: selectAllCertifications, selectCertificationsLoading, selectCertificationsError, selectCertificationsForSkill(skillId), selectCertificationsWithStatus (maps certs with computeCertificationStatus) in src/app/core/store/certifications/certifications.selectors.ts
-- [ ] T012 [P] Create StatusBadgeComponent (standalone) accepting status: CertificationStatus input, rendering a color-coded badge — green for Valid, amber for Expiring Soon, red for Expired — with text label and aria-label in src/app/shared/components/status-badge/status-badge.component.ts|html|scss
-- [ ] T013 [P] Create CertifiedBadgeComponent (standalone) accepting isVisible: boolean input, rendering a "Certified" chip/badge when visible with aria-label in src/app/shared/components/certified-badge/certified-badge.component.ts|html|scss
-- [ ] T014 Create certifications feature routes: /certifications → CertificationsListComponent, /certifications/upload → CertUploadComponent, both with AuthGuard, register provideState('certifications', certificationsReducer) in src/app/features/certifications/certifications.routes.ts
-- [ ] T015 Register certifications lazy-loaded route via loadChildren pointing to certifications.routes.ts with AuthGuard in src/app/app.routes.ts
+- [X] T004 Create certification utility functions (computeCertificationStatus, hasValidCertification, getActiveCertForSkill, applyRatingBonus, getCertificationBonusWeight) with date-only comparison and referenceDate parameter in src/app/shared/utils/certification.util.ts
+- [X] T005 [P] Create CertificationStatusPipe (standalone, pure) that transforms an expiryDate string to a CertificationStatus using computeCertificationStatus in src/app/shared/pipes/certification-status.pipe.ts
+- [X] T006 Extend MockApiInterceptor with certifications CRUD endpoints: GET /api/certifications?userId=:userId (filter by userId), GET /api/certifications/:certId (find by ID, 404 if missing), POST /api/certifications (generate certId, attach userId from session, return 201), DELETE /api/certifications/:certId (remove from array) in src/app/core/interceptors/mock-api.interceptor.ts
+- [X] T007 Create CertificationService with getCertifications(userId), getCertification(certId), and createCertification(payload) methods wrapping HttpClient calls in src/app/core/services/certification.service.ts
+- [X] T008 [P] Create NgRx certifications actions: loadCertifications, loadCertificationsSuccess, loadCertificationsFailure, uploadCertification, uploadCertificationSuccess, uploadCertificationFailure in src/app/core/store/certifications/certifications.actions.ts
+- [X] T009 Create NgRx certifications reducer handling all action types with CertificationsState (certifications[], loading, error, uploadInProgress) and initialCertificationsState in src/app/core/store/certifications/certifications.reducer.ts
+- [X] T010 Create NgRx certifications effects: loadCertifications$ calls CertificationService.getCertifications; uploadCertification$ calls CertificationService.createCertification with success toast and navigation to /certifications in src/app/core/store/certifications/certifications.effects.ts
+- [X] T011 Create NgRx certifications selectors: selectAllCertifications, selectCertificationsLoading, selectCertificationsError, selectCertificationsForSkill(skillId), selectCertificationsWithStatus (maps certs with computeCertificationStatus) in src/app/core/store/certifications/certifications.selectors.ts
+- [X] T012 [P] Create StatusBadgeComponent (standalone) accepting status: CertificationStatus input, rendering a color-coded badge — green for Valid, amber for Expiring Soon, red for Expired — with text label and aria-label in src/app/shared/components/status-badge/status-badge.component.ts|html|scss
+- [X] T013 [P] Create CertifiedBadgeComponent (standalone) accepting isVisible: boolean input, rendering a "Certified" chip/badge when visible with aria-label in src/app/shared/components/certified-badge/certified-badge.component.ts|html|scss
+- [X] T014 Create certifications feature routes: /certifications → CertificationsListComponent, /certifications/upload → CertUploadComponent, both with AuthGuard, register provideState('certifications', certificationsReducer) in src/app/features/certifications/certifications.routes.ts
+- [X] T015 Register certifications lazy-loaded route via loadChildren pointing to certifications.routes.ts with AuthGuard in src/app/app.routes.ts
 
 **Checkpoint**: Foundation ready — all services, store, interceptor endpoints, and shared components are in place. User story implementation can now begin.
 
@@ -61,9 +61,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Create CertificationsListComponent (standalone) that dispatches loadCertifications on init and subscribes to selectCertificationsWithStatus selector for table data in src/app/features/certifications/certifications-list/certifications-list.component.ts
-- [ ] T017 [US1] Implement certifications-list template with mat-table displaying columns: Certification Name, Skill (mapped from skillId to display name via skill-definitions), Issuing Organization, Issue Date, Expiry Date, and Status (using StatusBadgeComponent) with loading spinner while data loads in src/app/features/certifications/certifications-list/certifications-list.component.html
-- [ ] T018 [US1] Add certifications-list SCSS styles for table layout, column widths, and loading state in src/app/features/certifications/certifications-list/certifications-list.component.scss
+- [X] T016 [US1] Create CertificationsListComponent (standalone) that dispatches loadCertifications on init and subscribes to selectCertificationsWithStatus selector for table data in src/app/features/certifications/certifications-list/certifications-list.component.ts
+- [X] T017 [US1] Implement certifications-list template with mat-table displaying columns: Certification Name, Skill (mapped from skillId to display name via skill-definitions), Issuing Organization, Issue Date, Expiry Date, and Status (using StatusBadgeComponent) with loading spinner while data loads in src/app/features/certifications/certifications-list/certifications-list.component.html
+- [X] T018 [US1] Add certifications-list SCSS styles for table layout, column widths, and loading state in src/app/features/certifications/certifications-list/certifications-list.component.scss
 
 **Checkpoint**: User Story 1 complete — certifications list renders with correct data and status badges. Navigating to /certifications shows a fully functional list.
 
@@ -77,9 +77,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T019 [US2] Create CertUploadComponent (standalone) with reactive form (FormGroup: certName, skillId, issuingOrg, issueDate, expiryDate) and file input; populate skill dropdown from NgRx employee-skills selector filtered to current user; extract FileMetadata on file selection; dispatch uploadCertification action on submit in src/app/features/certifications/cert-upload/cert-upload.component.ts
-- [ ] T020 [US2] Implement cert-upload template with mat-form-field for each input: mat-input for certName and issuingOrg, mat-select for skill dropdown, matDatepicker for issueDate and expiryDate, custom file input with readonly mat-input showing filename and mat-icon-button (attach_file) triggering hidden native file input, and a submit button in src/app/features/certifications/cert-upload/cert-upload.component.html
-- [ ] T021 [US2] Add cert-upload SCSS styles with two-column form layout for desktop in src/app/features/certifications/cert-upload/cert-upload.component.scss
+- [X] T019 [US2] Create CertUploadComponent (standalone) with reactive form (FormGroup: certName, skillId, issuingOrg, issueDate, expiryDate) and file input; populate skill dropdown from NgRx employee-skills selector filtered to current user; extract FileMetadata on file selection; dispatch uploadCertification action on submit in src/app/features/certifications/cert-upload/cert-upload.component.ts
+- [X] T020 [US2] Implement cert-upload template with mat-form-field for each input: mat-input for certName and issuingOrg, mat-select for skill dropdown, matDatepicker for issueDate and expiryDate, custom file input with readonly mat-input showing filename and mat-icon-button (attach_file) triggering hidden native file input, and a submit button in src/app/features/certifications/cert-upload/cert-upload.component.html
+- [X] T021 [US2] Add cert-upload SCSS styles with two-column form layout for desktop in src/app/features/certifications/cert-upload/cert-upload.component.scss
 
 **Checkpoint**: User Story 2 complete — upload form submits valid data, certification saved to NgRx state, success toast shown, user redirected to list.
 
@@ -93,9 +93,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T022 [US3] Add real-time inline validation to CertUploadComponent: Validators.required on all fields, custom file format validator checking against ALLOWED_FORMATS, file size validator checking MAX_FILE_SIZE, and cross-field validator ensuring expiryDate is after issueDate in src/app/features/certifications/cert-upload/cert-upload.component.ts
-- [ ] T023 [US3] Add mat-error elements for all validation states: "This field is required." for empty fields, "Only PDF, JPG, and PNG files are accepted." for invalid format, "File size must not exceed 5 MB." for oversized files, "Expiry date must be after issue date." for date conflict; disable submit button when form is invalid in src/app/features/certifications/cert-upload/cert-upload.component.html
-- [ ] T024 [US3] Handle empty skill profile edge case: when user has no skills, show "Add skills to your profile before uploading certifications." message, disable the skill dropdown and submit button in src/app/features/certifications/cert-upload/cert-upload.component.ts|html
+- [X] T022 [US3] Add real-time inline validation to CertUploadComponent: Validators.required on all fields, custom file format validator checking against ALLOWED_FORMATS, file size validator checking MAX_FILE_SIZE, and cross-field validator ensuring expiryDate is after issueDate in src/app/features/certifications/cert-upload/cert-upload.component.ts
+- [X] T023 [US3] Add mat-error elements for all validation states: "This field is required." for empty fields, "Only PDF, JPG, and PNG files are accepted." for invalid format, "File size must not exceed 5 MB." for oversized files, "Expiry date must be after issue date." for date conflict; disable submit button when form is invalid in src/app/features/certifications/cert-upload/cert-upload.component.html
+- [X] T024 [US3] Handle empty skill profile edge case: when user has no skills, show "Add skills to your profile before uploading certifications." message, disable the skill dropdown and submit button in src/app/features/certifications/cert-upload/cert-upload.component.ts|html
 
 **Checkpoint**: User Story 3 complete — all validation rules enforced inline, invalid submissions blocked, clear error messages displayed.
 
@@ -109,9 +109,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T025 [US4] Create CertificationBonusService with hasValidCertForSkill(skillId) returning Observable<boolean> from NgRx selectCertificationsForSkill + hasValidCertification utility, and getAdjustedScore(testScore, skillId) returning Observable<number> applying applyRatingBonus in src/app/core/services/certification-bonus.service.ts
-- [ ] T026 [US4] Integrate certification rating bonus into skill rating display: use CertificationBonusService.getAdjustedScore to show adjusted skill percentages on skill profile and skill detail screens (Phase 3 components)
-- [ ] T027 [US4] Integrate Certification Bonus weight (0.20) into System Rating formula: use getCertificationBonusWeight with CertificationBonusService.hasValidCertForSkill to contribute to the system rating computation (Phase 4 scoring service)
+- [X] T025 [US4] Create CertificationBonusService with hasValidCertForSkill(skillId) returning Observable<boolean> from NgRx selectCertificationsForSkill + hasValidCertification utility, and getAdjustedScore(testScore, skillId) returning Observable<number> applying applyRatingBonus in src/app/core/services/certification-bonus.service.ts
+- [X] T026 [US4] Integrate certification rating bonus into skill rating display: use CertificationBonusService.getAdjustedScore to show adjusted skill percentages on skill profile and skill detail screens (Phase 3 components)
+- [X] T027 [US4] Integrate Certification Bonus weight (0.20) into System Rating formula: use getCertificationBonusWeight with CertificationBonusService.hasValidCertForSkill to contribute to the system rating computation (Phase 4 scoring service)
 
 **Checkpoint**: User Story 4 complete — valid certifications add +10% to skill scores (capped at 100%), System Rating formula includes Certification Bonus at 0.20 weight.
 
@@ -125,9 +125,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T028 [US5] Add selectExpiringSoonCertifications selector filtering certifications with 'Expiring Soon' status for dashboard alerts in src/app/core/store/certifications/certifications.selectors.ts
-- [ ] T029 [US5] Add certification expiry alerts section to the existing dashboard component: display list of certifications expiring within 30 days with certification name, skill, and days remaining (Phase 3 dashboard component)
-- [ ] T030 [US5] Verify expired certification exclusion: ensure CertificationBonusService and certified badge logic gate on computeCertificationStatus !== 'Expired' so expired certs contribute 0% bonus and no badge in src/app/core/services/certification-bonus.service.ts
+- [X] T028 [US5] Add selectExpiringSoonCertifications selector filtering certifications with 'Expiring Soon' status for dashboard alerts in src/app/core/store/certifications/certifications.selectors.ts
+- [X] T029 [US5] Add certification expiry alerts section to the existing dashboard component: display list of certifications expiring within 30 days with certification name, skill, and days remaining (Phase 3 dashboard component)
+- [X] T030 [US5] Verify expired certification exclusion: ensure CertificationBonusService and certified badge logic gate on computeCertificationStatus !== 'Expired' so expired certs contribute 0% bonus and no badge in src/app/core/services/certification-bonus.service.ts
 
 **Checkpoint**: User Story 5 complete — dashboard shows expiry alerts, expired certifications have no rating or badge impact.
 
@@ -141,8 +141,8 @@
 
 ### Implementation for User Story 6
 
-- [ ] T031 [US6] Integrate CertifiedBadgeComponent into the existing My Skills list component: for each skill, use selectCertificationsForSkill selector and hasValidCertification utility to determine badge visibility (Phase 3 skill profile list component)
-- [ ] T032 [US6] Integrate CertifiedBadgeComponent into the existing Skill Detail screen: show "Certified" badge when a valid certification exists for the displayed skill (Phase 3 skill detail component)
+- [X] T031 [US6] Integrate CertifiedBadgeComponent into the existing My Skills list component: for each skill, use selectCertificationsForSkill selector and hasValidCertification utility to determine badge visibility (Phase 3 skill profile list component)
+- [X] T032 [US6] Integrate CertifiedBadgeComponent into the existing Skill Detail screen: show "Certified" badge when a valid certification exists for the displayed skill (Phase 3 skill detail component)
 
 **Checkpoint**: User Story 6 complete — "Certified" badge visible on skill profile for skills with valid certs, hidden for skills with expired or no certs.
 
@@ -156,8 +156,8 @@
 
 ### Implementation for User Story 7
 
-- [ ] T033 [US7] Add responsive layout to CertificationsListComponent: inject BreakpointObserver, switch between mat-table (desktop) and card layout (mobile) based on breakpoint, use SCSS variables from _breakpoints.scss in src/app/features/certifications/certifications-list/certifications-list.component.ts|html|scss
-- [ ] T034 [US7] Add responsive layout to CertUploadComponent: inject BreakpointObserver, switch from two-column to single-column layout on mobile, add sticky submit button positioning on mobile, use SCSS variables from _breakpoints.scss in src/app/features/certifications/cert-upload/cert-upload.component.ts|html|scss
+- [X] T033 [US7] Add responsive layout to CertificationsListComponent: inject BreakpointObserver, switch between mat-table (desktop) and card layout (mobile) based on breakpoint, use SCSS variables from _breakpoints.scss in src/app/features/certifications/certifications-list/certifications-list.component.ts|html|scss
+- [X] T034 [US7] Add responsive layout to CertUploadComponent: inject BreakpointObserver, switch from two-column to single-column layout on mobile, add sticky submit button positioning on mobile, use SCSS variables from _breakpoints.scss in src/app/features/certifications/cert-upload/cert-upload.component.ts|html|scss
 
 **Checkpoint**: User Story 7 complete — all certification screens are responsive across desktop, tablet, and mobile viewports.
 
@@ -167,10 +167,10 @@
 
 **Purpose**: Accessibility, code quality, and final validation across all user stories
 
-- [ ] T035 [P] Add accessibility attributes: aria-labels on status badges, certified badge, file upload button, and all interactive elements; ensure 44×44px minimum touch targets on mobile in src/app/shared/components/ and src/app/features/certifications/
-- [ ] T036 [P] Add prefers-reduced-motion media query to disable or simplify animations on certification screens in src/app/features/certifications/
-- [ ] T037 Code cleanup: verify no `any` types, no inline styles, no BehaviorSubject for shared state, explicit return types on all services, SCSS-only styling across all certifications-module files
-- [ ] T038 Run quickstart.md verification checklist — validate all 11 checks pass (interfaces compile, interceptor handles 4 endpoints, NgRx store works, list renders, form validates, badge shows, dashboard alerts, responsive layouts, no `any`/inline/BehaviorSubject)
+- [X] T035 [P] Add accessibility attributes: aria-labels on status badges, certified badge, file upload button, and all interactive elements; ensure 44×44px minimum touch targets on mobile in src/app/shared/components/ and src/app/features/certifications/
+- [X] T036 [P] Add prefers-reduced-motion media query to disable or simplify animations on certification screens in src/app/features/certifications/
+- [X] T037 Code cleanup: verify no `any` types, no inline styles, no BehaviorSubject for shared state, explicit return types on all services, SCSS-only styling across all certifications-module files
+- [X] T038 Run quickstart.md verification checklist — validate all 11 checks pass (interfaces compile, interceptor handles 4 endpoints, NgRx store works, list renders, form validates, badge shows, dashboard alerts, responsive layouts, no `any`/inline/BehaviorSubject)
 
 ---
 

@@ -5,9 +5,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatBadgeModule } from '@angular/material/badge';
+import { NotificationBellComponent } from '../notification-bell/notification-bell.component';
 import { Store } from '@ngrx/store';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { NotificationBellComponent } from '../notification-bell/notification-bell.component';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
 import { SessionActions } from '../../../core/store/session/session.actions';
 
@@ -21,8 +22,9 @@ import { SessionActions } from '../../../core/store/session/session.actions';
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    AvatarComponent,
     NotificationBellComponent,
+    MatBadgeModule,
+    AvatarComponent,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],

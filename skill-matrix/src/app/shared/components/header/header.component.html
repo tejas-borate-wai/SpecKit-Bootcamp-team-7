@@ -16,7 +16,11 @@
   </div>
 
   <div class="header-right">
-    <app-notification-bell></app-notification-bell>
+    <button mat-icon-button routerLink="/notifications"
+            aria-label="Notifications"
+            [matBadge]="3" matBadgeColor="warn" matBadgeSize="small">
+      <mat-icon>notifications</mat-icon>
+    </button>
 
     @if (user$ | async; as user) {
       <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">

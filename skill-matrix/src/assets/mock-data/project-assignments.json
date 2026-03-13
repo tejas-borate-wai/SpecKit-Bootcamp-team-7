@@ -1,0 +1,23 @@
+[
+  {
+    "assignmentId": "asgn-001",
+    "projectId": "proj-002",
+    "userId": "u005",
+    "role": "ML Engineer",
+    "assignedDate": "2026-01-12"
+  },
+  {
+    "assignmentId": "asgn-002",
+    "projectId": "proj-002",
+    "userId": "u002",
+    "role": "Backend Developer",
+    "assignedDate": "2026-01-15"
+  },
+  {
+    "assignmentId": "asgn-003",
+    "projectId": "proj-004",
+    "userId": "u004",
+    "role": "DevOps Engineer",
+    "assignedDate": "2026-01-22"
+  }
+]

@@ -27,9 +27,9 @@
 
 **Purpose**: Install additional dependencies and create mock data files for this feature
 
-- [ ] T001 Install @swimlane/ngx-charts charting library dependency via `npm install @swimlane/ngx-charts`
-- [ ] T002 [P] Create employee-skills.json mock data with 6 employee records (mix of Approved, Pending, Draft, Stale statuses; 1 stale skill with lastUpdated 8+ months ago) in src/assets/mock-data/employee-skills.json
-- [ ] T003 [P] Create skill-test-attempts.json mock data with 25+ attempts across multiple users and skills for progress chart demos in src/assets/mock-data/skill-test-attempts.json
+- [X] T001 Install @swimlane/ngx-charts charting library dependency via `npm install @swimlane/ngx-charts`
+- [X] T002 [P] Create employee-skills.json mock data with 6 employee records (mix of Approved, Pending, Draft, Stale statuses; 1 stale skill with lastUpdated 8+ months ago) in src/assets/mock-data/employee-skills.json
+- [X] T003 [P] Create skill-test-attempts.json mock data with 25+ attempts across multiple users and skills for progress chart demos in src/assets/mock-data/skill-test-attempts.json
 
 ---
 
@@ -41,46 +41,46 @@
 
 ### Models & Interfaces
 
-- [ ] T004 [P] Create EmployeeSkill, EmployeeSkillRecord, SkillStatus, ProficiencyLevel interfaces per data-model.md in src/app/shared/models/employee-skill.model.ts
-- [ ] T005 [P] Create SkillTestAttempt interface per data-model.md in src/app/shared/models/skill-test-attempt.model.ts
-- [ ] T006 [P] Create AchievementBadge, AchievementType types per data-model.md in src/app/shared/models/achievement.model.ts
-- [ ] T007 [P] Create dashboard widget data interfaces (EmployeeDashboardData, ManagerDashboardData, AdminDashboardData, and supporting types) per data-model.md in src/app/shared/models/dashboard.model.ts
+- [X] T004 [P] Create EmployeeSkill, EmployeeSkillRecord, SkillStatus, ProficiencyLevel interfaces per data-model.md in src/app/shared/models/employee-skill.model.ts
+- [X] T005 [P] Create SkillTestAttempt interface per data-model.md in src/app/shared/models/skill-test-attempt.model.ts
+- [X] T006 [P] Create AchievementBadge, AchievementType types per data-model.md in src/app/shared/models/achievement.model.ts
+- [X] T007 [P] Create dashboard widget data interfaces (EmployeeDashboardData, ManagerDashboardData, AdminDashboardData, and supporting types) per data-model.md in src/app/shared/models/dashboard.model.ts
 
 ### Utility Functions
 
-- [ ] T008 [P] Create skill utility functions: ratingToPercentage(), percentageToLevel(), computeConfidence(), isStale() per data-model.md in src/app/shared/utils/skill-utils.ts
+- [X] T008 [P] Create skill utility functions: ratingToPercentage(), percentageToLevel(), computeConfidence(), isStale() per data-model.md in src/app/shared/utils/skill-utils.ts
 
 ### Pipes
 
-- [ ] T009 [P] Create ProficiencyLabelPipe mapping percentage to Beginner/Intermediate/Advanced/Expert label in src/app/shared/pipes/proficiency-label.pipe.ts
-- [ ] T010 [P] Create StaleCheckPipe checking if ISO date is older than 6 months in src/app/shared/pipes/stale-check.pipe.ts
+- [X] T009 [P] Create ProficiencyLabelPipe mapping percentage to Beginner/Intermediate/Advanced/Expert label in src/app/shared/pipes/proficiency-label.pipe.ts
+- [X] T010 [P] Create StaleCheckPipe checking if ISO date is older than 6 months in src/app/shared/pipes/stale-check.pipe.ts
 
 ### Mock API Interceptor
 
-- [ ] T011 Extend MockApiInterceptor with employee-skills CRUD endpoints (GET/POST/PUT/DELETE /api/employee-skills/:userId), skill-test-attempts endpoints (GET /api/skill-test-attempts/:userId and /api/skill-test-attempts/:userId/:skillId), certifications query (GET /api/certifications?userId=), and project-assignments query (GET /api/project-assignments/:userId) per contracts/mock-api-contract.md with RBAC enforcement in src/app/core/interceptors/mock-api.interceptor.ts
+- [X] T011 Extend MockApiInterceptor with employee-skills CRUD endpoints (GET/POST/PUT/DELETE /api/employee-skills/:userId), skill-test-attempts endpoints (GET /api/skill-test-attempts/:userId and /api/skill-test-attempts/:userId/:skillId), certifications query (GET /api/certifications?userId=), and project-assignments query (GET /api/project-assignments/:userId) per contracts/mock-api-contract.md with RBAC enforcement in src/app/core/interceptors/mock-api.interceptor.ts
 
 ### Core Services
 
-- [ ] T012 [P] Create SkillService with HttpClient methods: getUserSkills(), addSkill(), updateSkillRating(), deleteSkill() in src/app/core/services/skill.service.ts
-- [ ] T013 [P] Create SkillLibraryService with HttpClient methods: getCategories(), getDefinitions(), getDefinitionsBySubCategory() in src/app/core/services/skill-library.service.ts
-- [ ] T014 [P] Create AchievementService with computeAchievements() implementing First Assessment, Reached Advanced, Improved by 20% badge conditions per research.md Decision 4 in src/app/core/services/achievement.service.ts
-- [ ] T015 [P] Create DashboardService with methods for role-specific widget data aggregation (employee, manager, admin) in src/app/core/services/dashboard.service.ts
+- [X] T012 [P] Create SkillService with HttpClient methods: getUserSkills(), addSkill(), updateSkillRating(), deleteSkill() in src/app/core/services/skill.service.ts
+- [X] T013 [P] Create SkillLibraryService with HttpClient methods: getCategories(), getDefinitions(), getDefinitionsBySubCategory() in src/app/core/services/skill-library.service.ts
+- [X] T014 [P] Create AchievementService with computeAchievements() implementing First Assessment, Reached Advanced, Improved by 20% badge conditions per research.md Decision 4 in src/app/core/services/achievement.service.ts
+- [X] T015 [P] Create DashboardService with methods for role-specific widget data aggregation (employee, manager, admin) in src/app/core/services/dashboard.service.ts
 
 ### NgRx Skills Store
 
-- [ ] T016 Create NgRx skills actions: loadMySkills, loadMySkillsSuccess/Failure, loadSkillLibrary, loadSkillLibrarySuccess, addSkill, addSkillSuccess/Failure, updateSkillRating, updateSkillRatingSuccess/Failure, deleteSkill, deleteSkillSuccess/Failure, loadTestAttempts, loadTestAttemptsSuccess, loadAllEmployeeSkills, loadAllEmployeeSkillsSuccess in src/app/core/store/skills/skills.actions.ts
-- [ ] T017 Create NgRx skills reducer with SkillsState interface (mySkills, allEmployeeSkills, skillCategories, skillDefinitions, testAttempts, loading, error) per data-model.md in src/app/core/store/skills/skills.reducer.ts
-- [ ] T018 Create NgRx skills selectors: selectMySkills, selectMyActiveSkills, selectMyStaleSkills, selectProfileCompletion, selectSkillById, selectSkillProgress, selectConfidenceLevel, selectDashboardWidgets per research.md Decision 2 in src/app/core/store/skills/skills.selectors.ts
-- [ ] T019 Create NgRx skills effects wiring all actions to HttpClient service calls (SkillService, SkillLibraryService) with error handling in src/app/core/store/skills/skills.effects.ts
+- [X] T016 Create NgRx skills actions: loadMySkills, loadMySkillsSuccess/Failure, loadSkillLibrary, loadSkillLibrarySuccess, addSkill, addSkillSuccess/Failure, updateSkillRating, updateSkillRatingSuccess/Failure, deleteSkill, deleteSkillSuccess/Failure, loadTestAttempts, loadTestAttemptsSuccess, loadAllEmployeeSkills, loadAllEmployeeSkillsSuccess in src/app/core/store/skills/skills.actions.ts
+- [X] T017 Create NgRx skills reducer with SkillsState interface (mySkills, allEmployeeSkills, skillCategories, skillDefinitions, testAttempts, loading, error) per data-model.md in src/app/core/store/skills/skills.reducer.ts
+- [X] T018 Create NgRx skills selectors: selectMySkills, selectMyActiveSkills, selectMyStaleSkills, selectProfileCompletion, selectSkillById, selectSkillProgress, selectConfidenceLevel, selectDashboardWidgets per research.md Decision 2 in src/app/core/store/skills/skills.selectors.ts
+- [X] T019 Create NgRx skills effects wiring all actions to HttpClient service calls (SkillService, SkillLibraryService) with error handling in src/app/core/store/skills/skills.effects.ts
 
 ### Shared Presentational Components
 
-- [ ] T020 [P] Create RatingBadgeComponent displaying proficiency level pill with color token (Grey=Beginner, Blue=Intermediate, Purple=Advanced, Gold=Expert) in src/app/shared/components/rating-badge/rating-badge.component.ts
-- [ ] T021 [P] Create StatCardComponent displaying metric title, value, optional trend indicator, and optional icon in src/app/shared/components/stat-card/stat-card.component.ts
-- [ ] T022 [P] Create ConfidenceIndicatorComponent displaying 🟢 High / 🟡 Medium / 🔴 Low based on ConfidenceLevel input in src/app/shared/components/confidence-indicator/confidence-indicator.component.ts
-- [ ] T023 [P] Create AchievementBadgeComponent displaying badge icon and label for achievement types in src/app/shared/components/achievement-badge/achievement-badge.component.ts
-- [ ] T024 [P] Create ProgressChartComponent wrapping ngx-charts-line-chart with responsive sizing via BreakpointObserver (desktop full-size, mobile 250px max height) in src/app/shared/components/progress-chart/progress-chart.component.ts
-- [ ] T025 [P] Create SkillCardComponent displaying skill name, level badge, rating percentage, status pill, and stale amber indicator in src/app/shared/components/skill-card/skill-card.component.ts
+- [X] T020 [P] Create RatingBadgeComponent displaying proficiency level pill with color token (Grey=Beginner, Blue=Intermediate, Purple=Advanced, Gold=Expert) in src/app/shared/components/rating-badge/rating-badge.component.ts
+- [X] T021 [P] Create StatCardComponent displaying metric title, value, optional trend indicator, and optional icon in src/app/shared/components/stat-card/stat-card.component.ts
+- [X] T022 [P] Create ConfidenceIndicatorComponent displaying 🟢 High / 🟡 Medium / 🔴 Low based on ConfidenceLevel input in src/app/shared/components/confidence-indicator/confidence-indicator.component.ts
+- [X] T023 [P] Create AchievementBadgeComponent displaying badge icon and label for achievement types in src/app/shared/components/achievement-badge/achievement-badge.component.ts
+- [X] T024 [P] Create ProgressChartComponent wrapping ngx-charts-line-chart with responsive sizing via BreakpointObserver (desktop full-size, mobile 250px max height) in src/app/shared/components/progress-chart/progress-chart.component.ts
+- [X] T025 [P] Create SkillCardComponent displaying skill name, level badge, rating percentage, status pill, and stale amber indicator in src/app/shared/components/skill-card/skill-card.component.ts
 
 **Checkpoint**: Foundation ready — all models, services, store, interceptor, and shared components are available. User story implementation can now begin in parallel.
 
@@ -92,11 +92,11 @@
 
 **Independent Test**: Log in as an employee, navigate to /my-skills, verify the table displays all skills with correct columns, stale badges, and three-dot actions menu. Verify Admin sees "Override Rating", non-admins do not.
 
-- [ ] T026 [US1] Create MySkillsListComponent with responsive layout using BreakpointObserver: full mat-table on desktop (Skill, Category, Level Badge, Rating %, Status, Last Updated, Actions), condensed table on tablet (Category + Last Updated hidden), card list on mobile per research.md Decision 7 in src/app/features/my-skills/my-skills-list/my-skills-list.component.ts
-- [ ] T027 [US1] Implement three-dot mat-menu actions (View Detail, Edit, Delete) and "Add Skill" button; enforce RBAC visibility with @if removing "Override Rating" button from DOM for non-Admin roles per FR-004 in src/app/features/my-skills/my-skills-list/my-skills-list.component.html
-- [ ] T028 [US1] Style stale skill rows with amber warning badge and amber border (--color-stale-border); add empty state with "Add your first skill" CTA button per FR-005 in src/app/features/my-skills/my-skills-list/my-skills-list.component.scss
-- [ ] T029 [US1] Create my-skills.routes.ts defining child routes for list, add, detail, and edit with lazy loading in src/app/features/my-skills/my-skills.routes.ts
-- [ ] T030 [US1] Register /my-skills lazy route with loadChildren pointing to my-skills.routes.ts in src/app/app.routes.ts
+- [X] T026 [US1] Create MySkillsListComponent with responsive layout using BreakpointObserver: full mat-table on desktop (Skill, Category, Level Badge, Rating %, Status, Last Updated, Actions), condensed table on tablet (Category + Last Updated hidden), card list on mobile per research.md Decision 7 in src/app/features/my-skills/my-skills-list/my-skills-list.component.ts
+- [X] T027 [US1] Implement three-dot mat-menu actions (View Detail, Edit, Delete) and "Add Skill" button; enforce RBAC visibility with @if removing "Override Rating" button from DOM for non-Admin roles per FR-004 in src/app/features/my-skills/my-skills-list/my-skills-list.component.html
+- [X] T028 [US1] Style stale skill rows with amber warning badge and amber border (--color-stale-border); add empty state with "Add your first skill" CTA button per FR-005 in src/app/features/my-skills/my-skills-list/my-skills-list.component.scss
+- [X] T029 [US1] Create my-skills.routes.ts defining child routes for list, add, detail, and edit with lazy loading in src/app/features/my-skills/my-skills.routes.ts
+- [X] T030 [US1] Register /my-skills lazy route with loadChildren pointing to my-skills.routes.ts in src/app/app.routes.ts
 
 **Checkpoint**: Employees can view their skill list across all breakpoints. Skills table is fully navigable and role-aware.
 
@@ -108,8 +108,8 @@
 
 **Independent Test**: Navigate to /my-skills/add, select Category → Subcategory → Skill via dropdowns, set a self-rating, save, and verify the skill appears in the My Skills list with status "Draft".
 
-- [ ] T031 [US2] Create AddSkillComponent with reactive form: cascading mat-select dropdowns (Category → Subcategory → Skill populated from SkillLibraryService), self-rating radio group (1–4 mapped to Beginner–Expert), and Save button dispatching addSkill NgRx action per FR-006, FR-007, FR-009 in src/app/features/my-skills/add-skill/add-skill.component.ts
-- [ ] T032 [US2] Implement duplicate skill validation checking existing profile skills (error: "This skill is already in your profile." per FR-008) and required field inline validation ("This field is required." per FR-010) in src/app/features/my-skills/add-skill/add-skill.component.html
+- [X] T031 [US2] Create AddSkillComponent with reactive form: cascading mat-select dropdowns (Category → Subcategory → Skill populated from SkillLibraryService), self-rating radio group (1–4 mapped to Beginner–Expert), and Save button dispatching addSkill NgRx action per FR-006, FR-007, FR-009 in src/app/features/my-skills/add-skill/add-skill.component.ts
+- [X] T032 [US2] Implement duplicate skill validation checking existing profile skills (error: "This skill is already in your profile." per FR-008) and required field inline validation ("This field is required." per FR-010) in src/app/features/my-skills/add-skill/add-skill.component.html
 
 **Checkpoint**: Employees can add skills with full validation. Duplicate and empty-field errors display correctly.
 
@@ -121,9 +121,9 @@
 
 **Independent Test**: Click "View Detail" on a skill row, verify all 4 rating sources display (nulls as "—"), confidence indicator color matches source count, line chart plots historical scores, and certified badge appears for skills with valid certifications.
 
-- [ ] T033 [US3] Create SkillDetailComponent loading skill data and test attempts from NgRx store, displaying all rating sources (Self, Manager, Peer, System, Final with nulls shown as "—"), proficiency level badge, and current status per FR-016, FR-018, FR-022 in src/app/features/my-skills/skill-detail/skill-detail.component.ts
-- [ ] T034 [US3] Integrate ConfidenceIndicatorComponent (🟢🟡🔴 based on non-null rating source count per FR-017) and ProgressChartComponent (line chart of score trend with best/latest score comparison per FR-020, FR-021) in src/app/features/my-skills/skill-detail/skill-detail.component.html
-- [ ] T035 [US3] Display "Certified" badge by checking certifications data for the skill per FR-019 in src/app/features/my-skills/skill-detail/skill-detail.component.html
+- [X] T033 [US3] Create SkillDetailComponent loading skill data and test attempts from NgRx store, displaying all rating sources (Self, Manager, Peer, System, Final with nulls shown as "—"), proficiency level badge, and current status per FR-016, FR-018, FR-022 in src/app/features/my-skills/skill-detail/skill-detail.component.ts
+- [X] T034 [US3] Integrate ConfidenceIndicatorComponent (🟢🟡🔴 based on non-null rating source count per FR-017) and ProgressChartComponent (line chart of score trend with best/latest score comparison per FR-020, FR-021) in src/app/features/my-skills/skill-detail/skill-detail.component.html
+- [X] T035 [US3] Display "Certified" badge by checking certifications data for the skill per FR-019 in src/app/features/my-skills/skill-detail/skill-detail.component.html
 
 **Checkpoint**: Skill detail screen shows all ratings, confidence, chart, and certification status. All data sourced from NgRx store.
 
@@ -135,11 +135,11 @@
 
 **Independent Test**: Log in as each role and verify the correct set of dashboard widgets renders. Verify stat cards show 4/row on desktop, 2/row on tablet, 1/row stacked on mobile.
 
-- [ ] T036 [US4] Create DashboardComponent using @switch on user role from NgRx session store to render EmployeeDashboard, ManagerDashboard, or AdminDashboard per research.md Decision 5 in src/app/features/dashboard/dashboard.component.ts
-- [ ] T037 [P] [US4] Create EmployeeDashboardComponent with 7 widgets: skills list with rating+level+badge, profile completion percentage, skill gap cards with "Start Assessment" CTA, certification alerts (valid/expiring-soon/expired), skill progress chart, recent activity feed (last 5 actions), and achievement badges per FR-032 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.ts
-- [ ] T038 [P] [US4] Create ManagerDashboardComponent with 7 widgets: pending skill approvals count, team skill strength summary chart, employees with incomplete profiles, stale skills needing team attention, project skill match recommendations, team availability overview, and recent team activity feed per FR-033 in src/app/features/dashboard/manager-dashboard/manager-dashboard.component.ts
-- [ ] T039 [P] [US4] Create AdminDashboardComponent with 7 widgets: org-wide skill health score, total skills tracked, skill gap summary by department, org skill heatmap top-level view, certification compliance rate, most common skill gaps, and user count by role per FR-034 in src/app/features/dashboard/admin-dashboard/admin-dashboard.component.ts
-- [ ] T040 [US4] Create dashboard.routes.ts and register /dashboard lazy route in app.routes.ts with responsive stat card grid (4/row desktop, 2/row tablet, 1/row mobile per FR-035) in src/app/features/dashboard/dashboard.routes.ts
+- [X] T036 [US4] Create DashboardComponent using @switch on user role from NgRx session store to render EmployeeDashboard, ManagerDashboard, or AdminDashboard per research.md Decision 5 in src/app/features/dashboard/dashboard.component.ts
+- [X] T037 [P] [US4] Create EmployeeDashboardComponent with 7 widgets: skills list with rating+level+badge, profile completion percentage, skill gap cards with "Start Assessment" CTA, certification alerts (valid/expiring-soon/expired), skill progress chart, recent activity feed (last 5 actions), and achievement badges per FR-032 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.ts
+- [X] T038 [P] [US4] Create ManagerDashboardComponent with 7 widgets: pending skill approvals count, team skill strength summary chart, employees with incomplete profiles, stale skills needing team attention, project skill match recommendations, team availability overview, and recent team activity feed per FR-033 in src/app/features/dashboard/manager-dashboard/manager-dashboard.component.ts
+- [X] T039 [P] [US4] Create AdminDashboardComponent with 7 widgets: org-wide skill health score, total skills tracked, skill gap summary by department, org skill heatmap top-level view, certification compliance rate, most common skill gaps, and user count by role per FR-034 in src/app/features/dashboard/admin-dashboard/admin-dashboard.component.ts
+- [X] T040 [US4] Create dashboard.routes.ts and register /dashboard lazy route in app.routes.ts with responsive stat card grid (4/row desktop, 2/row tablet, 1/row mobile per FR-035) in src/app/features/dashboard/dashboard.routes.ts
 
 **Checkpoint**: All three role-specific dashboards render the complete widget set. Stat cards adapt to breakpoints.
 
@@ -151,8 +151,8 @@
 
 **Independent Test**: Navigate to /my-skills/:skillId/edit, change the self-rating, save, and verify the updated rating and refreshed lastUpdated timestamp in the skills list. Verify a stale skill clears the amber indicators after editing.
 
-- [ ] T041 [US5] Create EditSkillComponent with reactive form pre-populated with current selfRating, dispatching updateSkillRating NgRx action on save per FR-011 in src/app/features/my-skills/edit-skill/edit-skill.component.ts
-- [ ] T042 [US5] Implement lastUpdated timestamp refresh and stale status clearing (Stale → Approved) on successful rating update in interceptor and reducer per FR-012, FR-027 in src/app/core/store/skills/skills.reducer.ts
+- [X] T041 [US5] Create EditSkillComponent with reactive form pre-populated with current selfRating, dispatching updateSkillRating NgRx action on save per FR-011 in src/app/features/my-skills/edit-skill/edit-skill.component.ts
+- [X] T042 [US5] Implement lastUpdated timestamp refresh and stale status clearing (Stale → Approved) on successful rating update in interceptor and reducer per FR-012, FR-027 in src/app/core/store/skills/skills.reducer.ts
 
 **Checkpoint**: Self-rating updates persist in-memory. Stale skills are restored to Approved status on edit.
 
@@ -164,8 +164,8 @@
 
 **Independent Test**: Delete a skill not linked to a project — verify it disappears from the active list. Attempt to delete a skill linked to an active project — verify the error "This skill is linked to an active project and cannot be deleted." appears.
 
-- [ ] T043 [US6] Implement soft-delete confirmation dialog and dispatch deleteSkill NgRx action from MySkillsListComponent three-dot menu per FR-013, FR-014 in src/app/features/my-skills/my-skills-list/my-skills-list.component.ts
-- [ ] T044 [US6] Handle 409 error response from interceptor (project link constraint) displaying error toast "This skill is linked to an active project and cannot be deleted." per FR-015 in src/app/core/store/skills/skills.effects.ts
+- [X] T043 [US6] Implement soft-delete confirmation dialog and dispatch deleteSkill NgRx action from MySkillsListComponent three-dot menu per FR-013, FR-014 in src/app/features/my-skills/my-skills-list/my-skills-list.component.ts
+- [X] T044 [US6] Handle 409 error response from interceptor (project link constraint) displaying error toast "This skill is linked to an active project and cannot be deleted." per FR-015 in src/app/core/store/skills/skills.effects.ts
 
 **Checkpoint**: Soft-delete works with history retention. Project-linked skills are protected with clear error messaging.
 
@@ -177,8 +177,8 @@
 
 **Independent Test**: View a skill with multiple test attempts — verify "First Assessment" badge appears. View a skill with score ≥ 66% — verify "Reached Advanced" badge. View a skill with 20%+ improvement — verify "Improved by 20%" badge. Check the Employee Dashboard shows all earned badges.
 
-- [ ] T045 [US7] Wire AchievementService.computeAchievements() into SkillDetailComponent to display per-skill achievement badges section per FR-025 in src/app/features/my-skills/skill-detail/skill-detail.component.ts
-- [ ] T046 [US7] Integrate achievement badges earned widget on EmployeeDashboard by aggregating badges across all skills per FR-032 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.ts
+- [X] T045 [US7] Wire AchievementService.computeAchievements() into SkillDetailComponent to display per-skill achievement badges section per FR-025 in src/app/features/my-skills/skill-detail/skill-detail.component.ts
+- [X] T046 [US7] Integrate achievement badges earned widget on EmployeeDashboard by aggregating badges across all skills per FR-032 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.ts
 
 **Checkpoint**: Achievement badges render correctly based on test history. Both skill detail and employee dashboard show earned badges.
 
@@ -190,8 +190,8 @@
 
 **Independent Test**: Verify a skill with lastUpdated date older than 6 months shows amber warning badge and amber border in the skills list. Verify the Manager Dashboard displays a stale skills count.
 
-- [ ] T047 [US8] Wire selectMyStaleSkills selector into MySkillsListComponent to apply amber styling to stale rows and display stale count badge per FR-026 in src/app/features/my-skills/my-skills-list/my-skills-list.component.ts
-- [ ] T048 [US8] Wire stale skills count and "stale skills needing team attention" widget data into ManagerDashboard per FR-028 in src/app/features/dashboard/manager-dashboard/manager-dashboard.component.ts
+- [X] T047 [US8] Wire selectMyStaleSkills selector into MySkillsListComponent to apply amber styling to stale rows and display stale count badge per FR-026 in src/app/features/my-skills/my-skills-list/my-skills-list.component.ts
+- [X] T048 [US8] Wire stale skills count and "stale skills needing team attention" widget data into ManagerDashboard per FR-028 in src/app/features/dashboard/manager-dashboard/manager-dashboard.component.ts
 
 **Checkpoint**: Stale skills are visually flagged in the skills list. Manager Dashboard shows stale alert data.
 
@@ -203,8 +203,8 @@
 
 **Independent Test**: Verify profile completion shows (assessed / total) × 100 on the Employee Dashboard. Verify unassessed skills render as gap cards with "Take Assessment" CTA.
 
-- [ ] T049 [US9] Wire selectProfileCompletion selector into EmployeeDashboard profile completion stat card and verify correct percentage calculation per FR-029 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.ts
-- [ ] T050 [US9] Render unassessed skill gap cards with "Take Assessment" CTA using skill library definitions minus user assessed skills per FR-030 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.html
+- [X] T049 [US9] Wire selectProfileCompletion selector into EmployeeDashboard profile completion stat card and verify correct percentage calculation per FR-029 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.ts
+- [X] T050 [US9] Render unassessed skill gap cards with "Take Assessment" CTA using skill library definitions minus user assessed skills per FR-030 in src/app/features/dashboard/employee-dashboard/employee-dashboard.component.html
 
 **Checkpoint**: Profile completion percentage is accurate. Gap cards display with assessment CTAs for all unassessed skills.
 
@@ -214,11 +214,11 @@
 
 **Purpose**: Unit tests (constitution mandate), validation, and cleanup across all user stories
 
-- [ ] T051 [P] Add unit tests for skill utility functions: ratingToPercentage, percentageToLevel, computeConfidence, isStale in src/app/shared/utils/skill-utils.spec.ts
-- [ ] T052 [P] Add unit tests for AchievementService.computeAchievements() badge conditions in src/app/core/services/achievement.service.spec.ts
-- [ ] T053 [P] Add unit tests for NgRx skills selectors (selectMyActiveSkills, selectMyStaleSkills, selectProfileCompletion, selectConfidenceLevel) in src/app/core/store/skills/skills.selectors.spec.ts
-- [ ] T054 [P] Add unit tests for skills reducer state transitions (add, update, delete, load success/failure) in src/app/core/store/skills/skills.reducer.spec.ts
-- [ ] T055 Run quickstart.md verification checklist, ensure TypeScript strict compliance, no `any` types, and SCSS-only styles
+- [X] T051 [P] Add unit tests for skill utility functions: ratingToPercentage, percentageToLevel, computeConfidence, isStale in src/app/shared/utils/skill-utils.spec.ts
+- [X] T052 [P] Add unit tests for AchievementService.computeAchievements() badge conditions in src/app/core/services/achievement.service.spec.ts
+- [X] T053 [P] Add unit tests for NgRx skills selectors (selectMyActiveSkills, selectMyStaleSkills, selectProfileCompletion, selectConfidenceLevel) in src/app/core/store/skills/skills.selectors.spec.ts
+- [X] T054 [P] Add unit tests for skills reducer state transitions (add, update, delete, load success/failure) in src/app/core/store/skills/skills.reducer.spec.ts
+- [X] T055 Run quickstart.md verification checklist, ensure TypeScript strict compliance, no `any` types, and SCSS-only styles
 
 ---
 
