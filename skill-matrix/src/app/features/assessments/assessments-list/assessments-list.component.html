@@ -75,14 +75,14 @@
 
                 <!-- Not attempted -->
                 <ng-container *ngIf="row.hasExam && row.status === 'Not Attempted'">
-                  <button class="btn btn-primary" (click)="startAssessment(row.skillId)" aria-label="Start assessment for {{ row.skillName }}">
+                  <button class="btn btn-primary" (click)="startAssessment(row.skillId)" [attr.aria-label]="'Start assessment for ' + row.skillName">
                     Start Assessment
                   </button>
                 </ng-container>
 
                 <!-- Completed + can retake -->
                 <ng-container *ngIf="row.status === 'Completed' && row.canRetake">
-                  <button class="btn btn-secondary" (click)="startAssessment(row.skillId)" aria-label="Retake assessment for {{ row.skillName }}">
+                  <button class="btn btn-secondary" (click)="startAssessment(row.skillId)" [attr.aria-label]="'Retake assessment for ' + row.skillName">
                     Retake
                   </button>
                   <a [routerLink]="['/assessments', row.skillId, 'result']" class="btn btn-ghost">

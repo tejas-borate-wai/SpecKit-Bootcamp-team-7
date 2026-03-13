@@ -16,7 +16,7 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>{{ cat.categoryName }}</mat-panel-title>
-          <mat-panel-description>{{ cat.subCategories?.length ?? 0 }} subcategories</mat-panel-description>
+          <mat-panel-description>{{ cat.subCategories.length }} subcategories</mat-panel-description>
         </mat-expansion-panel-header>
 
         <div class="subcategory-list">
@@ -34,7 +34,7 @@
             </div>
           }
 
-          @if ((cat.subCategories?.length ?? 0) === 0) {
+          @if (cat.subCategories.length === 0) {
             <p class="empty-note">No subcategories yet.</p>
           }
         </div>

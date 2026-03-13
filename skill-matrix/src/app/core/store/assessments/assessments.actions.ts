@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { SkillExam } from '../../shared/models/skill-exam.model';
-import { AssessmentAttempt } from '../../shared/models/assessment-attempt.model';
+import { SkillExam } from '../../../shared/models/skill-exam.model';
+import { AssessmentAttempt } from '../../../shared/models/assessment-attempt.model';
 
 // Load all exams
 export const loadExams = createAction('[Assessments] Load Exams');
