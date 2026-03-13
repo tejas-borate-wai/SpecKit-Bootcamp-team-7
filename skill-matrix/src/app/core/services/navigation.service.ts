@@ -11,8 +11,9 @@ const NAVIGATION_CONFIG: NavItem[] = [
   { label: 'My Skills', icon: 'star', route: '/my-skills', roles: ['Employee', 'Manager', 'Admin'] },
   { label: 'Assessments', icon: 'assignment', route: '/assessments', roles: ['Employee', 'Manager', 'Admin'] },
   { label: 'Certifications', icon: 'workspace_premium', route: '/certifications', roles: ['Employee', 'Manager', 'Admin'] },
-  
-  // Settings or other common items... 
+  { label: 'Notifications', icon: 'notifications', route: '/notifications', roles: ['Employee', 'Manager', 'Admin'] },
+
+  // Settings — all roles
   { label: 'Settings', icon: 'settings', route: '/settings', roles: ['Employee', 'Manager', 'Admin'], section: 'SETTINGS' },
 
   // TEAM section — Manager + Admin
