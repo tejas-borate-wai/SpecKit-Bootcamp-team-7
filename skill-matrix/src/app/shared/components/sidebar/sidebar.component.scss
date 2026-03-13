@@ -18,10 +18,10 @@
 .section-header {
   padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #9ca3af;
+  letter-spacing: 0.8px;
+  color: #6b7280;
 }
 
 a[mat-list-item] {
@@ -41,6 +41,7 @@ a[mat-list-item] {
 
   .nav-label {
     font-size: 14px;
+    font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -49,6 +50,7 @@ a[mat-list-item] {
   &.active {
     background-color: rgba(59, 130, 246, 0.08);
     color: var(--color-primary);
+    font-weight: 600;
 
     mat-icon {
       color: var(--color-primary);

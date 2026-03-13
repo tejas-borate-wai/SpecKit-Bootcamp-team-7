@@ -28,14 +28,16 @@
   }
 
   .logo {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--color-primary);
+    letter-spacing: -0.3px;
   }
 
   .page-title {
     font-size: 14px;
-    color: #9ca3af;
+    font-weight: 500;
+    color: #6b7280;
     margin-left: var(--spacing-sm);
 
     @include bp.mobile {
