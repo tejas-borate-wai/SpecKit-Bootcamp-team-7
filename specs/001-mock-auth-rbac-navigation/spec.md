@@ -101,7 +101,7 @@ When the application initializes, it checks persistent storage for an existing u
 
 **Acceptance Scenarios**:
 
-1. **Given** a user previously logged in and their session exists in persistent storage, **When** the application starts, **Then** the user state is restored and they are directed to their last location or /dashboard — not the login page.
+- **Given** a user previously logged in and their session exists in persistent storage, **When** the application starts, **Then** the user state is restored and they are navigated to the last visited route (stored in localStorage as `lastRoute`); if that route is absent, invalid, or restricted for their role, they fall back to /dashboard — not the login page.
 2. **Given** no session exists in persistent storage, **When** the application starts, **Then** the user is directed to /login.
 
 ---
@@ -119,13 +119,13 @@ When the application initializes, it checks persistent storage for an existing u
 
 - **FR-001**: System MUST display a login screen at /login with email and password input fields.
 - **FR-002**: System MUST validate submitted credentials against the users.json mock data file.
-- **FR-003**: Upon successful login, the system MUST store the user object (id, name, email, role, department, avatarUrl) in both application state and persistent storage (localStorage).
+- **FR-003**: Upon successful login, the system MUST store the user object (id, name, email, role, department, avatarUrl) in both application state and persistent storage (localStorage). Application state MUST be managed via a singleton `AuthService` exposing a `BehaviorSubject<User | null>` as the session state source of truth.
 - **FR-004**: Upon successful login, the system MUST redirect the user to /dashboard regardless of role (Employee, Manager, or Admin).
 - **FR-005**: The /dashboard route MUST render a different dashboard view depending on the logged-in user's role.
 - **FR-006**: If credentials do not match, the system MUST display the error message "Invalid email or password" on the login form.
 - **FR-007**: If the email or password field is empty on submit, the system MUST display inline validation "This field is required" below the empty field(s).
 - **FR-008**: The user session MUST persist in localStorage across page refreshes.
-- **FR-009**: On application initialization, the system MUST check localStorage for an existing session; if found, restore the user state and skip the login page.
+- **FR-009**: On application initialization, the system MUST check localStorage for an existing session; if found, restore the user state, skip the login page, and navigate to the route stored in `lastRoute` (localStorage). If `lastRoute` is absent, invalid, or role-restricted, the system MUST fall back to /dashboard.
 - **FR-010**: Logout MUST clear the user state from both application state and localStorage, then redirect to /login.
 - **FR-011**: An AuthGuard MUST protect all routes except /login. Unauthenticated users accessing any protected route MUST be redirected to /login.
 - **FR-012**: A RoleGuard MUST accept an array of allowed roles. If the authenticated user's role is not in the allowed list, the user MUST be redirected to /unauthorized.
@@ -174,6 +174,13 @@ When the application initializes, it checks persistent storage for an existing u
 - **SC-007**: 100% of login validation scenarios produce the correct error message without page reload or blank state.
 - **SC-008**: All 10+ mock users are loadable and each role (Employee, Manager, Admin) produces the correct navigation and dashboard experience.
 
+## Clarifications
+
+### Session 2026-03-13
+
+- Q: How should Angular application state be managed for the user session? → A: Angular Service + BehaviorSubject — a singleton `AuthService` holding a `BehaviorSubject<User | null>` as the session state source of truth.
+- Q: Where should the app navigate on session restore at startup? → A: Redirect to last visited route (stored as `lastRoute` in localStorage), with fallback to /dashboard if absent, invalid, or role-restricted.
+
 ## Assumptions
 
 - This is a frontend-only application with no real backend or JWT-based authentication. Credential matching is performed against a local JSON file (users.json).
@@ -182,6 +189,7 @@ When the application initializes, it checks persistent storage for an existing u
 - Session persistence uses localStorage. Data resets only if the user explicitly clears browser storage.
 - The /dashboard route is a shared entry point for all roles; the specific dashboard content (Employee vs Manager vs Admin) is determined by the logged-in user's role and will be implemented in a subsequent phase (Phase 3).
 - Route guard validation relies on the user role stored in application state. The application re-hydrates this state from localStorage on startup.
+- Application state is managed via a singleton `AuthService` with a `BehaviorSubject<User | null>`. Components and guards subscribe to this observable; NgRx and Angular Signals are explicitly out of scope for this phase.
 - The notification bell in the header displays a count badge but the full notifications feature (data, list screen) will be implemented in a subsequent phase (Phase 9).
 - The search bar in the header is a visual placeholder in this phase; search functionality will be implemented in Phase 10.
 - Mobile bottom navigation bar is not part of this phase — it will be addressed in Phase 10 (Responsive Design).
