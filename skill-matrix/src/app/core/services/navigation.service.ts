@@ -30,11 +30,11 @@ const NAVIGATION_CONFIG: NavItem[] = [
 
   // SETTINGS section — Admin only
   {
-    label: 'Skill Framework', icon: 'account_tree', route: '/admin/framework', roles: ['Admin'], section: 'SETTINGS',
+    label: 'Skill Framework', icon: 'account_tree', route: '/admin/skill-framework/categories', roles: ['Admin'], section: 'SETTINGS',
     children: [
-      { label: 'Categories', icon: 'category', route: '/admin/framework', roles: ['Admin'] },
-      { label: 'Subcategories', icon: 'subdirectory_arrow_right', route: '/admin/framework', roles: ['Admin'] },
-      { label: 'Skill Definitions', icon: 'description', route: '/admin/framework', roles: ['Admin'] },
+      { label: 'Categories', icon: 'category', route: '/admin/skill-framework/categories', roles: ['Admin'] },
+      { label: 'Subcategories', icon: 'subdirectory_arrow_right', route: '/admin/skill-framework/subcategories', roles: ['Admin'] },
+      { label: 'Skill Definitions', icon: 'description', route: '/admin/skill-framework/skills', roles: ['Admin'] },
     ],
   },
   { label: 'Rating Configuration', icon: 'tune', route: '/admin/rating-config', roles: ['Admin'], section: 'SETTINGS' },

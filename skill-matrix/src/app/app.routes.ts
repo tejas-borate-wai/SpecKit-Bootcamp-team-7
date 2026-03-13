@@ -83,6 +83,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: placeholder,
   },
+  {
+    path: 'settings',
+    canActivate: [authGuard],
+    loadComponent: placeholder,
+  },
 
   // AuthGuard + RoleGuard — Manager, Admin
   {
