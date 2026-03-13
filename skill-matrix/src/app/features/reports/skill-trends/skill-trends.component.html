@@ -89,7 +89,7 @@
                 <thead>
                   <tr>
                     <th>Skill</th>
-                    @for (quarterEntry of chartData[0]?.series; track quarterEntry.name) {
+                    @for (quarterEntry of chartData[0].series; track quarterEntry.name) {
                       <th>{{ quarterEntry.name }}</th>
                     }
                   </tr>

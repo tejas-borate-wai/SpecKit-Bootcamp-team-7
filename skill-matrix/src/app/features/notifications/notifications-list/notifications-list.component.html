@@ -5,7 +5,7 @@
       <h1>Notifications</h1>
       @if (unreadCount$ | async; as count) {
         @if (count > 0) {
-          <span class="unread-badge" aria-label="{{ count }} unread notifications">{{ count }}</span>
+          <span class="unread-badge" [attr.aria-label]="count + ' unread notifications'">{{ count }}</span>
         }
       }
     </div>
