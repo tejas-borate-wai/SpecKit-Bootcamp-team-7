@@ -1,0 +1,20 @@
+feat(003): implement employee skill profile and role-specific dashboard
+
+Complete Feature 003 - Employee Skill Profile and Role-Specific Dashboard.
+
+Implements all 54+ tasks (T002-T055). T001 skipped - SVG ProgressChart used instead of ngx-charts.
+
+Key changes:
+- Mock data: employee-skills.json (6 users), skill-test-attempts.json (28 attempts)
+- Models: EmployeeSkill, SkillTestAttempt, AchievementBadge, dashboard interfaces
+- Utilities: ratingToPercentage, percentageToLevel, computeConfidence, isStale
+- Pipes: ProficiencyLabelPipe, StaleCheckPipe
+- Interceptor: employee-skills CRUD, skill-test-attempts, read-only skill-categories/definitions endpoints
+- Services: SkillService, SkillLibraryService, AchievementService, DashboardService
+- NgRx: skills slice (actions, reducer, selectors, effects)
+- Shared components: RatingBadge, StatCard, ConfidenceIndicator, AchievementBadge, ProgressChart (SVG), SkillCard
+- My Skills feature: list, add, detail, edit, confirm-delete-dialog, my-skills.routes.ts
+- Dashboard: role-switch container + EmployeeDashboard, ManagerDashboard, AdminDashboard, dashboard.routes.ts
+- Unit tests: skill-utils, achievement.service, skills.selectors, skills.reducer
+- Routes: app.routes.ts lazy-loads /my-skills and /dashboard with NgRx skills providers
+- RBAC fix: skill-library now uses /api/skill-categories and /api/skill-definitions (accessible to all roles)

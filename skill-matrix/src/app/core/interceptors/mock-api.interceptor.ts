@@ -7,6 +7,8 @@ import { SkillDefinition } from '../../shared/models/skill-definition.model';
 import { ProficiencyLevel } from '../../shared/models/proficiency-level.model';
 import { RatingWeightConfig } from '../../shared/models/rating-weight.model';
 import { ToastService } from '../../shared/services/toast.service';
+import { EmployeeSkill, EmployeeSkillRecord } from '../../shared/models/employee-skill.model';
+import { SkillTestAttempt } from '../../shared/models/skill-test-attempt.model';
 
 // ── In-memory caches with mutable copies for CRUD operations ───────────────
 let usersCache: User[] | null = null;
@@ -14,7 +16,8 @@ let categoriesCache: SkillCategory[] | null = null;
 let skillDefinitionsCache: SkillDefinition[] | null = null;
 let proficiencyLevelsCache: ProficiencyLevel[] | null = null;
 let ratingWeightsCache: RatingWeightConfig | null = null;
-let employeeSkillsCache: Array<{ userId: string; skills: Array<{ skillId: string }> }> | null = null;
+let employeeSkillsCache: EmployeeSkillRecord[] | null = null;
+let testAttemptsCache: SkillTestAttempt[] | null = null;
 
 async function loadUsers(): Promise<User[]> {
   if (usersCache) return usersCache;
@@ -51,11 +54,18 @@ async function loadRatingWeights(): Promise<RatingWeightConfig> {
   return ratingWeightsCache!;
 }
 
-async function loadEmployeeSkills(): Promise<Array<{ userId: string; skills: Array<{ skillId: string }> }>> {
+async function loadEmployeeSkills(): Promise<EmployeeSkillRecord[]> {
   if (employeeSkillsCache) return employeeSkillsCache;
   const response = await fetch('/assets/mock-data/employee-skills.json');
   employeeSkillsCache = await response.json();
   return employeeSkillsCache!;
+}
+
+async function loadTestAttempts(): Promise<SkillTestAttempt[]> {
+  if (testAttemptsCache) return testAttemptsCache;
+  const response = await fetch('/assets/mock-data/skill-test-attempts.json');
+  testAttemptsCache = await response.json();
+  return testAttemptsCache!;
 }
 
 function getSimulatedDelay(): number {
@@ -87,6 +97,62 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (req.url === '/api/auth/login' && req.method === 'POST') {
     return handleLogin(req.body as { email?: string; password?: string });
+  }
+
+  // ── Employee Skills endpoints ─────────────────────────────────────────
+  // GET /api/employee-skills (all records — Manager/Admin only)
+  if (req.url === '/api/employee-skills' && req.method === 'GET') {
+    return handleGetAllEmployeeSkills();
+  }
+
+  // /api/employee-skills/:userId/skills/:skillId
+  const skillDetailMatch = req.url.match(/^\/api\/employee-skills\/([^/]+)\/skills\/([^/]+)$/);
+  if (skillDetailMatch) {
+    return handleEmployeeSkillDetail(req, skillDetailMatch[1], skillDetailMatch[2]);
+  }
+
+  // /api/employee-skills/:userId/skills
+  const skillsMatch = req.url.match(/^\/api\/employee-skills\/([^/]+)\/skills$/);
+  if (skillsMatch) {
+    return handleAddEmployeeSkill(req, skillsMatch[1]);
+  }
+
+  // /api/employee-skills/:userId
+  const empSkillMatch = req.url.match(/^\/api\/employee-skills\/([^/]+)$/);
+  if (empSkillMatch && req.method === 'GET') {
+    return handleGetEmployeeSkills(empSkillMatch[1]);
+  }
+
+  // ── Skill Test Attempts ───────────────────────────────────────────────
+  // /api/skill-test-attempts/:userId/:skillId
+  const attemptSkillMatch = req.url.match(/^\/api\/skill-test-attempts\/([^/]+)\/([^/]+)$/);
+  if (attemptSkillMatch && req.method === 'GET') {
+    return handleGetSkillAttempts(attemptSkillMatch[1], attemptSkillMatch[2]);
+  }
+
+  // /api/skill-test-attempts/:userId
+  const attemptMatch = req.url.match(/^\/api\/skill-test-attempts\/([^/]+)$/);
+  if (attemptMatch && req.method === 'GET') {
+    return handleGetTestAttempts(attemptMatch[1]);
+  }
+
+  // ── Read-only skill library (all authenticated roles) ──────────────────
+  if (url === '/api/skill-categories' && req.method === 'GET') {
+    return new Observable<HttpResponse<unknown>>((subscriber) => {
+      loadCategories().then((cats) => {
+        subscriber.next(new HttpResponse({ status: 200, body: cats }));
+        subscriber.complete();
+      });
+    }).pipe(delay(getSimulatedDelay()));
+  }
+
+  if (url === '/api/skill-definitions' && req.method === 'GET') {
+    return new Observable<HttpResponse<unknown>>((subscriber) => {
+      loadSkillDefinitions().then((defs) => {
+        subscriber.next(new HttpResponse({ status: 200, body: defs }));
+        subscriber.complete();
+      });
+    }).pipe(delay(getSimulatedDelay()));
   }
 
   // ── Admin API endpoints ────────────────────────────────────────────────
@@ -411,4 +477,177 @@ function handleUpdateRatingWeights(body: RatingWeightConfig): Observable<HttpRes
     sub.next(new HttpResponse({ status: 200, body: ratingWeightsCache }));
     sub.complete();
   }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── Employee Skills Handlers ────────────────────────────────────────────────
+
+function handleGetAllEmployeeSkills(): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  if (role !== 'Manager' && role !== 'Admin') {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable((sub) => {
+    loadEmployeeSkills().then((records) => {
+      sub.next(new HttpResponse({ status: 200, body: records }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetEmployeeSkills(userId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const currentUserId = getCurrentUserId();
+  if (role !== 'Admin' && currentUserId !== userId) {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable((sub) => {
+    loadEmployeeSkills().then((records) => {
+      const record = records.find((r) => r.userId === userId);
+      if (!record) {
+        sub.next(new HttpResponse({ status: 200, body: { userId, skills: [] } }));
+      } else {
+        sub.next(new HttpResponse({ status: 200, body: record }));
+      }
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleAddEmployeeSkill(req: HttpRequest<unknown>, userId: string): Observable<HttpResponse<unknown>> {
+  if (req.method !== 'POST') return makeError(405, 'Method not allowed.');
+  const role = getCurrentUserRole();
+  const currentUserId = getCurrentUserId();
+  if (role !== 'Admin' && currentUserId !== userId) {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable((sub) => {
+    loadEmployeeSkills().then((records) => {
+      const body = req.body as { skillId?: string; selfRating?: number };
+      if (!body?.skillId || body.selfRating === undefined) {
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'skillId and selfRating are required.' } }));
+        return;
+      }
+      if (body.selfRating < 1 || body.selfRating > 4) {
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Self-rating must be between 1 and 4.' } }));
+        return;
+      }
+      let record = records.find((r) => r.userId === userId);
+      if (!record) {
+        record = { userId, skills: [] };
+        employeeSkillsCache = [...records, record];
+      }
+      const exists = record.skills.some((s) => s.skillId === body.skillId && !s.isDeleted);
+      if (exists) {
+        sub.error(new HttpErrorResponse({ status: 409, error: { message: 'This skill is already in your profile.' } }));
+        return;
+      }
+      const newSkill: EmployeeSkill = {
+        skillId: body.skillId,
+        selfRating: body.selfRating,
+        managerRating: null,
+        peerRating: null,
+        systemRating: null,
+        finalRating: null,
+        level: 'Beginner',
+        status: 'Draft',
+        lastUpdated: new Date().toISOString(),
+        isDeleted: false,
+      };
+      record.skills = [...record.skills, newSkill];
+      if (employeeSkillsCache) {
+        employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === userId ? record! : r);
+      }
+      sub.next(new HttpResponse({ status: 201, body: newSkill }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleEmployeeSkillDetail(req: HttpRequest<unknown>, userId: string, skillId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const currentUserId = getCurrentUserId();
+  if (role !== 'Admin' && currentUserId !== userId) {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable((sub) => {
+    loadEmployeeSkills().then(async (records) => {
+      const record = records.find((r) => r.userId === userId);
+      if (!record) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Skill not found.' } })); return; }
+      const skillIdx = record.skills.findIndex((s) => s.skillId === skillId && !s.isDeleted);
+      if (skillIdx === -1) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Skill not found.' } })); return; }
+
+      if (req.method === 'PUT') {
+        const body = req.body as { selfRating?: number };
+        if (body.selfRating === undefined || body.selfRating < 1 || body.selfRating > 4) {
+          sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Self-rating must be between 1 and 4.' } }));
+          return;
+        }
+        const existing = record.skills[skillIdx];
+        const updated: EmployeeSkill = {
+          ...existing,
+          selfRating: body.selfRating,
+          lastUpdated: new Date().toISOString(),
+          status: existing.status === 'Stale' ? 'Approved' : existing.status,
+        };
+        record.skills = record.skills.map((s, i) => i === skillIdx ? updated : s);
+        if (employeeSkillsCache) {
+          employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === userId ? record! : r);
+        }
+        sub.next(new HttpResponse({ status: 200, body: updated }));
+        sub.complete();
+      } else if (req.method === 'DELETE') {
+        // Check project-assignments constraint (stub — no projects.json yet)
+        const skill = record.skills[skillIdx];
+        record.skills = record.skills.map((s, i) => i === skillIdx ? { ...s, isDeleted: true } : s);
+        if (employeeSkillsCache) {
+          employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === userId ? record! : r);
+        }
+        sub.next(new HttpResponse({ status: 200, body: { message: 'Skill removed from active profile.', skillId: skill.skillId } }));
+        sub.complete();
+      }
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── Test Attempts Handlers ──────────────────────────────────────────────────
+
+function handleGetTestAttempts(userId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const currentUserId = getCurrentUserId();
+  if (role !== 'Admin' && currentUserId !== userId) {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable((sub) => {
+    loadTestAttempts().then((attempts) => {
+      const userAttempts = attempts.filter((a) => a.userId === userId);
+      sub.next(new HttpResponse({ status: 200, body: userAttempts }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetSkillAttempts(userId: string, skillId: string): Observable<HttpResponse<unknown>> {
+  const role = getCurrentUserRole();
+  const currentUserId = getCurrentUserId();
+  if (role !== 'Admin' && currentUserId !== userId) {
+    return makeError(403, 'You do not have permission to perform this action.');
+  }
+  return new Observable((sub) => {
+    loadTestAttempts().then((attempts) => {
+      const filtered = attempts.filter((a) => a.userId === userId && a.skillId === skillId);
+      sub.next(new HttpResponse({ status: 200, body: filtered }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function getCurrentUserId(): string | null {
+  try {
+    const raw = localStorage.getItem('session');
+    if (!raw) return null;
+    const session = JSON.parse(raw) as { id?: string };
+    return session.id ?? null;
+  } catch {
+    return null;
+  }
 }

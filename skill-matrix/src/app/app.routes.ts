@@ -5,6 +5,8 @@ import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
 import { adminReducer } from './core/store/admin/admin.reducer';
 import * as adminEffects from './core/store/admin/admin.effects';
+import { skillsReducer } from './core/store/skills/skills.reducer';
+import * as skillsEffects from './core/store/skills/skills.effects';
 
 // Placeholder component for routes not yet implemented
 const placeholder = () =>
@@ -33,20 +35,26 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent
+    providers: [
+      provideState('skills', skillsReducer),
+      provideEffects(skillsEffects),
+    ],
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.routes').then(
+        m => m.dashboardRoutes
       ),
   },
   {
     path: 'my-skills',
     canActivate: [authGuard],
-    children: [
-      { path: '', loadComponent: placeholder },
-      { path: 'add', loadComponent: placeholder },
-      { path: ':skillId', loadComponent: placeholder },
-      { path: ':skillId/assess', loadComponent: placeholder },
+    providers: [
+      provideState('skills', skillsReducer),
+      provideEffects(skillsEffects),
     ],
+    loadChildren: () =>
+      import('./features/my-skills/my-skills.routes').then(
+        m => m.mySkillsRoutes
+      ),
   },
   {
     path: 'assessments',

@@ -1,0 +1,119 @@
+<div class="skills-page">
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">My Skills</h1>
+      @if (staleCount > 0) {
+        <span class="stale-count-badge">
+          <mat-icon>warning_amber</mat-icon>{{ staleCount }} stale
+        </span>
+      }
+    </div>
+    <button mat-raised-button color="primary" (click)="onAddSkill()">
+      <mat-icon>add</mat-icon>Add Skill
+    </button>
+  </div>
+
+  @if (user$ | async; as user) {
+    @if (activeSkills$ | async; as skills) {
+      @if (definitions$ | async; as defs) {
+        @if (skills.length === 0) {
+          <!-- Empty state -->
+          <div class="empty-state">
+            <mat-icon class="empty-icon">workspace_premium</mat-icon>
+            <h2>No skills added yet</h2>
+            <p>Start building your skill profile by adding your first skill.</p>
+            <button mat-raised-button color="primary" (click)="onAddSkill()">Add your first skill</button>
+          </div>
+        } @else {
+          @if (isMobile) {
+            <!-- Mobile card list -->
+            <div class="card-list">
+              @for (skill of skills; track skill.skillId) {
+                <div class="skill-row-card" [class.stale-row]="isStaleRow(skill)">
+                  <div class="row-top">
+                    <span class="skill-name-mobile">{{ getDefinition(skill.skillId, defs)?.skillName ?? skill.skillId }}</span>
+                    <app-rating-badge [level]="skill.level"/>
+                  </div>
+                  <div class="row-bottom">
+                    <span class="status-pill" [ngClass]="skill.status.toLowerCase()">{{ skill.status }}</span>
+                    @if (isStaleRow(skill)) {
+                      <span class="stale-badge"><mat-icon>warning_amber</mat-icon>Stale</span>
+                    }
+                  </div>
+                  <div class="row-actions">
+                    <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #mobileMenu="matMenu">
+                      <button mat-menu-item (click)="onView(skill.skillId)"><mat-icon>visibility</mat-icon>View Detail</button>
+                      <button mat-menu-item (click)="onEdit(skill.skillId)"><mat-icon>edit</mat-icon>Edit</button>
+                      <button mat-menu-item (click)="onDelete(user.id, skill)" class="danger-item"><mat-icon>delete</mat-icon>Delete</button>
+                    </mat-menu>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <!-- Desktop/Tablet table -->
+            <div class="table-container">
+              <table mat-table [dataSource]="skills" class="skills-table">
+                <ng-container matColumnDef="skill">
+                  <th mat-header-cell *matHeaderCellDef>Skill</th>
+                  <td mat-cell *matCellDef="let skill">
+                    <div class="skill-cell">
+                      <span class="skill-name">{{ getDefinition(skill.skillId, defs)?.skillName ?? skill.skillId }}</span>
+                      @if (isStaleRow(skill)) {
+                        <span class="stale-badge"><mat-icon>warning_amber</mat-icon>Stale</span>
+                      }
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="category">
+                  <th mat-header-cell *matHeaderCellDef>Category</th>
+                  <td mat-cell *matCellDef="let skill">{{ getDefinition(skill.skillId, defs)?.categoryId ?? '—' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="level">
+                  <th mat-header-cell *matHeaderCellDef>Level</th>
+                  <td mat-cell *matCellDef="let skill"><app-rating-badge [level]="skill.level"/></td>
+                </ng-container>
+                <ng-container matColumnDef="rating">
+                  <th mat-header-cell *matHeaderCellDef>Rating</th>
+                  <td mat-cell *matCellDef="let skill">
+                    {{ skill.finalRating !== null ? skill.finalRating + '%' : (skill.systemRating !== null ? skill.systemRating + '%' : '—') }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let skill">
+                    <span class="status-pill" [ngClass]="skill.status.toLowerCase()">{{ skill.status }}</span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="lastUpdated">
+                  <th mat-header-cell *matHeaderCellDef>Last Updated</th>
+                  <td mat-cell *matCellDef="let skill">{{ formatDate(skill.lastUpdated) }}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let skill">
+                    <button mat-icon-button [matMenuTriggerFor]="rowMenu" (click)="$event.stopPropagation()">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #rowMenu="matMenu">
+                      <button mat-menu-item (click)="onView(skill.skillId)"><mat-icon>visibility</mat-icon>View Detail</button>
+                      <button mat-menu-item (click)="onEdit(skill.skillId)"><mat-icon>edit</mat-icon>Edit</button>
+                      <button mat-menu-item (click)="onDelete(user.id, skill)" class="danger-item"><mat-icon>delete</mat-icon>Delete</button>
+                    </mat-menu>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                    [class.stale-row]="isStaleRow(row)"
+                    (click)="onView(row.skillId)"></tr>
+              </table>
+            </div>
+          }
+        }
+      }
+    }
+  }
+</div>

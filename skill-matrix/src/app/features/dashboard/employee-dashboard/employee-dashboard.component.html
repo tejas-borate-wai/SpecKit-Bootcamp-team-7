@@ -1,0 +1,65 @@
+@if (user$ | async; as user) {
+  <div class="dashboard">
+    <h1 class="page-title">Welcome, {{ user.name }}!</h1>
+
+    @if (widgets$ | async; as w) {
+      <!-- Stat cards row -->
+      <div class="stat-grid">
+        <app-stat-card title="Total Skills" [value]="w.totalActive.toString()" icon="school"/>
+        <app-stat-card title="Profile Completion" [value]="(profileCompletion$ | async) + '%'" icon="check_circle"/>
+        <app-stat-card title="Stale Skills" [value]="w.staleCount.toString()" icon="warning" subtitle="> 6 months old"/>
+        <app-stat-card title="Pending Approvals" [value]="w.pendingCount.toString()" icon="pending"/>
+      </div>
+    }
+
+    <!-- Recent Skills -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">My Skills</h2>
+        <a routerLink="/my-skills" class="section-link">View All</a>
+      </div>
+      @if (recentSkills$ | async; as skills) {
+        @if (skills.length === 0) {
+          <div class="empty-state">
+            <p>No skills yet. <a routerLink="/my-skills/add">Add your first skill</a></p>
+          </div>
+        } @else {
+          <div class="skill-list">
+            @for (skill of skills; track skill.skillId) {
+              <app-skill-card [skill]="skill" (viewDetail)="null" (editSkill)="null" (deleteSkill)="null"/>
+            }
+          </div>
+        }
+      }
+    </section>
+
+    <!-- Achievements -->
+    @if (allBadges$ | async; as badges) {
+      @if (badges.length > 0) {
+        <section class="section">
+          <h2 class="section-title">Achievements</h2>
+          <div class="badges-row">
+            @for (badge of badges; track badge.type) {
+              <app-achievement-badge [badge]="badge"/>
+            }
+          </div>
+        </section>
+      }
+    }
+
+    <!-- Profile completion gap -->
+    @if (definitions$ | async; as defs) {
+      @if (activeSkills$ | async; as active) {
+        @if (active.length < defs.length) {
+          <section class="section">
+            <h2 class="section-title">Skill Gaps</h2>
+            <p class="gap-hint">You have {{ defs.length - active.length }} unassessed skills.</p>
+            <a routerLink="/my-skills/add" mat-raised-button>
+              Add Skills
+            </a>
+          </section>
+        }
+      }
+    }
+  </div>
+}
