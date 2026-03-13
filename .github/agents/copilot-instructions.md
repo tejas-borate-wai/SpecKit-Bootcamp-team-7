@@ -14,6 +14,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-12
 - In-memory via MockApiInterceptor; JSON files in `/assets/mock-data/` (projects.json, project-assignments.json, employee-skills.json, users.json, skill-definitions.json, skill-categories.json, certifications.json) (007-project-mgmt-team-builder)
 - TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, ngx-charts or Chart.js (chart rendering), jsPDF + jsPDF-AutoTable (PDF export), SheetJS/xlsx (Excel/CSV export), html2canvas (PNG export for heatmap) (008-reporting-analytics)
 - In-memory via MockApiInterceptor; JSON files in `/assets/mock-data/` (employee-skills.json, users.json, projects.json, skill-definitions.json, skill-categories.json, certifications.json, skill-test-attempts.json) (008-reporting-analytics)
+- TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular Router, Angular HttpClient + HTTP Interceptors, Angular CDK (BreakpointObserver) (009-notifications-alerts)
+- In-memory via MockApiInterceptor; `notifications.json` in `/assets/mock-data/` (009-notifications-alerts)
 
 - TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular Router, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors (001-mock-auth-rbac-navigation)
 
@@ -33,9 +35,9 @@ npm test; npm run lint
 TypeScript 5.x (strict mode), Angular 17+: Follow standard conventions
 
 ## Recent Changes
+- 009-notifications-alerts: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular Router, Angular HttpClient + HTTP Interceptors, Angular CDK (BreakpointObserver)
 - 008-reporting-analytics: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, ngx-charts or Chart.js (chart rendering), jsPDF + jsPDF-AutoTable (PDF export), SheetJS/xlsx (Excel/CSV export), html2canvas (PNG export for heatmap)
 - 007-project-mgmt-team-builder: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Animations, Angular Router (AuthGuard + RoleGuard)
-- 006-peer-validation-manager-controls: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Animations, Angular Router (AuthGuard + RoleGuard)
 
 
 <!-- MANUAL ADDITIONS START -->
