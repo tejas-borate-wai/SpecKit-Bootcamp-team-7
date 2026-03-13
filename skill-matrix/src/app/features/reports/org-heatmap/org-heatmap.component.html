@@ -1,0 +1,90 @@
+<div class="org-heatmap">
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Organisation Skill Heatmap</h1>
+      <p class="subtitle">Proficiency level distribution across all skills and employees.</p>
+    </div>
+    @if (currentUser$ | async; as user) {
+      <div class="header-actions">
+        <button mat-stroked-button (click)="exportPdf(user)">
+          <mat-icon>picture_as_pdf</mat-icon> Export PDF
+        </button>
+        <button mat-stroked-button color="primary" (click)="exportPng(user)">
+          <mat-icon>image</mat-icon> Export PNG
+        </button>
+      </div>
+    }
+  </header>
+
+  @if (loading$ | async) {
+    <div class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading heatmap data…</p>
+    </div>
+  } @else {
+    @if (error$ | async; as err) {
+      <div class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ err }}</p>
+        <button mat-button color="primary" (click)="reload()">Retry</button>
+      </div>
+    } @else {
+      @if (chartData$ | async; as chartData) {
+        @if (chartData.length === 0) {
+          <div class="empty-state">
+            <mat-icon>grid_view</mat-icon>
+            <p>No heatmap data available.</p>
+          </div>
+        } @else {
+          <app-chart-wrapper ariaLabel="Organisation Skill Heatmap — rows are skills, columns are proficiency levels, values are employee counts">
+            <div #chartContainer class="chart-container">
+              <p class="chart-placeholder-notice">
+                ⚠ Chart requires <code>@swimlane/ngx-charts</code> to be installed.
+                Run <code>npm install</code> to enable the heatmap visualisation.
+              </p>
+              <!-- ngx-charts-heat-map will be rendered here after npm install -->
+              <!-- Example usage:
+              <ngx-charts-heat-map
+                [results]="chartData"
+                [scheme]="colorScheme"
+                [legend]="true"
+                legendTitle="Employee Count"
+                xAxisLabel="Proficiency Level"
+                yAxisLabel="Skill"
+                [xAxis]="true"
+                [yAxis]="true"
+                aria-label="Organisation Skill Heatmap"
+              ></ngx-charts-heat-map>
+              -->
+              <table class="heatmap-table" aria-label="Organisation Skill Heatmap fallback table">
+                <thead>
+                  <tr>
+                    <th>Skill</th>
+                    <th>Beginner</th>
+                    <th>Intermediate</th>
+                    <th>Advanced</th>
+                    <th>Expert</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of chartData; track row.name) {
+                    <tr>
+                      <td class="skill-label">{{ row.name }}</td>
+                      @for (cell of row.series; track cell.name) {
+                        <td
+                          class="heatmap-cell"
+                          [style.background]="getCellColor(cell.value, chartData)"
+                          [title]="row.name + ' – ' + cell.name + ': ' + cell.value + ' employees'"
+                        >{{ cell.value }}</td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </app-chart-wrapper>
+        }
+      }
+    }
+  }
+</div>

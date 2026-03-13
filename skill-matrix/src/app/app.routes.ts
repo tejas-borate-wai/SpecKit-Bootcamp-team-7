@@ -107,17 +107,8 @@ export const routes: Routes = [
     path: 'reports',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['Manager', 'Admin'] },
-    children: [
-      { path: '', loadComponent: placeholder },
-      { path: 'gap-analysis', loadComponent: placeholder },
-      { path: 'team-capability', loadComponent: placeholder },
-      {
-        path: 'heatmap',
-        canActivate: [roleGuard],
-        data: { roles: ['Admin'] },
-        loadComponent: placeholder,
-      },
-    ],
+    loadChildren: () =>
+      import('./features/reports/reports.routes').then((m) => m.reportsRoutes),
   },
 
   // Admin only

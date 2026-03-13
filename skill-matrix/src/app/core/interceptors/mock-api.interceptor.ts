@@ -422,6 +422,30 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     return handleGetValidationQueue();
   }
 
+  // ── Feature 008: Reports endpoints ──────────────────────────────────────
+  if (url.startsWith('/api/reports/')) {
+    const role = getCurrentUserRole();
+    if (role === 'Employee') {
+      return makeError(403, 'Access denied. Reports are only available to Managers and Admins.');
+    }
+    const params = new URL(req.url, 'http://localhost').searchParams;
+    if (url === '/api/reports/gap-analysis' && req.method === 'GET') {
+      return handleGetReportsGapAnalysis(params.get('department'));
+    }
+    if (url === '/api/reports/team-capability' && req.method === 'GET') {
+      return handleGetReportsTeamCapability(params.get('department'), params.get('categoryId'));
+    }
+    if (url === '/api/reports/heatmap' && req.method === 'GET') {
+      if (role !== 'Admin') {
+        return makeError(403, 'Access denied. Heatmap is only available to Admins.');
+      }
+      return handleGetReportsHeatmap();
+    }
+    if (url === '/api/reports/trends' && req.method === 'GET') {
+      return handleGetReportsTrends(params.get('department'));
+    }
+  }
+
   // ── Admin API endpoints ────────────────────────────────────────────────
   if (req.url.startsWith('/api/admin/')) {
     const role = getCurrentUserRole();
@@ -1809,3 +1833,79 @@ function handlePeerRespond(req: HttpRequest<unknown>, requestId: string): Observ
     });
   }).pipe(delay(getSimulatedDelay()));
 }
+
+// ── Feature 008: Reports handlers ─────────────────────────────────────────────
+
+function handleGetReportsGapAnalysis(department: string | null): Observable<HttpResponse<unknown>> {
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    Promise.all([loadProjects(), loadEmployeeSkills(), loadSkillDefinitions(), loadUsers()]).then(
+      ([projects, employeeSkills, skillDefinitions, users]) => {
+        // Filter employee skills by department if provided
+        let filteredEmployeeSkills = employeeSkills;
+        if (department) {
+          const deptUserIds = users.filter((u) => u.department === department).map((u) => u.id);
+          filteredEmployeeSkills = employeeSkills.filter((r) => deptUserIds.includes(r.userId));
+        }
+        sub.next(new HttpResponse({
+          status: 200,
+          body: { projects, employeeSkills: filteredEmployeeSkills, skillDefinitions },
+        }));
+        sub.complete();
+      }
+    );
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetReportsTeamCapability(
+  department: string | null,
+  categoryId: string | null,
+): Observable<HttpResponse<unknown>> {
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    Promise.all([loadEmployeeSkills(), loadSkillDefinitions(), loadCategories(), loadUsers()]).then(
+      ([employeeSkills, skillDefinitions, skillCategories, users]) => {
+        let filteredEmployeeSkills = employeeSkills;
+        if (department) {
+          const deptUserIds = users.filter((u) => u.department === department).map((u) => u.id);
+          filteredEmployeeSkills = employeeSkills.filter((r) => deptUserIds.includes(r.userId));
+        }
+        let filteredSkillDefinitions = skillDefinitions;
+        if (categoryId) {
+          filteredSkillDefinitions = skillDefinitions.filter((d) => d.categoryId === categoryId);
+        }
+        // Include stripped-down users list (no passwords) for userId→department mapping
+        const usersPublic = users.map(({ id, name, department, role }) => ({ id, name, department, role }));
+        sub.next(new HttpResponse({
+          status: 200,
+          body: { employeeSkills: filteredEmployeeSkills, skillDefinitions: filteredSkillDefinitions, skillCategories, users: usersPublic },
+        }));
+        sub.complete();
+      }
+    );
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetReportsHeatmap(): Observable<HttpResponse<unknown>> {
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    Promise.all([loadEmployeeSkills(), loadSkillDefinitions()]).then(([employeeSkills, skillDefinitions]) => {
+      sub.next(new HttpResponse({ status: 200, body: { employeeSkills, skillDefinitions } }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetReportsTrends(department: string | null): Observable<HttpResponse<unknown>> {
+  return new Observable<HttpResponse<unknown>>((sub) => {
+    Promise.all([loadTestAttempts(), loadSkillDefinitions(), loadUsers()]).then(
+      ([skillTestAttempts, skillDefinitions, users]) => {
+        let filteredAttempts = skillTestAttempts;
+        if (department) {
+          const deptUserIds = users.filter((u) => u.department === department).map((u) => u.id);
+          filteredAttempts = skillTestAttempts.filter((a) => deptUserIds.includes(a.userId));
+        }
+        sub.next(new HttpResponse({ status: 200, body: { skillTestAttempts: filteredAttempts, skillDefinitions } }));
+        sub.complete();
+      }
+    );
+  }).pipe(delay(getSimulatedDelay()));
+}
+

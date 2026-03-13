@@ -1,0 +1,127 @@
+<section class="skill-trends">
+  <header class="skill-trends__header">
+    <h2 class="skill-trends__title">Skill Trend Analysis</h2>
+
+    @if (currentUser$ | async; as user) {
+      @if (user.role === 'Admin') {
+        <div class="skill-trends__filters">
+          <mat-form-field appearance="outline" class="skill-trends__dept-filter">
+            <mat-label>Filter by Department</mat-label>
+            <mat-select
+              [ngModel]="selectedDepartment$ | async"
+              (ngModelChange)="onDepartmentChange($event)"
+            >
+              <mat-option [value]="null">All Departments</mat-option>
+              <mat-option value="Engineering">Engineering</mat-option>
+              <mat-option value="Design">Design</mat-option>
+              <mat-option value="Product">Product</mat-option>
+              <mat-option value="QA">QA</mat-option>
+              <mat-option value="Data">Data</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      }
+    }
+
+    <div class="skill-trends__actions">
+      @if (currentUser$ | async; as user) {
+        <button
+          mat-stroked-button
+          class="export-btn"
+          (click)="exportPdf(user)"
+          [disabled]="(loading$ | async) ?? false"
+        >
+          <mat-icon>picture_as_pdf</mat-icon>
+          Export PDF
+        </button>
+      }
+    </div>
+  </header>
+
+  @if (loading$ | async) {
+    <div class="skill-trends__loading">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading trend data…</p>
+    </div>
+  } @else if (error$ | async; as err) {
+    <div class="skill-trends__error">
+      <mat-icon class="skill-trends__error-icon">error_outline</mat-icon>
+      <p>{{ err }}</p>
+      <button mat-stroked-button (click)="reload()">Retry</button>
+    </div>
+  } @else if ((chartData$ | async) as chartData) {
+    @if (chartData.length === 0) {
+      <div class="skill-trends__empty">
+        <mat-icon>trending_up</mat-icon>
+        <p>No trend data available.</p>
+      </div>
+    } @else {
+      @if (hasSingleDataPoint(chartData)) {
+        <div class="skill-trends__notice">
+          <mat-icon>info_outline</mat-icon>
+          <span>More data points needed for trend analysis.</span>
+        </div>
+      }
+
+      <app-chart-wrapper #chartContainer>
+        <!-- ngx-charts-line-chart (enable after: npm install @swimlane/ngx-charts) -->
+        <!--
+        <ngx-charts-line-chart
+          [results]="chartData"
+          [xAxis]="true"
+          [yAxis]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          xAxisLabel="Quarter"
+          yAxisLabel="Avg Proficiency (%)"
+          [timeline]="false"
+          [gradient]="false"
+          [showGridLines]="true"
+          [autoScale]="true">
+        </ngx-charts-line-chart>
+        -->
+
+        <!-- Fallback trend table (remove once ngx-charts installed) -->
+        <div class="skill-trends__table-wrapper">
+          <table class="skill-trends__table">
+            <thead>
+              <tr>
+                <th>Skill</th>
+                @for (quarterEntry of chartData[0]?.series; track quarterEntry.name) {
+                  <th>{{ quarterEntry.name }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (series of chartData; track series.name) {
+                <tr>
+                  <td class="skill-trends__skill-name">{{ series.name }}</td>
+                  @for (point of series.series; track point.name) {
+                    <td class="skill-trends__value-cell">
+                      <span
+                        class="skill-trends__pill"
+                        [class.skill-trends__pill--low]="point.value < 40"
+                        [class.skill-trends__pill--mid]="point.value >= 40 && point.value < 70"
+                        [class.skill-trends__pill--high]="point.value >= 70"
+                      >
+                        {{ point.value }}%
+                      </span>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </app-chart-wrapper>
+
+      <!-- Trend summary chips -->
+      <div class="skill-trends__summary">
+        <span class="skill-trends__summary-label">Tracked skills:</span>
+        @for (series of chartData; track series.name) {
+          <span class="skill-trends__chip">{{ series.name }}</span>
+        }
+      </div>
+    }
+  }
+</section>
