@@ -4,48 +4,53 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 24px;
 
   h1 {
     margin: 0;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.025em;
   }
 
   @include bp.mobile {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-sm);
+    gap: 8px;
   }
 }
 
 .spinner-wrapper {
   display: flex;
   justify-content: center;
-  padding: var(--spacing-2xl);
+  padding: 48px;
 }
 
 .subcategory-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 4px;
 }
 
 .subcategory-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  transition: background 0.15s;
 
   &:hover {
-    background: #f3f4f6;
+    background: #f1f5f9;
   }
 
   .sub-name {
     font-size: 0.9375rem;
+    font-weight: 500;
+    color: #1e293b;
   }
 
   .actions {
@@ -55,7 +60,7 @@
 }
 
 .empty-note {
-  color: #9ca3af;
+  color: #94a3b8;
   font-size: 0.875rem;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 8px 16px;
 }

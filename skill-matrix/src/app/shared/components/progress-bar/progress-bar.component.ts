@@ -28,20 +28,20 @@ import { CommonModule } from '@angular/common';
       gap: 6px;
     }
     .progress-label {
-      font-size: 0.85rem;
-      color: #6b7280;
+      font-size: 0.8125rem;
+      color: #64748b;
       font-weight: 500;
     }
     .progress-track {
       width: 100%;
       height: 8px;
-      background: #e5e7eb;
+      background: #e2e8f0;
       border-radius: 4px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
-      background: #6366f1;
+      background: #3c83f6;
       border-radius: 4px;
       transition: width 0.3s ease;
     }

@@ -27,12 +27,12 @@ export type AnyConfidenceLevel = 'high' | 'medium' | 'low' | 'High' | 'Medium' |
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .high .dot  { background: var(--color-approved, #16a34a); }
-    .medium .dot { background: var(--color-pending, #f59e0b); }
-    .low .dot   { background: var(--color-rejected, #ef4444); }
-    .high  { color: var(--color-approved, #16a34a); }
-    .medium { color: var(--color-pending, #f59e0b); }
-    .low   { color: var(--color-rejected, #ef4444); }
+    .high .dot  { background: #16a34a; }
+    .medium .dot { background: #f59e0b; }
+    .low .dot   { background: #ef4444; }
+    .high  { color: #16a34a; }
+    .medium { color: #f59e0b; }
+    .low   { color: #ef4444; }
   `],
 })
 export class ConfidenceIndicatorComponent {

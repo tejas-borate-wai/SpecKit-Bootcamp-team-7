@@ -55,31 +55,31 @@ import { isStale } from '../../utils/skill-utils';
   `,
   styles: [`
     .skill-card {
-      background: var(--color-surface, #fff);
-      border: 1px solid var(--color-border, #e5e7eb);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 16px;
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.15s;
     }
-    .skill-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .skill-card.stale { border-color: var(--color-stale-border, #f59e0b); }
+    .skill-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .skill-card.stale { border-color: #f59e0b; }
     .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
     .skill-info { display: flex; flex-direction: column; gap: 4px; }
-    .skill-name { font-weight: 600; color: var(--color-text, #111827); }
-    .stale-badge { display: inline-block; font-size: 0.7rem; background: #fffbeb; color: #f59e0b; border: 1px solid #fde68a; border-radius: 8px; padding: 1px 8px; font-weight: 600; }
+    .skill-name { font-weight: 600; color: #0f172a; }
+    .stale-badge { display: inline-block; font-size: 0.7rem; background: #fffbeb; color: #f59e0b; border: 1px solid #fde68a; border-radius: 9999px; padding: 1px 8px; font-weight: 600; }
     .card-actions { display: flex; align-items: center; gap: 4px; }
     .card-body { display: flex; justify-content: space-between; align-items: center; }
     .rating-row, .status-row { display: flex; align-items: center; gap: 8px; }
-    .rating-label { font-size: 0.75rem; color: var(--color-text-secondary, #6b7280); }
-    .rating-value { font-weight: 700; color: var(--color-text, #111827); }
-    .status-pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 8px; font-weight: 600; }
-    .draft { background: #f9fafb; color: #6b7280; }
+    .rating-label { font-size: 0.75rem; color: #64748b; }
+    .rating-value { font-weight: 700; color: #0f172a; }
+    .status-pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 9999px; font-weight: 600; }
+    .draft { background: #f1f5f9; color: #64748b; }
     .pending { background: #fffbeb; color: #f59e0b; }
     .approved { background: #f0fdf4; color: #16a34a; }
-    .stale-pill { background: #fffbeb; color: #f59e0b; } 
+    .stale-pill { background: #fffbeb; color: #f59e0b; }
     .stale .status-pill.stale { background: #fffbeb; color: #f59e0b; }
-    .updated { font-size: 0.7rem; color: var(--color-text-secondary, #9ca3af); }
-    .danger-item { color: var(--color-rejected, #ef4444); }
+    .updated { font-size: 0.7rem; color: #94a3b8; }
+    .danger-item { color: #ef4444; }
   `],
 })
 export class SkillCardComponent {

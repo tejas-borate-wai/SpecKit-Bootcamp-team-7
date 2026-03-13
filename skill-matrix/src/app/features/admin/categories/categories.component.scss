@@ -4,56 +4,61 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 24px;
 
   h1 {
     margin: 0;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.025em;
   }
 }
 
 .spinner-wrapper {
   display: flex;
   justify-content: center;
-  padding: var(--spacing-2xl);
+  padding: 48px;
 }
 
 .table-container {
   overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
 }
 
 .description-cell {
   max-width: 320px;
   white-space: normal;
-  color: #6b7280;
+  color: #64748b;
   font-size: 0.875rem;
 }
 
 .card-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 12px;
 }
 
 .category-card {
-  border-radius: var(--radius-md);
+  border-radius: 12px;
 }
 
 .empty-state {
   text-align: center;
-  padding: var(--spacing-2xl);
-  color: #9ca3af;
+  padding: 48px;
+  color: #94a3b8;
 
   mat-icon {
     font-size: 48px;
     width: 48px;
     height: 48px;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 16px;
+    color: #cbd5e1;
   }
 }
 
-// Responsive visibility
 .desktop-only {
   @include bp.mobile {
     display: none;
