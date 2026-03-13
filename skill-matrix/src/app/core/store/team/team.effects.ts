@@ -1,10 +1,11 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TeamService } from '../../services/team.service';
 import { PeerValidationService } from '../../services/peer-validation.service';
+import { ToastService } from '../../../shared/services/toast.service';
 import * as TeamActions from './team.actions';
 
 // ── Load Team Members ────────────────────────────────────────────────────────
@@ -84,6 +85,7 @@ export const approveSubmission$ = createEffect(
   () => {
     const actions$ = inject(Actions);
     const teamService = inject(TeamService);
+    const toast = inject(ToastService);
     return actions$.pipe(
       ofType(TeamActions.approveSubmission),
       switchMap(({ submissionId, managerRating: _mr, comment }) =>
@@ -97,6 +99,7 @@ export const approveSubmission$ = createEffect(
             sourceCount: result.sourceCount,
             effectiveWeights: result.effectiveWeights,
           })),
+          tap(() => toast.showSuccess('Skill approved successfully.')),
           catchError((err: HttpErrorResponse) => of(TeamActions.approveSubmissionFailure({ error: err.error?.error ?? err.message })))
         )
       )

@@ -89,6 +89,10 @@ export const routes: Routes = [
   {
     path: 'settings',
     canActivate: [authGuard],
+    providers: [
+      provideState('skills', skillsReducer),
+      provideEffects(skillsEffects),
+    ],
     loadComponent: placeholder,
   },
 

@@ -16,6 +16,16 @@
   gap: 12px;
 }
 
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filter-select {
+  min-width: 160px;
+}
+
 .page-title {
   margin: 0;
   font-size: 1.5rem;

@@ -1,0 +1,57 @@
+@if (isMobile$ | async) {
+  <!-- Mobile card list -->
+  <div class="card-list">
+    @for (row of data; track trackByFn($index, row); let i = $index) {
+      <div class="data-card" (click)="toggleExpand(i)">
+        <div class="card-header">
+          @if (primaryColumn) {
+            <span class="card-title">{{ getValue(row, primaryColumn.key) }}</span>
+          }
+          <mat-icon class="expand-icon" [class.expanded]="expandedIndex === i">expand_more</mat-icon>
+        </div>
+        <div class="card-summary">
+          @for (col of secondaryColumns; track col.key) {
+            <div class="card-field">
+              <span class="field-label">{{ col.header }}</span>
+              <span class="field-value">{{ getValue(row, col.key) }}</span>
+            </div>
+          }
+        </div>
+        @if (expandedIndex === i && detailColumns.length > 0) {
+          <div class="card-details">
+            @for (col of detailColumns; track col.key) {
+              <div class="card-field">
+                <span class="field-label">{{ col.header }}</span>
+                <span class="field-value">{{ getValue(row, col.key) }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+} @else {
+  <!-- Desktop/tablet table -->
+  @if (currentBreakpoint$ | async; as bp) {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            @for (col of getVisibleColumns(bp); track col.key) {
+              <th>{{ col.header }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of data; track trackByFn($index, row)) {
+            <tr>
+              @for (col of getVisibleColumns(bp); track col.key) {
+                <td>{{ getValue(row, col.key) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+}

@@ -18,8 +18,8 @@ const NAVIGATION_CONFIG: NavItem[] = [
 
   // TEAM section — Manager + Admin
   { label: 'Team Skills', icon: 'groups', route: '/team', roles: ['Manager', 'Admin'], section: 'TEAM' },
-  { label: 'Skill Validation Queue', icon: 'fact_check', route: '/team/validation-queue', roles: ['Manager', 'Admin'], section: 'TEAM' },
-  { label: 'Project Matching', icon: 'handshake', route: '/team/availability', roles: ['Manager', 'Admin'], section: 'TEAM' },
+  { label: 'Skill Validation Queue', icon: 'fact_check', route: '/team/validation', roles: ['Manager', 'Admin'], section: 'TEAM' },
+  { label: 'Project Matching', icon: 'handshake', route: '/projects/alignment', roles: ['Manager', 'Admin'], section: 'TEAM' },
 
   // PROJECTS section — Manager + Admin
   { label: 'Projects', icon: 'folder_special', route: '/projects', roles: ['Manager', 'Admin'], section: 'PROJECTS' },

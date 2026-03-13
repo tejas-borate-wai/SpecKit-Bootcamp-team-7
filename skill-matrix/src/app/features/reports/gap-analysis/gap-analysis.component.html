@@ -21,10 +21,8 @@
   </header>
 
   @if (loading$ | async) {
-    <div class="loading-state">
-      <mat-spinner diameter="48"></mat-spinner>
-      <p>Loading gap analysis data…</p>
-    </div>
+    <app-skeleton-loader type="chart" />
+    <app-skeleton-loader type="table-row" [count]="4" [columns]="5" />
   } @else {
     @if (error$ | async; as err) {
       <div class="error-state">

@@ -19,6 +19,7 @@ import { loadCertifications, deleteCertification } from '../../../core/store/cer
 import { selectSkillDefinitions } from '../../../core/store/skills/skills.selectors';
 import * as SkillsActions from '../../../core/store/skills/skills.actions';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { BREAKPOINTS } from '../../../core/breakpoints';
 
 @Component({
@@ -32,6 +33,7 @@ import { BREAKPOINTS } from '../../../core/breakpoints';
     MatIconModule,
     MatProgressSpinnerModule,
     StatusBadgeComponent,
+    SkeletonLoaderComponent,
   ],
   templateUrl: './certifications-list.component.html',
   styleUrls: ['./certifications-list.component.scss'],

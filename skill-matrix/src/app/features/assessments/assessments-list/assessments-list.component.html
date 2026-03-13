@@ -25,9 +25,7 @@
 
   <!-- Loading state -->
   <ng-container *ngIf="(examsLoading$ | async) || (attemptsLoading$ | async); else content">
-    <div class="loading-state">
-      <div class="skeleton-row" *ngFor="let i of [1,2,3,4,5]"></div>
-    </div>
+    <app-skeleton-loader type="list-item" [count]="5" />
   </ng-container>
 
   <ng-template #content>

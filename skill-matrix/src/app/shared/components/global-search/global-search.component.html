@@ -1,0 +1,69 @@
+<div class="global-search">
+  <!-- Desktop: always visible input -->
+  <div class="search-input-wrap desktop-search">
+    <mat-icon class="search-icon">search</mat-icon>
+    <input
+      type="text"
+      [(ngModel)]="query"
+      (input)="onInput()"
+      placeholder="Search employees, skills, projects..."
+      class="search-input"
+      aria-label="Global search"
+      autocomplete="off"
+    />
+    @if (query) {
+      <button class="clear-btn" (click)="close()" aria-label="Clear search">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </div>
+
+  <!-- Tablet: icon toggle -->
+  <div class="tablet-search">
+    @if (!showInput) {
+      <button class="search-toggle" (click)="toggleInput()" aria-label="Open search">
+        <mat-icon>search</mat-icon>
+      </button>
+    } @else {
+      <div class="search-input-wrap expanded">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          [(ngModel)]="query"
+          (input)="onInput()"
+          placeholder="Search..."
+          class="search-input"
+          aria-label="Global search"
+          autocomplete="off"
+        />
+        <button class="clear-btn" (click)="close()" aria-label="Close search">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Results dropdown -->
+  @if (isOpen) {
+    <div class="search-results" role="listbox" aria-label="Search results">
+      @if (results.length === 0) {
+        <div class="no-results">No results found for your search.</div>
+      } @else {
+        @for (result of results; track result.id) {
+          <button
+            class="result-item"
+            (click)="selectResult(result)"
+            role="option"
+          >
+            <mat-icon class="result-icon" [ngClass]="'type-' + result.type">{{ getIcon(result.type) }}</mat-icon>
+            <div class="result-text">
+              <span class="result-title">{{ result.title }}</span>
+              <span class="result-subtitle">{{ result.subtitle }}</span>
+            </div>
+            <span class="result-type-badge">{{ result.type }}</span>
+          </button>
+        }
+      }
+    </div>
+  }
+</div>

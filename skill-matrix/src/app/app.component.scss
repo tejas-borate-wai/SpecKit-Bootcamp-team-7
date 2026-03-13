@@ -33,14 +33,23 @@ mat-sidenav-content {
   &.sidebar-collapsed {
     margin-left: 0;
   }
+
+  &.has-bottom-nav {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .app-content {
   padding: 24px 32px;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+
+  @include bp.large-desktop {
+    padding: 24px 48px;
+  }
 
   @include bp.mobile {
     padding: 16px;

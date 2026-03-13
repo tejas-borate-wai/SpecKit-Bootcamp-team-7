@@ -31,9 +31,7 @@
   </section>
 
   @if (loading$ | async) {
-    <div class="loading-container" aria-label="Loading projects">
-      <mat-spinner diameter="48"></mat-spinner>
-    </div>
+    <app-skeleton-loader type="table-row" [count]="4" [columns]="6" />
   } @else {
     @if (currentUser$ | async; as user) {
       @if (filteredProjects$ | async; as allProjects) {

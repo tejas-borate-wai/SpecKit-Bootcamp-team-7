@@ -17,6 +17,7 @@ import {
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
 import { ExportService } from '../../../core/services/export.service';
 import { SkillGapRecord } from '../../../shared/models/report.models';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { SessionUser } from '../../../shared/models/user.model';
 
 @Component({
@@ -29,6 +30,7 @@ import { SessionUser } from '../../../shared/models/user.model';
     MatIconModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    SkeletonLoaderComponent,
   ],
   templateUrl: './gap-analysis.component.html',
   styleUrls: ['./gap-analysis.component.scss'],

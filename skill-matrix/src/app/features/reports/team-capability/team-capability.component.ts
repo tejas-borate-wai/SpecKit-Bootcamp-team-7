@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { FormsModule } from '@angular/forms';
 
 import { ReportsActions } from '../store/reports.actions';
@@ -34,6 +35,7 @@ import { SessionUser } from '../../../shared/models/user.model';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatButtonToggleModule,
+    SkeletonLoaderComponent,
   ],
   templateUrl: './team-capability.component.html',
   styleUrls: ['./team-capability.component.scss'],

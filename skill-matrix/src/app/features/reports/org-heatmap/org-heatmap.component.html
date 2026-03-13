@@ -17,10 +17,7 @@
   </header>
 
   @if (loading$ | async) {
-    <div class="loading-state">
-      <mat-spinner diameter="48"></mat-spinner>
-      <p>Loading heatmap data…</p>
-    </div>
+    <app-skeleton-loader type="chart" />
   } @else {
     @if (error$ | async; as err) {
       <div class="error-state">

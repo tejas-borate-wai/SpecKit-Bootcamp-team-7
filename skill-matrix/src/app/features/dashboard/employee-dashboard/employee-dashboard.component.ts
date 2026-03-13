@@ -15,6 +15,7 @@ import { SkillCardComponent } from '../../../shared/components/skill-card/skill-
 import { AchievementBadgeComponent } from '../../../shared/components/achievement-badge/achievement-badge.component';
 import { RatingBadgeComponent } from '../../../shared/components/rating-badge/rating-badge.component';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { AchievementService } from '../../../core/services/achievement.service';
 import { AchievementBadge } from '../../../shared/models/achievement.model';
 import { EmployeeSkill } from '../../../shared/models/employee-skill.model';
@@ -26,7 +27,7 @@ import { CertificationWithStatus } from '../../../shared/models/certification.mo
 @Component({
   selector: 'app-employee-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule, StatCardComponent, SkillCardComponent, AchievementBadgeComponent, RatingBadgeComponent, StatusBadgeComponent],
+  imports: [CommonModule, RouterModule, MatIconModule, StatCardComponent, SkillCardComponent, AchievementBadgeComponent, RatingBadgeComponent, StatusBadgeComponent, SkeletonLoaderComponent],
   templateUrl: './employee-dashboard.component.html',
   styleUrls: ['./employee-dashboard.component.scss'],
 })

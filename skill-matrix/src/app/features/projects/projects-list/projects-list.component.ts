@@ -20,6 +20,7 @@ import {
 } from '../../../core/store/projects/projects.selectors';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
 import { ToastService } from '../../../shared/services/toast.service';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 
 @Component({
   selector: 'app-projects-list',
@@ -32,6 +33,7 @@ import { ToastService } from '../../../shared/services/toast.service';
     MatSelectModule,
     MatProgressSpinnerModule,
     FormsModule,
+    SkeletonLoaderComponent,
   ],
   templateUrl: './projects-list.component.html',
   styleUrls: ['./projects-list.component.scss'],

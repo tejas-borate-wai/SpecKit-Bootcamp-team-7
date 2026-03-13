@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of, forkJoin } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SkillService } from '../../services/skill.service';
 import { SkillLibraryService } from '../../services/skill-library.service';
 import { DashboardService } from '../../services/dashboard.service';
+import { ToastService } from '../../../shared/services/toast.service';
 import * as SkillsActions from './skills.actions';
 
 export const loadMySkillsEffect = createEffect(
@@ -72,11 +73,13 @@ export const addSkillEffect = createEffect(
   () => {
     const actions$ = inject(Actions);
     const skillService = inject(SkillService);
+    const toast = inject(ToastService);
     return actions$.pipe(
       ofType(SkillsActions.addSkill),
       switchMap(({ userId, skillId, selfRating }) =>
         skillService.addSkill(userId, skillId, selfRating).pipe(
           map((skill) => SkillsActions.addSkillSuccess({ skill })),
+          tap(() => toast.showSuccess('Skill saved successfully.')),
           catchError((err: HttpErrorResponse) =>
             of(SkillsActions.addSkillFailure({ error: err.error?.message ?? 'Failed to add skill.' }))
           )

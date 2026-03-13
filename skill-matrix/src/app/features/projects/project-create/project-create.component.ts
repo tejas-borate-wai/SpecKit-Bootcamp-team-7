@@ -17,6 +17,7 @@ import { ProjectsActions } from '../../../core/store/projects/projects.actions';
 import { selectProjectsLoading, selectProjectsError } from '../../../core/store/projects/projects.selectors';
 import { SkillLibraryService } from '../../../core/services/skill-library.service';
 import { ToastService } from '../../../shared/services/toast.service';
+import { ERROR_MESSAGES } from '../../../core/constants/error-messages';
 
 @Component({
   selector: 'app-project-create',
@@ -136,12 +137,12 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     };
 
     if (new Date(startDate) >= new Date(deadline)) {
-      this.toast.showError('Start date must be before deadline.');
+      this.toast.showError(ERROR_MESSAGES.startAfterDeadline);
       return;
     }
 
     if (!requiredSkills || requiredSkills.length === 0) {
-      this.toast.showError('Add at least one required skill.');
+      this.toast.showError(ERROR_MESSAGES.noSkillsAdded);
       return;
     }
 

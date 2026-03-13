@@ -53,29 +53,8 @@
   max-width: 400px;
   margin: 0 var(--spacing-lg);
 
-  @include bp.tablet {
-    display: none;
-  }
-
   @include bp.mobile {
     display: none;
-  }
-
-  .search-placeholder {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background-color: #f1f5f9;
-    border-radius: 8px;
-    width: 100%;
-    color: #94a3b8;
-    font-size: 0.875rem;
-    transition: background 0.15s;
-
-    &:hover {
-      background-color: #e2e8f0;
-    }
   }
 }
 

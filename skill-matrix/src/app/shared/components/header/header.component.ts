@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { NotificationBellComponent } from '../notification-bell/notification-bell.component';
+import { GlobalSearchComponent } from '../global-search/global-search.component';
 import { Store } from '@ngrx/store';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
@@ -25,6 +26,7 @@ import { SessionActions } from '../../../core/store/session/session.actions';
     NotificationBellComponent,
     MatBadgeModule,
     AvatarComponent,
+    GlobalSearchComponent,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],

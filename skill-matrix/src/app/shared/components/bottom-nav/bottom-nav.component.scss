@@ -1,0 +1,100 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 11px;
+  gap: 2px;
+  min-width: 44px;
+  min-height: 44px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+
+  &.active {
+    color: var(--color-primary, #3c83f6);
+  }
+}
+
+.tab-label {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.more-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1001;
+}
+
+.more-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  padding: 8px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 1002;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  margin: 0 auto 12px;
+}
+
+.sheet-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  text-decoration: none;
+  color: #374151;
+  font-size: 15px;
+  min-height: 44px;
+  cursor: pointer;
+
+  &:active {
+    background: #f3f4f6;
+  }
+
+  mat-icon {
+    color: #6b7280;
+  }
+}

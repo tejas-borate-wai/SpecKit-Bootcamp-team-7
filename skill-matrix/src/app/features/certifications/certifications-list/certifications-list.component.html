@@ -9,8 +9,7 @@
 
   <!-- Loading -->
   <div *ngIf="loading$ | async" class="loading-state" aria-live="polite" aria-label="Loading certifications">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Loading certifications…</p>
+    <app-skeleton-loader type="table-row" [count]="4" [columns]="6"></app-skeleton-loader>
   </div>
 
   <!-- Table -->

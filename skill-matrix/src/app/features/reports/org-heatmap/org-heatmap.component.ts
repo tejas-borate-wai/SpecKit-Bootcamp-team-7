@@ -12,6 +12,7 @@ import { selectCurrentUser } from '../../../core/store/session/session.selectors
 import { ExportService } from '../../../core/services/export.service';
 import { HeatmapChartData } from '../../../shared/models/report.models';
 import { ChartWrapperComponent } from '../../../shared/components/chart-wrapper/chart-wrapper.component';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { SessionUser } from '../../../shared/models/user.model';
 
 @Component({
@@ -23,6 +24,7 @@ import { SessionUser } from '../../../shared/models/user.model';
     MatIconModule,
     MatProgressSpinnerModule,
     ChartWrapperComponent,
+    SkeletonLoaderComponent,
   ],
   templateUrl: './org-heatmap.component.html',
   styleUrls: ['./org-heatmap.component.scss'],

@@ -39,10 +39,7 @@
   </header>
 
   @if (loading$ | async) {
-    <div class="skill-trends__loading">
-      <mat-spinner diameter="48"></mat-spinner>
-      <p>Loading trend data…</p>
-    </div>
+    <app-skeleton-loader type="chart" />
   } @else {
     @if (error$ | async; as err) {
       <div class="skill-trends__error">

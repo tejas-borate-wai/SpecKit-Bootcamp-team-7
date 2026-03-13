@@ -13,6 +13,7 @@ import {
   selectExamsLoading,
   selectAttemptsLoading,
 } from '../../../core/store/assessments/assessments.selectors';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { AssessmentStatus } from '../../../shared/models/assessment-status.model';
 import { SkillExam } from '../../../shared/models/skill-exam.model';
 import { AssessmentAttempt } from '../../../shared/models/assessment-attempt.model';
@@ -32,7 +33,7 @@ interface SkillRow {
 @Component({
   selector: 'app-assessments-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, AsyncPipe, RouterLink],
+  imports: [CommonModule, FormsModule, AsyncPipe, RouterLink, SkeletonLoaderComponent],
   templateUrl: './assessments-list.component.html',
   styleUrls: ['./assessments-list.component.scss'],
 })

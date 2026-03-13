@@ -9,9 +9,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Subject, takeUntil, filter, Observable } from 'rxjs';
-import { selectMyActiveSkills, selectMyStaleSkills, selectSkillDefinitions, selectSkillsError } from '../../../core/store/skills/skills.selectors';
+import { selectMyActiveSkills, selectMyStaleSkills, selectSkillDefinitions, selectSkillsError, selectSkillsLoading } from '../../../core/store/skills/skills.selectors';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import * as SkillsActions from '../../../core/store/skills/skills.actions';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
 import { EmployeeSkill } from '../../../shared/models/employee-skill.model';
@@ -31,6 +34,7 @@ import { selectHasValidCertForSkill } from '../../../core/store/certifications/c
     CommonModule,
     MatTableModule, MatIconModule, MatButtonModule, MatMenuModule,
     MatDialogModule, MatTooltipModule, MatSnackBarModule, RatingBadgeComponent, CertifiedBadgeComponent,
+    SkeletonLoaderComponent, FormsModule, MatSelectModule,
   ],
   templateUrl: './my-skills-list.component.html',
   styleUrls: ['./my-skills-list.component.scss'],
@@ -48,10 +52,13 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
   definitions$ = this.store.select(selectSkillDefinitions);
   user$ = this.store.select(selectCurrentUser);
   error$ = this.store.select(selectSkillsError);
+  loading$ = this.store.select(selectSkillsLoading);
 
   isMobile = false;
   isTablet = false;
   staleCount = 0;
+  filterStatus: '' | 'Active' | 'Stale' = '';
+  filterCategory = '';
 
   get displayedColumns(): string[] {
     if (this.isMobile) return ['skill', 'level', 'status', 'actions'];
@@ -126,5 +133,21 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
 
   hasValidCert(skillId: string): Observable<boolean> {
     return this.store.select(selectHasValidCertForSkill(skillId));
+  }
+
+  filterSkills(skills: EmployeeSkill[], defs: SkillDefinition[]): EmployeeSkill[] {
+    return skills.filter((s) => {
+      if (this.filterStatus === 'Stale' && !this.isStaleRow(s)) return false;
+      if (this.filterStatus === 'Active' && this.isStaleRow(s)) return false;
+      if (this.filterCategory) {
+        const def = defs.find((d) => d.skillId === s.skillId);
+        if (def?.categoryId !== this.filterCategory) return false;
+      }
+      return true;
+    });
+  }
+
+  getCategories(defs: SkillDefinition[]): string[] {
+    return [...new Set(defs.map((d) => d.categoryId))].sort();
   }
 }

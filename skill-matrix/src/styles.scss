@@ -2,6 +2,7 @@
 @use 'styles/variables';
 @use 'styles/breakpoints';
 @use 'styles/typography';
+@use 'styles/animations';
 
 @include mat.core();
 
@@ -36,5 +37,10 @@ html, body {
 
 .toast-error {
   --mdc-snackbar-container-color: var(--color-error, #ef4444);
+  --mdc-snackbar-supporting-text-color: #ffffff;
+}
+
+.toast-success {
+  --mdc-snackbar-container-color: var(--color-success, #22c55e);
   --mdc-snackbar-supporting-text-color: #ffffff;
 }

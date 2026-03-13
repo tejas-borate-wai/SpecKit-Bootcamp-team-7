@@ -19,12 +19,20 @@
     <mat-sidenav-content
       [class.sidebar-expanded]="!sidebarCollapsed && sidebarMode === 'side'"
       [class.sidebar-collapsed]="sidebarCollapsed && sidebarMode === 'side'"
+      [class.has-bottom-nav]="isMobile$ | async"
     >
-      <main class="app-content">
+      <main class="app-content" [@.disabled]="prefersReducedMotion" [@routeAnimations]="getRouteAnimationData()">
         <router-outlet></router-outlet>
       </main>
     </mat-sidenav-content>
   </mat-sidenav-container>
+
+  @if (isMobile$ | async) {
+    @if (fabAction) {
+      <app-fab [icon]="fabAction.icon" [route]="fabAction.route" [ariaLabel]="fabAction.label"></app-fab>
+    }
+    <app-bottom-nav></app-bottom-nav>
+  }
 } @else {
   <router-outlet></router-outlet>
 }

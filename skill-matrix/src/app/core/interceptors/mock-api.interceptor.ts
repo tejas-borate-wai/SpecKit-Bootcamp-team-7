@@ -218,10 +218,10 @@ function ok<T>(body: T): Observable<HttpResponse<T>> {
 // ── Role enforcement for /api/admin/* ───────────────────────────────────────
 function getCurrentUserRole(): string | null {
   try {
-    const raw = localStorage.getItem('session');
+    const raw = localStorage.getItem('skillmatrix_session');
     if (!raw) return null;
-    const session = JSON.parse(raw) as { role?: string };
-    return session.role ?? null;
+    const session = JSON.parse(raw) as { user?: { role?: string } };
+    return session.user?.role ?? null;
   } catch {
     return null;
   }
@@ -952,10 +952,10 @@ function handleGetSkillAttempts(userId: string, skillId: string): Observable<Htt
 
 function getCurrentUserId(): string | null {
   try {
-    const raw = localStorage.getItem('session');
+    const raw = localStorage.getItem('skillmatrix_session');
     if (!raw) return null;
-    const session = JSON.parse(raw) as { id?: string };
-    return session.id ?? null;
+    const session = JSON.parse(raw) as { user?: { id?: string } };
+    return session.user?.id ?? null;
   } catch {
     return null;
   }
@@ -963,10 +963,10 @@ function getCurrentUserId(): string | null {
 
 function getCurrentUserName(): string {
   try {
-    const raw = localStorage.getItem('session');
+    const raw = localStorage.getItem('skillmatrix_session');
     if (!raw) return 'Unknown';
-    const session = JSON.parse(raw) as { name?: string };
-    return session.name ?? 'Unknown';
+    const session = JSON.parse(raw) as { user?: { name?: string } };
+    return session.user?.name ?? 'Unknown';
   } catch {
     return 'Unknown';
   }
@@ -974,10 +974,10 @@ function getCurrentUserName(): string {
 
 function getCurrentUserDepartment(): string | null {
   try {
-    const raw = localStorage.getItem('session');
+    const raw = localStorage.getItem('skillmatrix_session');
     if (!raw) return null;
-    const session = JSON.parse(raw) as { department?: string };
-    return session.department ?? null;
+    const session = JSON.parse(raw) as { user?: { department?: string } };
+    return session.user?.department ?? null;
   } catch {
     return null;
   }
@@ -1128,8 +1128,8 @@ function handlePostCertification(
 ): Observable<HttpResponse<unknown>> {
   return new Observable<HttpResponse<unknown>>((sub) => {
     loadCertifications().then((certs) => {
-      const raw = localStorage.getItem('session');
-      const userId: string = raw ? (JSON.parse(raw) as { id?: string }).id ?? 'unknown' : 'unknown';
+      const raw = localStorage.getItem('skillmatrix_session');
+      const userId: string = raw ? (JSON.parse(raw) as { user?: { id?: string } }).user?.id ?? 'unknown' : 'unknown';
       const newCert = {
         certId: `cert-${Date.now()}`,
         userId,

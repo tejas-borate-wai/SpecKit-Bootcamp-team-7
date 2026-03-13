@@ -10,6 +10,14 @@
         <app-stat-card title="Stale Skills" [value]="w.staleCount.toString()" icon="warning" subtitle="> 6 months old"/>
         <app-stat-card title="Pending Approvals" [value]="w.pendingCount.toString()" icon="pending"/>
       </div>
+    } @else {
+      <!-- Skeleton loader for stat cards -->
+      <div class="stat-grid">
+        <app-skeleton-loader type="card"/>
+        <app-skeleton-loader type="card"/>
+        <app-skeleton-loader type="card"/>
+        <app-skeleton-loader type="card"/>
+      </div>
     }
 
     <!-- Expiring Soon Certifications Alert -->

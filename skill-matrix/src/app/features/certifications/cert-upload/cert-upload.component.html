@@ -62,7 +62,7 @@
       <!-- Cross-field error -->
       <div class="field-full cross-error" *ngIf="form.hasError('expiryBeforeIssue') && form.get('expiryDate')?.touched" role="alert">
         <mat-icon>error_outline</mat-icon>
-        Expiry date must be after the issue date.
+        Expiry date must be after issue date.
       </div>
 
       <!-- File Upload -->
@@ -100,10 +100,10 @@
             Please select a certificate file.
           </mat-error>
           <mat-error *ngIf="form.get('fileMetadata')?.hasError('fileTooLarge')" role="alert">
-            File exceeds the 5 MB limit.
+            File size must not exceed 5 MB.
           </mat-error>
           <mat-error *ngIf="form.get('fileMetadata')?.hasError('invalidFileFormat')" role="alert">
-            Only PDF, JPEG, and PNG files are accepted.
+            Only PDF, JPG, and PNG files are accepted.
           </mat-error>
         </div>
       </div>

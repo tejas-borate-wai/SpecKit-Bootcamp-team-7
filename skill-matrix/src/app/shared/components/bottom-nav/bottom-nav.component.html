@@ -1,0 +1,40 @@
+<nav class="bottom-nav" role="navigation" aria-label="Mobile navigation">
+  @for (tab of tabs$ | async; track tab.route) {
+    <a class="nav-tab"
+       [routerLink]="tab.route"
+       routerLinkActive="active"
+       [attr.aria-label]="tab.label">
+      <mat-icon>{{ tab.icon }}</mat-icon>
+      <span class="tab-label">{{ tab.label }}</span>
+    </a>
+  }
+  <button class="nav-tab" (click)="toggleMore()" aria-label="More navigation options">
+    <mat-icon>more_horiz</mat-icon>
+    <span class="tab-label">More</span>
+  </button>
+</nav>
+
+@if (moreOpen) {
+  <div class="more-backdrop" (click)="closeMore()"></div>
+  <div class="more-sheet" [@modalSlide]>
+    <div class="sheet-handle"></div>
+    <div class="sheet-content">
+      <a class="sheet-item" routerLink="/my-skills" (click)="closeMore()">
+        <mat-icon>star</mat-icon>
+        <span>My Skills</span>
+      </a>
+      <a class="sheet-item" routerLink="/assessments" (click)="closeMore()">
+        <mat-icon>assignment</mat-icon>
+        <span>Assessments</span>
+      </a>
+      <a class="sheet-item" routerLink="/certifications" (click)="closeMore()">
+        <mat-icon>workspace_premium</mat-icon>
+        <span>Certifications</span>
+      </a>
+      <a class="sheet-item" routerLink="/settings" (click)="closeMore()">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+}

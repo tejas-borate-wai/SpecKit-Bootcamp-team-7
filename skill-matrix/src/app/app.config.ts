@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStore, MetaReducer } from '@ngrx/store';
@@ -20,7 +20,7 @@ const metaReducers: MetaReducer<any>[] = [sessionHydrationMetaReducer as MetaRed
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withViewTransitions()),
     provideHttpClient(withInterceptors([mockApiInterceptor])),
     provideAnimationsAsync(),
     provideStore(

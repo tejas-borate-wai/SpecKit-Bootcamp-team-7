@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: block;
 }
@@ -160,7 +162,7 @@
   }
 }
 
-@media (max-width: 599px) {
+@include bp.mobile {
   .form-grid {
     grid-template-columns: 1fr;
 
@@ -171,5 +173,16 @@
 
   .file-drop-zone.has-file {
     flex-direction: column;
+  }
+
+  .form-actions {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 16px 0;
+    border-top: 1px solid #e2e8f0;
+    justify-content: stretch;
+
+    button { flex: 1; }
   }
 }

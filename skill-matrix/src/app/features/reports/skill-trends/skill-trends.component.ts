@@ -19,6 +19,7 @@ import { selectCurrentUser } from '../../../core/store/session/session.selectors
 import { ExportService } from '../../../core/services/export.service';
 import { TrendChartData } from '../../../shared/models/report.models';
 import { ChartWrapperComponent } from '../../../shared/components/chart-wrapper/chart-wrapper.component';
+import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import { SessionUser } from '../../../shared/models/user.model';
 
 @Component({
@@ -32,6 +33,7 @@ import { SessionUser } from '../../../shared/models/user.model';
     MatProgressSpinnerModule,
     MatSelectModule,
     ChartWrapperComponent,
+    SkeletonLoaderComponent,
   ],
   templateUrl: './skill-trends.component.html',
   styleUrls: ['./skill-trends.component.scss'],

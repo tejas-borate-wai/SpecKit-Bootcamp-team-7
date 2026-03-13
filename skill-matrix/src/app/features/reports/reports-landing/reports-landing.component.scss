@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 .reports-landing {
   padding: var(--spacing-xl);
   max-width: 1200px;
@@ -8,7 +10,7 @@
   margin-bottom: var(--spacing-xl);
 
   h1 {
-    font-size: 28px;
+    font-size: var(--font-h1);
     font-weight: 600;
     color: #111827;
   }
@@ -24,11 +26,11 @@
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-lg);
 
-  @media (max-width: 1279px) {
+  @include bp.tablet {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 767px) {
+  @include bp.mobile {
     grid-template-columns: 1fr;
   }
 }
