@@ -137,7 +137,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   // ── Read-only skill library (all authenticated roles) ──────────────────
-  if (url === '/api/skill-categories' && req.method === 'GET') {
+  if (req.url === '/api/skill-categories' && req.method === 'GET') {
     return new Observable<HttpResponse<unknown>>((subscriber) => {
       loadCategories().then((cats) => {
         subscriber.next(new HttpResponse({ status: 200, body: cats }));
@@ -146,7 +146,7 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
     }).pipe(delay(getSimulatedDelay()));
   }
 
-  if (url === '/api/skill-definitions' && req.method === 'GET') {
+  if (req.url === '/api/skill-definitions' && req.method === 'GET') {
     return new Observable<HttpResponse<unknown>>((subscriber) => {
       loadSkillDefinitions().then((defs) => {
         subscriber.next(new HttpResponse({ status: 200, body: defs }));
@@ -270,7 +270,7 @@ function handleAdminRequest(req: HttpRequest<unknown>): Observable<HttpResponse<
 
 // ── Categories Handlers ─────────────────────────────────────────────────────
 function handleGetCategories(): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCategories().then((cats) => {
       sub.next(new HttpResponse({ status: 200, body: cats }));
       sub.complete();
@@ -279,7 +279,7 @@ function handleGetCategories(): Observable<HttpResponse<unknown>> {
 }
 
 function handleAddCategory(body: Partial<SkillCategory>): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCategories().then((cats) => {
       const name = (body.categoryName ?? '').trim();
       if (!name) { sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Category name is required.' } })); return; }
@@ -299,7 +299,7 @@ function handleAddCategory(body: Partial<SkillCategory>): Observable<HttpRespons
 }
 
 function handleCategoryDetail(req: HttpRequest<unknown>, categoryId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCategories().then(async (cats) => {
       const idx = cats.findIndex((c) => c.categoryId === categoryId);
       if (idx === -1) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Category not found.' } })); return; }
@@ -330,7 +330,7 @@ function handleCategoryDetail(req: HttpRequest<unknown>, categoryId: string): Ob
 
 // ── Subcategory Handlers ────────────────────────────────────────────────────
 function handleSubcategories(req: HttpRequest<unknown>, categoryId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCategories().then((cats) => {
       const cat = cats.find((c) => c.categoryId === categoryId);
       if (!cat) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Category not found.' } })); return; }
@@ -348,7 +348,7 @@ function handleSubcategories(req: HttpRequest<unknown>, categoryId: string): Obs
 }
 
 function handleSubcategoryDetail(req: HttpRequest<unknown>, categoryId: string, subCategoryId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCategories().then(async (cats) => {
       const cat = cats.find((c) => c.categoryId === categoryId);
       if (!cat) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Category not found.' } })); return; }
@@ -381,7 +381,7 @@ function handleSubcategoryDetail(req: HttpRequest<unknown>, categoryId: string, 
 
 // ── Skill Definitions Handlers ──────────────────────────────────────────────
 function handleGetSkillDefinitions(): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadSkillDefinitions().then((skills) => {
       sub.next(new HttpResponse({ status: 200, body: skills }));
       sub.complete();
@@ -390,7 +390,7 @@ function handleGetSkillDefinitions(): Observable<HttpResponse<unknown>> {
 }
 
 function handleAddSkillDefinition(body: Partial<SkillDefinition>): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadSkillDefinitions().then((skills) => {
       const name = (body.skillName ?? '').trim();
       if (!name || !body.categoryId || !body.subCategoryId) {
@@ -414,7 +414,7 @@ function handleAddSkillDefinition(body: Partial<SkillDefinition>): Observable<Ht
 }
 
 function handleSkillDefinitionDetail(req: HttpRequest<unknown>, skillId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadSkillDefinitions().then((skills) => {
       const idx = skills.findIndex((s) => s.skillId === skillId);
       if (idx === -1) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Skill not found.' } })); return; }
@@ -434,7 +434,7 @@ function handleSkillDefinitionDetail(req: HttpRequest<unknown>, skillId: string)
 
 // ── Proficiency Level Handlers ──────────────────────────────────────────────
 function handleGetProficiencyLevels(): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadProficiencyLevels().then((levels) => {
       sub.next(new HttpResponse({ status: 200, body: levels }));
       sub.complete();
@@ -443,7 +443,7 @@ function handleGetProficiencyLevels(): Observable<HttpResponse<unknown>> {
 }
 
 function handleUpdateProficiencyLevel(body: ProficiencyLevel): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadProficiencyLevels().then((levels) => {
       const idx = levels.findIndex((l) => l.levelId === body.levelId);
       if (idx === -1) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Level not found.' } })); return; }
@@ -458,7 +458,7 @@ function handleUpdateProficiencyLevel(body: ProficiencyLevel): Observable<HttpRe
 
 // ── Rating Weights Handlers ─────────────────────────────────────────────────
 function handleGetRatingWeights(): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadRatingWeights().then((weights) => {
       sub.next(new HttpResponse({ status: 200, body: weights }));
       sub.complete();
@@ -467,7 +467,7 @@ function handleGetRatingWeights(): Observable<HttpResponse<unknown>> {
 }
 
 function handleUpdateRatingWeights(body: RatingWeightConfig): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     const sum = body.selfRating + body.managerRating + body.peerRating + body.systemRating;
     if (Math.abs(sum - 1.0) > 0.001) {
       sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Weights must sum to 1.00 (100%).' } }));
@@ -486,7 +486,7 @@ function handleGetAllEmployeeSkills(): Observable<HttpResponse<unknown>> {
   if (role !== 'Manager' && role !== 'Admin') {
     return makeError(403, 'You do not have permission to perform this action.');
   }
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadEmployeeSkills().then((records) => {
       sub.next(new HttpResponse({ status: 200, body: records }));
       sub.complete();
@@ -500,7 +500,7 @@ function handleGetEmployeeSkills(userId: string): Observable<HttpResponse<unknow
   if (role !== 'Admin' && currentUserId !== userId) {
     return makeError(403, 'You do not have permission to perform this action.');
   }
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadEmployeeSkills().then((records) => {
       const record = records.find((r) => r.userId === userId);
       if (!record) {
@@ -520,7 +520,7 @@ function handleAddEmployeeSkill(req: HttpRequest<unknown>, userId: string): Obse
   if (role !== 'Admin' && currentUserId !== userId) {
     return makeError(403, 'You do not have permission to perform this action.');
   }
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadEmployeeSkills().then((records) => {
       const body = req.body as { skillId?: string; selfRating?: number };
       if (!body?.skillId || body.selfRating === undefined) {
@@ -569,7 +569,7 @@ function handleEmployeeSkillDetail(req: HttpRequest<unknown>, userId: string, sk
   if (role !== 'Admin' && currentUserId !== userId) {
     return makeError(403, 'You do not have permission to perform this action.');
   }
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadEmployeeSkills().then(async (records) => {
       const record = records.find((r) => r.userId === userId);
       if (!record) { sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Skill not found.' } })); return; }
@@ -617,7 +617,7 @@ function handleGetTestAttempts(userId: string): Observable<HttpResponse<unknown>
   if (role !== 'Admin' && currentUserId !== userId) {
     return makeError(403, 'You do not have permission to perform this action.');
   }
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadTestAttempts().then((attempts) => {
       const userAttempts = attempts.filter((a) => a.userId === userId);
       sub.next(new HttpResponse({ status: 200, body: userAttempts }));
@@ -632,7 +632,7 @@ function handleGetSkillAttempts(userId: string, skillId: string): Observable<Htt
   if (role !== 'Admin' && currentUserId !== userId) {
     return makeError(403, 'You do not have permission to perform this action.');
   }
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadTestAttempts().then((attempts) => {
       const filtered = attempts.filter((a) => a.userId === userId && a.skillId === skillId);
       sub.next(new HttpResponse({ status: 200, body: filtered }));

@@ -43,8 +43,8 @@ export class ProficiencyFrameworkComponent implements OnInit {
   loading$ = this.store.select(selectProficiencyLevelsLoading);
 
   displayedColumns = ['levelName', 'score', 'thresholdRange', 'description', 'criteria', 'actions'];
-  editingId: string | null = null;
-  editForms: Record<string, FormGroup> = {};
+  editingId: number | null = null;
+  editForms: Record<number, FormGroup> = {};
 
   ngOnInit(): void {
     this.store.dispatch(AdminActions.loadProficiencyLevels());
