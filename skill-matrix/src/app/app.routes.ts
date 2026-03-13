@@ -7,6 +7,8 @@ import { adminReducer } from './core/store/admin/admin.reducer';
 import * as adminEffects from './core/store/admin/admin.effects';
 import { skillsReducer } from './core/store/skills/skills.reducer';
 import * as skillsEffects from './core/store/skills/skills.effects';
+import { assessmentsReducer } from './core/store/assessments/assessments.reducer';
+import * as assessmentsEffects from './core/store/assessments/assessments.effects';
 
 // Placeholder component for routes not yet implemented
 const placeholder = () =>
@@ -59,11 +61,14 @@ export const routes: Routes = [
   {
     path: 'assessments',
     canActivate: [authGuard],
-    children: [
-      { path: '', loadComponent: placeholder },
-      { path: 'history', loadComponent: placeholder },
-      { path: ':skillId/results', loadComponent: placeholder },
+    providers: [
+      provideState('assessments', assessmentsReducer),
+      provideEffects(assessmentsEffects),
     ],
+    loadChildren: () =>
+      import('./features/assessments/assessments.routes').then(
+        (m) => m.assessmentsRoutes
+      ),
   },
   {
     path: 'certifications',

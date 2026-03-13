@@ -9,6 +9,8 @@ import { RatingWeightConfig } from '../../shared/models/rating-weight.model';
 import { ToastService } from '../../shared/services/toast.service';
 import { EmployeeSkill, EmployeeSkillRecord } from '../../shared/models/employee-skill.model';
 import { SkillTestAttempt } from '../../shared/models/skill-test-attempt.model';
+import { SkillExam } from '../../shared/models/skill-exam.model';
+import { AssessmentAttempt } from '../../shared/models/assessment-attempt.model';
 
 // ── In-memory caches with mutable copies for CRUD operations ───────────────
 let usersCache: User[] | null = null;
@@ -18,6 +20,10 @@ let proficiencyLevelsCache: ProficiencyLevel[] | null = null;
 let ratingWeightsCache: RatingWeightConfig | null = null;
 let employeeSkillsCache: EmployeeSkillRecord[] | null = null;
 let testAttemptsCache: SkillTestAttempt[] | null = null;
+let skillExamsCache: SkillExam[] | null = null;
+let certificationsCache: { certificationId: string; userId: string; skillId: string; expiryDate: string; [key: string]: unknown }[] | null = null;
+let projectsCache: { projectId: string; status: string; requiredSkills: string[]; [key: string]: unknown }[] | null = null;
+let projectAssignmentsCache: { assignmentId: string; userId: string; projectId: string; [key: string]: unknown }[] | null = null;
 
 async function loadUsers(): Promise<User[]> {
   if (usersCache) return usersCache;
@@ -66,6 +72,46 @@ async function loadTestAttempts(): Promise<SkillTestAttempt[]> {
   const response = await fetch('/assets/mock-data/skill-test-attempts.json');
   testAttemptsCache = await response.json();
   return testAttemptsCache!;
+}
+
+async function loadSkillExams(): Promise<SkillExam[]> {
+  if (skillExamsCache) return skillExamsCache;
+  const response = await fetch('/assets/mock-data/skill-exams.json');
+  skillExamsCache = await response.json();
+  return skillExamsCache!;
+}
+
+async function loadCertifications(): Promise<typeof certificationsCache extends null ? never : NonNullable<typeof certificationsCache>> {
+  if (certificationsCache) return certificationsCache;
+  try {
+    const response = await fetch('/assets/mock-data/certifications.json');
+    certificationsCache = await response.json();
+  } catch {
+    certificationsCache = [];
+  }
+  return certificationsCache!;
+}
+
+async function loadProjects(): Promise<NonNullable<typeof projectsCache>> {
+  if (projectsCache) return projectsCache;
+  try {
+    const response = await fetch('/assets/mock-data/projects.json');
+    projectsCache = await response.json();
+  } catch {
+    projectsCache = [];
+  }
+  return projectsCache!;
+}
+
+async function loadProjectAssignments(): Promise<NonNullable<typeof projectAssignmentsCache>> {
+  if (projectAssignmentsCache) return projectAssignmentsCache;
+  try {
+    const response = await fetch('/assets/mock-data/project-assignments.json');
+    projectAssignmentsCache = await response.json();
+  } catch {
+    projectAssignmentsCache = [];
+  }
+  return projectAssignmentsCache!;
 }
 
 function getSimulatedDelay(): number {
@@ -122,8 +168,16 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   if (empSkillMatch && req.method === 'GET') {
     return handleGetEmployeeSkills(empSkillMatch[1]);
   }
+  if (empSkillMatch && req.method === 'PUT') {
+    return handleUpdateEmployeeSkillSystemRating(req, empSkillMatch[1]);
+  }
 
   // ── Skill Test Attempts ───────────────────────────────────────────────
+  // POST /api/skill-test-attempts (create new attempt)
+  if (req.url === '/api/skill-test-attempts' && req.method === 'POST') {
+    return handlePostSkillTestAttempt(req);
+  }
+
   // /api/skill-test-attempts/:userId/:skillId
   const attemptSkillMatch = req.url.match(/^\/api\/skill-test-attempts\/([^/]+)\/([^/]+)$/);
   if (attemptSkillMatch && req.method === 'GET') {
@@ -134,6 +188,36 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
   const attemptMatch = req.url.match(/^\/api\/skill-test-attempts\/([^/]+)$/);
   if (attemptMatch && req.method === 'GET') {
     return handleGetTestAttempts(attemptMatch[1]);
+  }
+
+  // ── Skill Exams ──────────────────────────────────────────────────────────
+  // GET /api/skill-exams/:skillId
+  const examSkillMatch = req.url.match(/^\/api\/skill-exams\/([^/?]+)$/);
+  if (examSkillMatch && req.method === 'GET') {
+    return handleGetExamBySkillId(examSkillMatch[1]);
+  }
+
+  // GET /api/skill-exams
+  if (req.url === '/api/skill-exams' && req.method === 'GET') {
+    return handleGetAllExams();
+  }
+
+  // ── Certifications ───────────────────────────────────────────────────────
+  const url = req.url.split('?')[0];
+  if (url === '/api/certifications' && req.method === 'GET') {
+    const params = new URL(req.url, 'http://localhost').searchParams;
+    return handleGetCertifications(params.get('userId'), params.get('skillId'));
+  }
+
+  // ── Project Assignments ──────────────────────────────────────────────────
+  if (url === '/api/project-assignments' && req.method === 'GET') {
+    const params = new URL(req.url, 'http://localhost').searchParams;
+    return handleGetProjectAssignments(params.get('userId'));
+  }
+
+  // GET /api/projects
+  if (req.url === '/api/projects' && req.method === 'GET') {
+    return handleGetProjects();
   }
 
   // ── Read-only skill library (all authenticated roles) ──────────────────
@@ -650,4 +734,131 @@ function getCurrentUserId(): string | null {
   } catch {
     return null;
   }
+}
+
+// ── Skill Exams Handlers ─────────────────────────────────────────────────────
+
+function handleGetAllExams(): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadSkillExams().then((exams) => {
+      sub.next(new HttpResponse({ status: 200, body: exams }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+function handleGetExamBySkillId(skillId: string): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadSkillExams().then((exams) => {
+      const exam = exams.find((e) => e.skillId === skillId);
+      if (!exam) {
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'No exam found for this skill.' } }));
+        return;
+      }
+      sub.next(new HttpResponse({ status: 200, body: exam }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── POST /api/skill-test-attempts ────────────────────────────────────────────
+
+function handlePostSkillTestAttempt(req: HttpRequest<unknown>): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadTestAttempts().then((attempts) => {
+      const body = req.body as AssessmentAttempt;
+      if (!body?.attemptId || !body.userId || !body.skillId) {
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Invalid attempt data.' } }));
+        return;
+      }
+      testAttemptsCache = [...attempts, body];
+      sub.next(new HttpResponse({ status: 201, body }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── PUT /api/employee-skills/:userId — update systemRating for a skill ───────
+
+function handleUpdateEmployeeSkillSystemRating(
+  req: HttpRequest<unknown>,
+  userId: string
+): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadEmployeeSkills().then((records) => {
+      const body = req.body as { skillId?: string; systemRating?: number; level?: string };
+      if (!body?.skillId) {
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'skillId is required.' } }));
+        return;
+      }
+      const record = records.find((r) => r.userId === userId);
+      if (!record) {
+        sub.next(new HttpResponse({ status: 200, body: null }));
+        sub.complete();
+        return;
+      }
+      const idx = record.skills.findIndex((s) => s.skillId === body.skillId && !s.isDeleted);
+      if (idx === -1) {
+        sub.next(new HttpResponse({ status: 200, body: null }));
+        sub.complete();
+        return;
+      }
+      const updated: EmployeeSkill = {
+        ...record.skills[idx],
+        systemRating: body.systemRating ?? record.skills[idx].systemRating,
+        level: (body.level as EmployeeSkill['level']) ?? record.skills[idx].level,
+        lastUpdated: new Date().toISOString(),
+      };
+      record.skills = record.skills.map((s, i) => (i === idx ? updated : s));
+      if (employeeSkillsCache) {
+        employeeSkillsCache = employeeSkillsCache.map((r) =>
+          r.userId === userId ? record! : r
+        );
+      }
+      sub.next(new HttpResponse({ status: 200, body: updated }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── Certifications Handler ────────────────────────────────────────────────────
+
+function handleGetCertifications(
+  userId: string | null,
+  skillId: string | null
+): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadCertifications().then((certs) => {
+      let filtered = certs;
+      if (userId) filtered = filtered.filter((c) => c.userId === userId);
+      if (skillId) filtered = filtered.filter((c) => c.skillId === skillId);
+      sub.next(new HttpResponse({ status: 200, body: filtered }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── Project Assignments Handler ───────────────────────────────────────────────
+
+function handleGetProjectAssignments(userId: string | null): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadProjectAssignments().then((assignments) => {
+      const filtered = userId
+        ? assignments.filter((a) => a.userId === userId)
+        : assignments;
+      sub.next(new HttpResponse({ status: 200, body: filtered }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
+}
+
+// ── Projects Handler ──────────────────────────────────────────────────────────
+
+function handleGetProjects(): Observable<HttpResponse<unknown>> {
+  return new Observable((sub) => {
+    loadProjects().then((projects) => {
+      sub.next(new HttpResponse({ status: 200, body: projects }));
+      sub.complete();
+    });
+  }).pipe(delay(getSimulatedDelay()));
 }
