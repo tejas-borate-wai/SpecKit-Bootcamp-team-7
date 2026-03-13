@@ -89,12 +89,8 @@ export const routes: Routes = [
     path: 'team',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['Manager', 'Admin'] },
-    children: [
-      { path: '', loadComponent: placeholder },
-      { path: 'validation-queue', loadComponent: placeholder },
-      { path: 'employee/:userId', loadComponent: placeholder },
-      { path: 'availability', loadComponent: placeholder },
-    ],
+    loadChildren: () =>
+      import('./features/team/team.routes').then((m) => m.teamRoutes),
   },
   {
     path: 'projects',

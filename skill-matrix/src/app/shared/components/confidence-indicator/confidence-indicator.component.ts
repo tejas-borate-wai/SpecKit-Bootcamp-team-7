@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConfidenceLevel } from '../../models/dashboard.model';
+
+export type AnyConfidenceLevel = 'high' | 'medium' | 'low' | 'High' | 'Medium' | 'Low';
 
 @Component({
   selector: 'app-confidence-indicator',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <span class="indicator" [ngClass]="level">
+    <span class="indicator" [ngClass]="normalizedLevel">
       <span class="dot"></span>
       <span class="label">{{ labelText }}</span>
     </span>
@@ -35,10 +36,15 @@ import { ConfidenceLevel } from '../../models/dashboard.model';
   `],
 })
 export class ConfidenceIndicatorComponent {
-  @Input() level: ConfidenceLevel = 'low';
+  @Input() level: AnyConfidenceLevel = 'low';
+
+  get normalizedLevel(): string {
+    return this.level.toLowerCase();
+  }
 
   get labelText(): string {
-    const map: Record<ConfidenceLevel, string> = { high: 'High', medium: 'Medium', low: 'Low' };
-    return map[this.level];
+    const map: Record<string, string> = { high: 'High', medium: 'Medium', low: 'Low' };
+    return map[this.level.toLowerCase()] ?? 'Low';
   }
 }
+

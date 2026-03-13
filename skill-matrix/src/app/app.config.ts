@@ -11,6 +11,8 @@ import { sessionReducer } from './core/store/session/session.reducer';
 import { sessionHydrationMetaReducer } from './core/store/session/session.meta-reducer';
 import * as sessionEffects from './core/store/session/session.effects';
 import { mockApiInterceptor } from './core/interceptors/mock-api.interceptor';
+import { teamReducer } from './core/store/team/team.reducer';
+import * as teamEffects from './core/store/team/team.effects';
 
 const metaReducers: MetaReducer<any>[] = [sessionHydrationMetaReducer as MetaReducer<any>];
 
@@ -19,8 +21,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([mockApiInterceptor])),
     provideAnimationsAsync(),
-    provideStore({ session: sessionReducer }, { metaReducers }),
-    provideEffects(sessionEffects),
+    provideStore({ session: sessionReducer, team: teamReducer }, { metaReducers }),
+    provideEffects(sessionEffects, teamEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
   ],
 };

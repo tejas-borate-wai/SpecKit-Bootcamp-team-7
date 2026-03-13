@@ -23,6 +23,20 @@ export const mySkillsRoutes: Routes = [
       ),
   },
   {
+    path: ':skillId/peer-validation',
+    loadComponent: () =>
+      import('../team/peer-validation-form/peer-validation-form.component').then(
+        (m) => m.PeerValidationFormComponent
+      ),
+  },
+  {
+    path: 'peer-validation/:requestId',
+    loadComponent: () =>
+      import('../team/peer-validation-form/peer-validation-form.component').then(
+        (m) => m.PeerValidationFormComponent
+      ),
+  },
+  {
     path: ':skillId/edit',
     loadComponent: () =>
       import('./edit-skill/edit-skill.component').then(
