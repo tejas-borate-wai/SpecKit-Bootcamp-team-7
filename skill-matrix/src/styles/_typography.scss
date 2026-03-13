@@ -1,0 +1,54 @@
+@use 'breakpoints' as bp;
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+
+  @include bp.tablet {
+    font-size: 24px;
+  }
+
+  @include bp.mobile {
+    font-size: 20px;
+  }
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+
+  @include bp.tablet {
+    font-size: 18px;
+  }
+
+  @include bp.mobile {
+    font-size: 16px;
+  }
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 500;
+
+  @include bp.tablet {
+    font-size: 15px;
+  }
+
+  @include bp.mobile {
+    font-size: 14px;
+  }
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.label {
+  font-size: 12px;
+
+  @include bp.mobile {
+    font-size: 11px;
+  }
+}

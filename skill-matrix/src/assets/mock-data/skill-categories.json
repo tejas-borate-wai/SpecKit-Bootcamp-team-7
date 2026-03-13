@@ -1,0 +1,77 @@
+[
+  {
+    "categoryId": "cat-001",
+    "categoryName": "Development",
+    "description": "Software development skills across frontend, backend, and mobile platforms.",
+    "subCategories": [
+      { "subCategoryId": "sub-001", "subCategoryName": "Frontend" },
+      { "subCategoryId": "sub-002", "subCategoryName": "Backend" },
+      { "subCategoryId": "sub-003", "subCategoryName": "Mobile" }
+    ]
+  },
+  {
+    "categoryId": "cat-002",
+    "categoryName": "QA",
+    "description": "Quality assurance, testing methodologies, and test automation.",
+    "subCategories": [
+      { "subCategoryId": "sub-004", "subCategoryName": "Manual Testing" },
+      { "subCategoryId": "sub-005", "subCategoryName": "Test Automation" }
+    ]
+  },
+  {
+    "categoryId": "cat-003",
+    "categoryName": "Cloud",
+    "description": "Cloud platform expertise and cloud-native architecture.",
+    "subCategories": [
+      { "subCategoryId": "sub-006", "subCategoryName": "AWS" },
+      { "subCategoryId": "sub-007", "subCategoryName": "Azure" },
+      { "subCategoryId": "sub-008", "subCategoryName": "Google Cloud" }
+    ]
+  },
+  {
+    "categoryId": "cat-004",
+    "categoryName": "DevOps",
+    "description": "Continuous integration, deployment pipelines, and infrastructure automation.",
+    "subCategories": [
+      { "subCategoryId": "sub-009", "subCategoryName": "CI/CD" },
+      { "subCategoryId": "sub-010", "subCategoryName": "Containerization" },
+      { "subCategoryId": "sub-011", "subCategoryName": "Infrastructure" }
+    ]
+  },
+  {
+    "categoryId": "cat-005",
+    "categoryName": "Data Engineering",
+    "description": "Data pipelines, warehousing, databases, and large-scale data processing.",
+    "subCategories": [
+      { "subCategoryId": "sub-012", "subCategoryName": "Databases" },
+      { "subCategoryId": "sub-013", "subCategoryName": "Data Pipelines" }
+    ]
+  },
+  {
+    "categoryId": "cat-006",
+    "categoryName": "AI/ML",
+    "description": "Machine learning, deep learning, and artificial intelligence techniques.",
+    "subCategories": [
+      { "subCategoryId": "sub-014", "subCategoryName": "Machine Learning" },
+      { "subCategoryId": "sub-015", "subCategoryName": "Deep Learning" }
+    ]
+  },
+  {
+    "categoryId": "cat-007",
+    "categoryName": "Communication",
+    "description": "Interpersonal communication, presentation, and collaboration skills.",
+    "subCategories": [
+      { "subCategoryId": "sub-016", "subCategoryName": "Presentation" },
+      { "subCategoryId": "sub-017", "subCategoryName": "Written Communication" }
+    ]
+  },
+  {
+    "categoryId": "cat-008",
+    "categoryName": "Project Management",
+    "description": "Project planning, agile methodologies, and delivery management.",
+    "subCategories": [
+      { "subCategoryId": "sub-018", "subCategoryName": "Agile/Scrum" },
+      { "subCategoryId": "sub-019", "subCategoryName": "Planning & Execution" }
+    ]
+  }
+]

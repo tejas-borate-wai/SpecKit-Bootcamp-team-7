@@ -1,0 +1,125 @@
+<div class="page-header">
+  <h1>Proficiency Framework</h1>
+  <p class="subtitle">Edit descriptions and example criteria. Level names and scores are read-only.</p>
+</div>
+
+@if (loading$ | async) {
+  <div class="spinner-wrapper">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+} @else {
+  <!-- Desktop table -->
+  <div class="table-container desktop-only">
+    <table mat-table [dataSource]="(levels$ | async) ?? []" class="mat-elevation-z1">
+      <ng-container matColumnDef="levelName">
+        <th mat-header-cell *matHeaderCellDef>Level</th>
+        <td mat-cell *matCellDef="let level">
+          <span class="level-badge" [attr.data-level]="level.levelName.toLowerCase()">
+            {{ level.levelName }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="score">
+        <th mat-header-cell *matHeaderCellDef>Score</th>
+        <td mat-cell *matCellDef="let level" class="readonly-cell">{{ level.score }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="thresholdRange">
+        <th mat-header-cell *matHeaderCellDef>Threshold</th>
+        <td mat-cell *matCellDef="let level" class="readonly-cell">{{ thresholdRange(level) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let level">
+          @if (editingId === level.levelId) {
+            <mat-form-field appearance="outline" class="inline-field" [formGroup]="editForms[level.levelId]">
+              <textarea matInput formControlName="description" rows="2"></textarea>
+            </mat-form-field>
+          } @else {
+            <span class="editable-hint">{{ level.description }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="criteria">
+        <th mat-header-cell *matHeaderCellDef>Example Criteria</th>
+        <td mat-cell *matCellDef="let level">
+          @if (editingId === level.levelId) {
+            <mat-form-field appearance="outline" class="inline-field" [formGroup]="editForms[level.levelId]">
+              <textarea matInput formControlName="exampleCriteria" rows="2"></textarea>
+            </mat-form-field>
+          } @else {
+            <span class="editable-hint">{{ level.exampleCriteria }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let level">
+          @if (editingId === level.levelId) {
+            <button mat-icon-button color="primary" (click)="saveEdit(level)" matTooltip="Save">
+              <mat-icon>check</mat-icon>
+            </button>
+            <button mat-icon-button (click)="cancelEdit()" matTooltip="Cancel">
+              <mat-icon>close</mat-icon>
+            </button>
+          } @else {
+            <button mat-icon-button color="primary" (click)="startEdit(level)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [class.editing-row]="editingId === row.levelId"></tr>
+    </table>
+  </div>
+
+  <!-- Mobile cards -->
+  <div class="card-list mobile-only">
+    @for (level of (levels$ | async) ?? []; track level.levelId) {
+      <mat-card [class.editing-card]="editingId === level.levelId">
+        <mat-card-header>
+          <mat-card-title>
+            <span class="level-badge" [attr.data-level]="level.levelName.toLowerCase()">
+              {{ level.levelName }}
+            </span>
+          </mat-card-title>
+          <mat-card-subtitle>Score: {{ level.score }} · {{ thresholdRange(level) }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (editingId === level.levelId) {
+            <form [formGroup]="editForms[level.levelId]" class="mobile-form">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="2"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Example Criteria</mat-label>
+                <textarea matInput formControlName="exampleCriteria" rows="2"></textarea>
+              </mat-form-field>
+            </form>
+          } @else {
+            <p><strong>Description:</strong> {{ level.description }}</p>
+            <p><strong>Criteria:</strong> {{ level.exampleCriteria }}</p>
+          }
+        </mat-card-content>
+        <mat-card-actions align="end">
+          @if (editingId === level.levelId) {
+            <button mat-button color="primary" (click)="saveEdit(level)">Save</button>
+            <button mat-button (click)="cancelEdit()">Cancel</button>
+          } @else {
+            <button mat-icon-button color="primary" (click)="startEdit(level)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          }
+        </mat-card-actions>
+      </mat-card>
+    }
+  </div>
+}

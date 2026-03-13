@@ -27,12 +27,12 @@
 
 **Purpose**: Create mock data files and TypeScript interfaces needed by all subsequent phases
 
-- [ ] T001 [P] Create skill-exams.json mock data file with 5–10 questions per skill (Easy/Medium/Hard mix) in src/assets/mock-data/skill-exams.json
-- [ ] T002 [P] Create skill-test-attempts.json mock data file with sample past attempts in src/assets/mock-data/skill-test-attempts.json
-- [ ] T003 [P] Create SkillExam, ExamQuestion, and DifficultyLevel interfaces in src/app/shared/models/skill-exam.model.ts
-- [ ] T004 [P] Create AssessmentAttempt interface in src/app/shared/models/assessment-attempt.model.ts
-- [ ] T005 [P] Create AssessmentStatus type ('Not Attempted' | 'In Progress' | 'Completed') in src/app/shared/models/assessment-status.model.ts
-- [ ] T006 [P] Create ScoreCard interface in src/app/shared/models/score-card.model.ts
+- [X] T001 [P] Create skill-exams.json mock data file with 5–10 questions per skill (Easy/Medium/Hard mix) in src/assets/mock-data/skill-exams.json
+- [X] T002 [P] Create skill-test-attempts.json mock data file with sample past attempts in src/assets/mock-data/skill-test-attempts.json
+- [X] T003 [P] Create SkillExam, ExamQuestion, and DifficultyLevel interfaces in src/app/shared/models/skill-exam.model.ts
+- [X] T004 [P] Create AssessmentAttempt interface in src/app/shared/models/assessment-attempt.model.ts
+- [X] T005 [P] Create AssessmentStatus type ('Not Attempted' | 'In Progress' | 'Completed') in src/app/shared/models/assessment-status.model.ts
+- [X] T006 [P] Create ScoreCard interface in src/app/shared/models/score-card.model.ts
 
 ---
 
@@ -42,17 +42,17 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 [P] Implement scoring utility functions (calculateWeightedScore, calculateSystemRating, mapScoreToLevel, calculateLevelChange) as pure functions in src/app/shared/utils/scoring.util.ts
-- [ ] T008 [P] Implement Fisher-Yates shuffle utility (shuffleArray) in src/app/shared/utils/shuffle.util.ts
-- [ ] T009 [P] Extend MockApiInterceptor with GET /api/skill-exams, GET /api/skill-exams/:skillId, GET /api/skill-test-attempts, POST /api/skill-test-attempts, PUT /api/employee-skills/:userId endpoints in src/app/core/interceptors/mock-api.interceptor.ts
-- [ ] T010 [P] Create AssessmentService with getExams(), getExamBySkillId(), getAttempts(), submitAttempt() methods via HttpClient in src/app/core/services/assessment.service.ts
-- [ ] T011 [P] Create NgRx AssessmentsState and ActiveAssessmentState interfaces with initial state in src/app/core/store/assessments/assessments.state.ts
-- [ ] T012 [P] Create NgRx assessments actions (loadExams, loadAttempts, startAssessment, assessmentLoaded, nextQuestion, previousQuestion, selectAnswer, timerTick, timerExpired, submitAssessment, assessmentSubmitted, clearActiveAssessment) in src/app/core/store/assessments/assessments.actions.ts
-- [ ] T013 Create NgRx assessments reducer handling all actions with immutable state transitions in src/app/core/store/assessments/assessments.reducer.ts
-- [ ] T014 Create NgRx assessments effects (load exams, load attempts, start assessment with shuffle, timer interval with wall-clock correction, submit attempt, auto-submit on timer expiry) in src/app/core/store/assessments/assessments.effects.ts
-- [ ] T015 Create NgRx assessments selectors (selectExams, selectAttempts, selectActiveAssessment, selectCurrentQuestion, selectSelectedAnswer, selectProgress, selectTimerRemaining, selectAssessmentStatusBySkill, selectCanRetake, selectCooldownRemaining, selectScoreCard) in src/app/core/store/assessments/assessments.selectors.ts
-- [ ] T016 Register assessments NgRx feature state in application configuration (provideState in app.config.ts or feature route providers)
-- [ ] T017 Create assessments.routes.ts with Routes array and update src/app/app.routes.ts with lazy-loaded assessments route guarded by AuthGuard in src/app/features/assessments/assessments.routes.ts and src/app/app.routes.ts
+- [X] T007 [P] Implement scoring utility functions (calculateWeightedScore, calculateSystemRating, mapScoreToLevel, calculateLevelChange) as pure functions in src/app/shared/utils/scoring.util.ts
+- [X] T008 [P] Implement Fisher-Yates shuffle utility (shuffleArray) in src/app/shared/utils/shuffle.util.ts
+- [X] T009 [P] Extend MockApiInterceptor with GET /api/skill-exams, GET /api/skill-exams/:skillId, GET /api/skill-test-attempts, POST /api/skill-test-attempts, PUT /api/employee-skills/:userId endpoints in src/app/core/interceptors/mock-api.interceptor.ts
+- [X] T010 [P] Create AssessmentService with getExams(), getExamBySkillId(), getAttempts(), submitAttempt() methods via HttpClient in src/app/core/services/assessment.service.ts
+- [X] T011 [P] Create NgRx AssessmentsState and ActiveAssessmentState interfaces with initial state in src/app/core/store/assessments/assessments.state.ts
+- [X] T012 [P] Create NgRx assessments actions (loadExams, loadAttempts, startAssessment, assessmentLoaded, nextQuestion, previousQuestion, selectAnswer, timerTick, timerExpired, submitAssessment, assessmentSubmitted, clearActiveAssessment) in src/app/core/store/assessments/assessments.actions.ts
+- [X] T013 Create NgRx assessments reducer handling all actions with immutable state transitions in src/app/core/store/assessments/assessments.reducer.ts
+- [X] T014 Create NgRx assessments effects (load exams, load attempts, start assessment with shuffle, timer interval with wall-clock correction, submit attempt, auto-submit on timer expiry) in src/app/core/store/assessments/assessments.effects.ts
+- [X] T015 Create NgRx assessments selectors (selectExams, selectAttempts, selectActiveAssessment, selectCurrentQuestion, selectSelectedAnswer, selectProgress, selectTimerRemaining, selectAssessmentStatusBySkill, selectCanRetake, selectCooldownRemaining, selectScoreCard) in src/app/core/store/assessments/assessments.selectors.ts
+- [X] T016 Register assessments NgRx feature state in application configuration (provideState in app.config.ts or feature route providers)
+- [X] T017 Create assessments.routes.ts with Routes array and update src/app/app.routes.ts with lazy-loaded assessments route guarded by AuthGuard in src/app/features/assessments/assessments.routes.ts and src/app/app.routes.ts
 
 **Checkpoint**: Foundation ready — user story implementation can now begin in parallel
 
@@ -64,9 +64,9 @@
 
 **Independent Test**: Navigate to /assessments → verify list renders with correct statuses (Not Attempted / Completed) → apply category and status filters → click "Start Assessment" on a not-attempted skill → confirm navigation to /assessments/:skillId/take
 
-- [ ] T018 [US1] Create AssessmentsListComponent (standalone, ts/html/scss) with skills table showing skill name, category, assessment status badge, last score, last attempt date, and action buttons in src/app/features/assessments/assessments-list/assessments-list.component.ts
-- [ ] T019 [US1] Implement category filter dropdown (from skill-categories.json) and status filter dropdown (Not Attempted / Completed) in AssessmentsListComponent in src/app/features/assessments/assessments-list/assessments-list.component.ts
-- [ ] T020 [US1] Implement "Start Assessment" button for not-attempted skills with navigation to /assessments/:skillId/take, and "Assessment not available yet for this skill." empty state when no exam exists in src/app/features/assessments/assessments-list/assessments-list.component.ts
+- [X] T018 [US1] Create AssessmentsListComponent (standalone, ts/html/scss) with skills table showing skill name, category, assessment status badge, last score, last attempt date, and action buttons in src/app/features/assessments/assessments-list/assessments-list.component.ts
+- [X] T019 [US1] Implement category filter dropdown (from skill-categories.json) and status filter dropdown (Not Attempted / Completed) in AssessmentsListComponent in src/app/features/assessments/assessments-list/assessments-list.component.ts
+- [X] T020 [US1] Implement "Start Assessment" button for not-attempted skills with navigation to /assessments/:skillId/take, and "Assessment not available yet for this skill." empty state when no exam exists in src/app/features/assessments/assessments-list/assessments-list.component.ts
 
 **Checkpoint**: User Story 1 fully functional — users can browse and start assessments
 
@@ -78,12 +78,12 @@
 
 **Independent Test**: Start an assessment → verify questions appear one at a time in randomized order → navigate Previous/Next and confirm answers are preserved → verify timer counts down → submit test and confirm navigation to result screen → verify auto-submit on timer expiry displays "Time's up!" message
 
-- [ ] T021 [P] [US2] Create CountdownTimerComponent (standalone, presentational) with Input for remaining seconds, MM:SS display format, and compact badge variant for mobile in src/app/shared/components/countdown-timer/countdown-timer.component.ts
-- [ ] T022 [P] [US2] Create ProgressBarComponent (standalone, presentational) with Inputs for current and total, displaying "Question X of Y" with visual progress bar and aria-valuenow/aria-valuemax in src/app/shared/components/progress-bar/progress-bar.component.ts
-- [ ] T023 [US2] Create TakeAssessmentComponent (standalone, ts/html/scss) with single-question display, 4 radio-button answer options, CountdownTimer, and ProgressBar in src/app/features/assessments/take-assessment/take-assessment.component.ts
-- [ ] T024 [US2] Implement Previous/Next navigation dispatching NgRx actions with answer preservation (selectAnswer action on option click, previousQuestion/nextQuestion actions on button click) in src/app/features/assessments/take-assessment/take-assessment.component.ts
-- [ ] T025 [US2] Implement timer countdown effect using RxJS interval with wall-clock correction (timerDeadline - Date.now()) dispatching timerTick and autoSubmit actions in src/app/core/store/assessments/assessments.effects.ts
-- [ ] T026 [US2] Implement "Submit Test" button dispatching submitAssessment action with navigation to /assessments/:skillId/result, and timer expiry auto-submit with "Time's up! Your test has been auto-submitted." message in src/app/features/assessments/take-assessment/take-assessment.component.ts
+- [X] T021 [P] [US2] Create CountdownTimerComponent (standalone, presentational) with Input for remaining seconds, MM:SS display format, and compact badge variant for mobile in src/app/shared/components/countdown-timer/countdown-timer.component.ts
+- [X] T022 [P] [US2] Create ProgressBarComponent (standalone, presentational) with Inputs for current and total, displaying "Question X of Y" with visual progress bar and aria-valuenow/aria-valuemax in src/app/shared/components/progress-bar/progress-bar.component.ts
+- [X] T023 [US2] Create TakeAssessmentComponent (standalone, ts/html/scss) with single-question display, 4 radio-button answer options, CountdownTimer, and ProgressBar in src/app/features/assessments/take-assessment/take-assessment.component.ts
+- [X] T024 [US2] Implement Previous/Next navigation dispatching NgRx actions with answer preservation (selectAnswer action on option click, previousQuestion/nextQuestion actions on button click) in src/app/features/assessments/take-assessment/take-assessment.component.ts
+- [X] T025 [US2] Implement timer countdown effect using RxJS interval with wall-clock correction (timerDeadline - Date.now()) dispatching timerTick and autoSubmit actions in src/app/core/store/assessments/assessments.effects.ts
+- [X] T026 [US2] Implement "Submit Test" button dispatching submitAssessment action with navigation to /assessments/:skillId/result, and timer expiry auto-submit with "Time's up! Your test has been auto-submitted." message in src/app/features/assessments/take-assessment/take-assessment.component.ts
 
 **Checkpoint**: User Story 2 fully functional — users can take a complete timed assessment
 
@@ -95,9 +95,9 @@
 
 **Independent Test**: Complete an assessment → verify score card shows test score as "X% (Y/Z points)" → verify certification bonus line shows "+20% cert bonus" or "No certification" → verify project experience line → verify system rating → verify level badge and level change indicator
 
-- [ ] T027 [US3] Create AssessmentResultComponent (standalone, ts/html/scss) with score card layout displaying test score percentage with earned/max points in src/app/features/assessments/assessment-result/assessment-result.component.ts
-- [ ] T028 [US3] Display certification bonus status ("+20% cert bonus" or "No certification") and project experience bonus status ("+20% project exp" or "No project tagged") in AssessmentResultComponent in src/app/features/assessments/assessment-result/assessment-result.component.ts
-- [ ] T029 [US3] Display system rating result, final rating (or "Awaiting manager review" if sources incomplete), proficiency level badge (Beginner/Intermediate/Advanced/Expert), and level change indicator (e.g., "⬆ Intermediate → Advanced") in AssessmentResultComponent in src/app/features/assessments/assessment-result/assessment-result.component.ts
+- [X] T027 [US3] Create AssessmentResultComponent (standalone, ts/html/scss) with score card layout displaying test score percentage with earned/max points in src/app/features/assessments/assessment-result/assessment-result.component.ts
+- [X] T028 [US3] Display certification bonus status ("+20% cert bonus" or "No certification") and project experience bonus status ("+20% project exp" or "No project tagged") in AssessmentResultComponent in src/app/features/assessments/assessment-result/assessment-result.component.ts
+- [X] T029 [US3] Display system rating result, final rating (or "Awaiting manager review" if sources incomplete), proficiency level badge (Beginner/Intermediate/Advanced/Expert), and level change indicator (e.g., "⬆ Intermediate → Advanced") in AssessmentResultComponent in src/app/features/assessments/assessment-result/assessment-result.component.ts
 
 **Checkpoint**: User Story 3 fully functional — users see complete score breakdown after every assessment
 
@@ -109,8 +109,8 @@
 
 **Independent Test**: Complete an assessment with known difficulty levels → verify earned points match sum of correct-answer weights → verify max points equal sum of all question weights → verify percentage equals (earned / max) × 100
 
-- [ ] T030 [US4] Integrate calculateWeightedScore from scoring.util.ts into the submit assessment effect to compute earnedPoints, maxPoints, and testScore from active assessment answers in src/app/core/store/assessments/assessments.effects.ts
-- [ ] T031 [US4] Create selectScoreCard NgRx selector that derives testScore, earnedPoints, maxPoints from assessment submission data and feeds to AssessmentResultComponent in src/app/core/store/assessments/assessments.selectors.ts
+- [X] T030 [US4] Integrate calculateWeightedScore from scoring.util.ts into the submit assessment effect to compute earnedPoints, maxPoints, and testScore from active assessment answers in src/app/core/store/assessments/assessments.effects.ts
+- [X] T031 [US4] Create selectScoreCard NgRx selector that derives testScore, earnedPoints, maxPoints from assessment submission data and feeds to AssessmentResultComponent in src/app/core/store/assessments/assessments.selectors.ts
 
 **Checkpoint**: User Story 4 fully functional — difficulty-weighted scoring is accurate for all question combinations
 
@@ -122,9 +122,9 @@
 
 **Independent Test**: Complete an assessment → attempt to retake immediately → verify "You can retake this assessment in X hours Y minutes" message → verify "Retake" button appears after 24 hours → verify retake starts with freshly randomized questions
 
-- [ ] T032 [US5] Implement selectCanRetake and selectCooldownRemaining selectors checking 24-hour window from latest attempt date per skill in src/app/core/store/assessments/assessments.selectors.ts
-- [ ] T033 [US5] Display "Retake" button for completed skills with elapsed cooldown and last score/attempt date in AssessmentsListComponent in src/app/features/assessments/assessments-list/assessments-list.component.ts
-- [ ] T034 [US5] Display "You can retake this assessment in X hours Y minutes." cooldown message when retake is attempted before 24-hour window elapses in src/app/features/assessments/assessments-list/assessments-list.component.ts
+- [X] T032 [US5] Implement selectCanRetake and selectCooldownRemaining selectors checking 24-hour window from latest attempt date per skill in src/app/core/store/assessments/assessments.selectors.ts
+- [X] T033 [US5] Display "Retake" button for completed skills with elapsed cooldown and last score/attempt date in AssessmentsListComponent in src/app/features/assessments/assessments-list/assessments-list.component.ts
+- [X] T034 [US5] Display "You can retake this assessment in X hours Y minutes." cooldown message when retake is attempted before 24-hour window elapses in src/app/features/assessments/assessments-list/assessments-list.component.ts
 
 **Checkpoint**: User Story 5 fully functional — retake cooldown is enforced and displayed correctly
 
@@ -136,9 +136,9 @@
 
 **Independent Test**: Complete an assessment for a skill with a valid certification and completed project → verify system rating equals (testScore × 0.60) + (100 × 0.20) + (100 × 0.20) → complete for a skill without cert/project → verify system rating equals (testScore × 0.60) + 0 + 0
 
-- [ ] T035 [US6] Implement certification bonus check in submit assessment effect: read certifications for current user + skill via GET /api/certifications, verify non-expired expiryDate in src/app/core/store/assessments/assessments.effects.ts
-- [ ] T036 [US6] Implement project experience bonus check in submit assessment effect: read project-assignments via GET /api/project-assignments, cross-reference with projects.json for completed project containing the skill in src/app/core/store/assessments/assessments.effects.ts
-- [ ] T037 [US6] Compute system rating via calculateSystemRating utility and update employee skill record via PUT /api/employee-skills/:userId after assessment submission in src/app/core/store/assessments/assessments.effects.ts
+- [X] T035 [US6] Implement certification bonus check in submit assessment effect: read certifications for current user + skill via GET /api/certifications, verify non-expired expiryDate in src/app/core/store/assessments/assessments.effects.ts
+- [X] T036 [US6] Implement project experience bonus check in submit assessment effect: read project-assignments via GET /api/project-assignments, cross-reference with projects.json for completed project containing the skill in src/app/core/store/assessments/assessments.effects.ts
+- [X] T037 [US6] Compute system rating via calculateSystemRating utility and update employee skill record via PUT /api/employee-skills/:userId after assessment submission in src/app/core/store/assessments/assessments.effects.ts
 
 **Checkpoint**: User Story 6 fully functional — system rating accurately reflects test score, certification, and project experience
 
@@ -150,8 +150,8 @@
 
 **Independent Test**: Complete multiple assessments for a skill → navigate to test history → verify all attempts listed with correct date, score, points, and time → verify empty state message for skills with no history
 
-- [ ] T038 [US7] Create test history section displaying all past attempts (attempt date, score %, earned/max points, time taken) as a table or card list in AssessmentResultComponent in src/app/features/assessments/assessment-result/assessment-result.component.ts
-- [ ] T039 [US7] Display "No attempts have been made" empty state when no assessment history exists for a skill in src/app/features/assessments/assessment-result/assessment-result.component.ts
+- [X] T038 [US7] Create test history section displaying all past attempts (attempt date, score %, earned/max points, time taken) as a table or card list in AssessmentResultComponent in src/app/features/assessments/assessment-result/assessment-result.component.ts
+- [X] T039 [US7] Display "No attempts have been made" empty state when no assessment history exists for a skill in src/app/features/assessments/assessment-result/assessment-result.component.ts
 
 **Checkpoint**: User Story 7 fully functional — complete test history is visible and accurate
 
@@ -163,10 +163,10 @@
 
 **Independent Test**: Resize browser to desktop (1280px+) → verify centered 720px question card, timer top-right, full-width progress bar → resize to tablet (768px) → verify full-width card, 44px+ tap targets → resize to mobile (<480px) → verify full-screen card, stacked options, compact timer badge, sticky Previous/Next at bottom
 
-- [ ] T040 [P] [US8] Implement desktop layout (centered max-width 720px question card, timer top-right, full-width progress bar) using SCSS breakpoint variables in src/app/features/assessments/take-assessment/take-assessment.component.scss
-- [ ] T041 [P] [US8] Implement tablet layout (full-width question card, ≥44px tap targets for answer options and navigation buttons) using Angular CDK BreakpointObserver in src/app/features/assessments/take-assessment/take-assessment.component.scss
-- [ ] T042 [US8] Implement mobile layout (full-screen question card, vertically stacked answer options, compact timer badge, sticky full-width Previous/Next buttons at viewport bottom) in src/app/features/assessments/take-assessment/take-assessment.component.scss
-- [ ] T043 [US8] Implement responsive assessments list (desktop full table → tablet reduced columns → mobile card list) in src/app/features/assessments/assessments-list/assessments-list.component.scss
+- [X] T040 [P] [US8] Implement desktop layout (centered max-width 720px question card, timer top-right, full-width progress bar) using SCSS breakpoint variables in src/app/features/assessments/take-assessment/take-assessment.component.scss
+- [X] T041 [P] [US8] Implement tablet layout (full-width question card, ≥44px tap targets for answer options and navigation buttons) using Angular CDK BreakpointObserver in src/app/features/assessments/take-assessment/take-assessment.component.scss
+- [X] T042 [US8] Implement mobile layout (full-screen question card, vertically stacked answer options, compact timer badge, sticky full-width Previous/Next buttons at viewport bottom) in src/app/features/assessments/take-assessment/take-assessment.component.scss
+- [X] T043 [US8] Implement responsive assessments list (desktop full table → tablet reduced columns → mobile card list) in src/app/features/assessments/assessments-list/assessments-list.component.scss
 
 **Checkpoint**: All assessment screens render correctly at all three breakpoints
 
@@ -176,9 +176,9 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T044 [P] Add loading spinner/skeleton states for exam data fetch and attempt history load across all assessment screens
-- [ ] T045 [P] Add error state handling for interceptor failures and empty states (no exams, no attempts) with toast notifications
-- [ ] T046 [P] Add Angular Animations for question slide transitions (Previous/Next) and score card reveal animation
+- [X] T044 [P] Add loading spinner/skeleton states for exam data fetch and attempt history load across all assessment screens
+- [X] T045 [P] Add error state handling for interceptor failures and empty states (no exams, no attempts) with toast notifications
+- [X] T046 [P] Add Angular Animations for question slide transitions (Previous/Next) and score card reveal animation
 - [ ] T047 Run quickstart.md verification checklist to validate all screens, timer, scoring, cooldown, responsive, and state management in specs/004-skill-assessments/quickstart.md
 
 ---

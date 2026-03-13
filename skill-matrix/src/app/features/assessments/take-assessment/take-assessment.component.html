@@ -1,0 +1,97 @@
+<div class="take-assessment-page">
+  <!-- Loading state -->
+  <ng-container *ngIf="!(activeAssessment$ | async)">
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Loading assessment...</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="activeAssessment$ | async as active">
+    <!-- Timer expiry message -->
+    <div *ngIf="timedOutMessage" class="timeout-banner" role="alert">
+      {{ timedOutMessage }}
+    </div>
+
+    <!-- Assessment header -->
+    <div class="assessment-header">
+      <div class="header-left">
+        <button class="btn btn-ghost btn-icon" (click)="onLeave()" aria-label="Leave assessment">
+          ← Back to Assessments
+        </button>
+      </div>
+      <div class="header-right">
+        <app-countdown-timer
+          [remainingSeconds]="(timerRemaining$ | async) ?? 0"
+          [compact]="false"
+        ></app-countdown-timer>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-section">
+      <app-progress-bar
+        [current]="(progress$ | async)?.current ?? 1"
+        [total]="(progress$ | async)?.total ?? 1"
+      ></app-progress-bar>
+    </div>
+
+    <!-- Question card -->
+    <div class="question-card" *ngIf="currentQuestion$ | async as q" [@questionSlide]="active.currentQuestionIndex">
+      <div class="difficulty-badge" [ngClass]="'diff-' + q.difficultyLevel.toLowerCase()">
+        {{ q.difficultyLevel }}
+      </div>
+      <h2 class="question-text">{{ q.questionText }}</h2>
+
+      <div class="options-list" role="radiogroup" [attr.aria-label]="'Answer options for: ' + q.questionText">
+        <label
+          *ngFor="let opt of q.options; let i = index"
+          class="option-label"
+          [class.selected]="(selectedAnswer$ | async) === opt"
+        >
+          <input
+            type="radio"
+            [name]="q.questionId"
+            [value]="opt"
+            [checked]="(selectedAnswer$ | async) === opt"
+            (change)="onSelectAnswer(q.questionId, opt)"
+            class="option-radio"
+            [attr.aria-label]="opt"
+          />
+          <span class="option-marker">{{ 'ABCD'[i] }}</span>
+          <span class="option-text">{{ opt }}</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+      <button
+        class="btn btn-secondary"
+        (click)="onPrevious()"
+        [disabled]="active.currentQuestionIndex === 0"
+        aria-label="Previous question"
+      >
+        ← Previous
+      </button>
+      <div class="nav-spacer"></div>
+      <button
+        *ngIf="active.currentQuestionIndex < active.shuffledQuestionIds.length - 1"
+        class="btn btn-primary"
+        (click)="onNext()"
+        aria-label="Next question"
+      >
+        Next →
+      </button>
+      <button
+        *ngIf="active.currentQuestionIndex === active.shuffledQuestionIds.length - 1"
+        class="btn btn-submit"
+        (click)="onSubmit()"
+        [disabled]="active.submitted || isSubmitting"
+        aria-label="Submit test"
+      >
+        {{ isSubmitting ? 'Submitting...' : 'Submit Test' }}
+      </button>
+    </div>
+  </ng-container>
+</div>

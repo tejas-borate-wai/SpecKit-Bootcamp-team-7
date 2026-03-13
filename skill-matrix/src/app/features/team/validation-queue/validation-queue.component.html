@@ -1,0 +1,94 @@
+<section class="validation-queue">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/team" class="back-link">← Team Overview</a>
+      <h1 class="page-title">Validation Queue</h1>
+    </div>
+  </div>
+
+  @if (loading$ | async) {
+    <div class="loading-state">Loading validation queue...</div>
+  }
+
+  @if (error$ | async; as error) {
+    <div class="error-state">{{ error }}</div>
+  }
+
+  @if (!(loading$ | async) && !(error$ | async)) {
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sort('employeeName')">
+              Employee
+              <span class="sort-icon" [class.active]="sortColumn === 'employeeName'">
+                {{ sortColumn === 'employeeName' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th>Department</th>
+            <th class="sortable" (click)="sort('skillName')">
+              Skill
+              <span class="sort-icon" [class.active]="sortColumn === 'skillName'">
+                {{ sortColumn === 'skillName' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th>Self Rating</th>
+            <th>Evidence</th>
+            <th>Peer Validation</th>
+            <th class="sortable" (click)="sort('submittedDate')">
+              Submitted
+              <span class="sort-icon" [class.active]="sortColumn === 'submittedDate'">
+                {{ sortColumn === 'submittedDate' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of sortedQueue; track item.submissionId) {
+            <tr class="data-row">
+              <td class="name-cell">
+                <span class="employee-name">{{ item.employeeName }}</span>
+              </td>
+              <td>{{ item.department }}</td>
+              <td><strong>{{ item.skillName }}</strong></td>
+              <td class="center-cell">{{ item.selfRating }}/4</td>
+              <td>
+                <div class="evidence-chips">
+                  @if (item.hasCertification) {
+                    <span class="chip chip-cert" title="Has certification">🏅 Cert</span>
+                  }
+                  @if (item.hasProjectExperience) {
+                    <span class="chip chip-project" title="Has project experience">💼 Project</span>
+                  }
+                  @if (!item.hasCertification && !item.hasProjectExperience) {
+                    <span class="none-label">None</span>
+                  }
+                </div>
+              </td>
+              <td>
+                <span [class]="peerStatusClass(item.peerValidationStatus)" class="peer-status">
+                  {{ peerStatusLabel(item.peerValidationStatus) }}
+                </span>
+                @if (item.peerRating !== null) {
+                  <span class="peer-rating"> ({{ item.peerRating }})</span>
+                }
+              </td>
+              <td class="date-cell">{{ item.submittedDate }}</td>
+              <td>
+                <a [routerLink]="['/team/validation', item.submissionId]" class="btn btn-sm btn-primary">
+                  Review
+                </a>
+              </td>
+            </tr>
+          }
+          @empty {
+            <tr>
+              <td colspan="8" class="empty-state">No pending submissions in the queue.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
