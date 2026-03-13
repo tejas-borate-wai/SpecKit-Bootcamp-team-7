@@ -1,9 +1,9 @@
 @if (navItems$ | async; as items) {
   <nav class="sidebar-nav" [class.collapsed]="collapsed">
-    @for (section of getSections(items); track section) {
+    @for (section of getSections(items); track section; let i = $index) {
       @if (section) {
         @if (!collapsed) {
-          <div class="section-header">{{ section }}</div>
+          <div class="section-divider"></div>
         }
       }
       @for (item of getItemsForSection(items, section); track item.route) {
@@ -15,22 +15,24 @@
                 <span class="nav-label">{{ item.label }}</span>
               </mat-expansion-panel-header>
               @for (child of item.children; track child.route) {
-                <a mat-list-item [routerLink]="child.route" routerLinkActive="active"
-                   (click)="onItemClick()">
-                  <mat-icon>{{ child.icon }}</mat-icon>
+                <a class="nav-item child-item" [routerLink]="child.route" routerLinkActive="active"
+                   (click)="onItemClick()"
+                   [routerLinkActiveOptions]="{exact: true}">
                   <span class="nav-label">{{ child.label }}</span>
                 </a>
               }
             </mat-expansion-panel>
           } @else {
-            <a mat-list-item [routerLink]="item.route" routerLinkActive="active"
+            <a class="nav-item" [routerLink]="item.route" routerLinkActive="active"
                [matTooltip]="item.label" matTooltipPosition="right"
-               (click)="onItemClick()">
+               (click)="onItemClick()"
+               [routerLinkActiveOptions]="{exact: true}">
               <mat-icon>{{ item.icon }}</mat-icon>
             </a>
           }
         } @else {
-          <a mat-list-item [routerLink]="item.route" routerLinkActive="active"
+          <a class="nav-item" [routerLink]="item.route" routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: true}"
              [matTooltip]="collapsed ? item.label : ''" matTooltipPosition="right"
              (click)="onItemClick()">
             <mat-icon>{{ item.icon }}</mat-icon>

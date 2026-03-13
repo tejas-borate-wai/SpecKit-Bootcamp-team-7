@@ -1,63 +1,97 @@
 .sidebar-nav {
-  padding: 8px 0;
+  padding: 12px 16px;
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  /* Custom Scrollbar for sleek UI */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+  }
 
   &.collapsed {
+    padding: 12px 8px;
     .nav-label {
       display: none;
     }
 
-    a[mat-list-item] {
+    .nav-item {
       justify-content: center;
-      padding: 0 8px;
+      padding: 0;
+      margin: 0 auto;
+      width: 44px;
+      height: 44px;
+      
+      mat-icon {
+        margin: 0;
+      }
     }
   }
 }
 
+.section-divider {
+  height: 1px;
+  background-color: #e2e8f0; /* Soft gray line */
+  margin: 12px 0;
+  flex-shrink: 0;
+}
+
 .section-header {
-  padding: 20px 16px 6px;
-  font-size: 0.6875rem;
+  padding: 8px 16px 4px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   color: #94a3b8;
 }
 
-a[mat-list-item] {
+.nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 44px;
-  border-radius: 8px;
-  margin: 2px 8px;
-  color: #475569;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 6px;
+  margin: 2px 0;
+  color: #334155;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  cursor: pointer;
 
   mat-icon {
-    color: #64748b;
+    color: #475569;
     flex-shrink: 0;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    transition: color 0.2s ease;
   }
 
   .nav-label {
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: normal;
   }
 
   &.active {
-    background: var(--color-primary);
-    color: #fff;
-    box-shadow: 0 1px 3px rgba(60, 131, 246, 0.3);
+    background: #3B82F6; /* Matches the vibrant blue in Figma */
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 
     mat-icon {
-      color: #fff;
+      color: #ffffff;
     }
 
     .nav-label {
@@ -67,12 +101,18 @@ a[mat-list-item] {
 
   &:hover:not(.active) {
     background-color: #f1f5f9;
-    color: #1e293b;
+    color: #0f172a;
 
     mat-icon {
-      color: #475569;
+      color: #334155;
     }
   }
+}
+
+.child-item {
+  padding-left: 56px;
+  height: 40px;
+  font-size: 0.875rem;
 }
 
 .nav-expansion {
@@ -85,12 +125,25 @@ a[mat-list-item] {
 
   mat-expansion-panel-header {
     padding: 0 16px;
-    height: 44px;
-    font-size: 0.875rem;
+    height: 48px !important;
+    font-family: inherit;
+    border-radius: 8px;
+    margin: 2px 4px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #f1f5f9;
+    }
 
     mat-icon {
-      margin-right: 8px;
+      margin-right: 16px;
       color: #64748b;
+    }
+    
+    .nav-label {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: #475569;
     }
   }
 }

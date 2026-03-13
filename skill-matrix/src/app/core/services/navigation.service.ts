@@ -8,15 +8,17 @@ import { selectUserRole } from '../store/session/session.selectors';
 const NAVIGATION_CONFIG: NavItem[] = [
   // MAIN section — all roles
   { label: 'Dashboard', icon: 'dashboard', route: '/dashboard', roles: ['Employee', 'Manager', 'Admin'] },
-  { label: 'My Skills', icon: 'psychology', route: '/my-skills', roles: ['Employee', 'Manager', 'Admin'] },
-  { label: 'Assessments', icon: 'quiz', route: '/assessments', roles: ['Employee', 'Manager', 'Admin'] },
-  { label: 'Certifications', icon: 'verified', route: '/certifications', roles: ['Employee', 'Manager', 'Admin'] },
-  { label: 'Notifications', icon: 'notifications', route: '/notifications', roles: ['Employee', 'Manager', 'Admin'] },
+  { label: 'My Skills', icon: 'star', route: '/my-skills', roles: ['Employee', 'Manager', 'Admin'] },
+  { label: 'Assessments', icon: 'assignment', route: '/assessments', roles: ['Employee', 'Manager', 'Admin'] },
+  { label: 'Certifications', icon: 'workspace_premium', route: '/certifications', roles: ['Employee', 'Manager', 'Admin'] },
+  
+  // Settings or other common items... 
+  { label: 'Settings', icon: 'settings', route: '/settings', roles: ['Employee', 'Manager', 'Admin'], section: 'SETTINGS' },
 
   // TEAM section — Manager + Admin
   { label: 'Team Skills', icon: 'groups', route: '/team', roles: ['Manager', 'Admin'], section: 'TEAM' },
   { label: 'Skill Validation Queue', icon: 'fact_check', route: '/team/validation-queue', roles: ['Manager', 'Admin'], section: 'TEAM' },
-  { label: 'Project Matching', icon: 'match', route: '/team/availability', roles: ['Manager', 'Admin'], section: 'TEAM' },
+  { label: 'Project Matching', icon: 'handshake', route: '/team/availability', roles: ['Manager', 'Admin'], section: 'TEAM' },
 
   // PROJECTS section — Manager + Admin
   { label: 'Projects', icon: 'folder_special', route: '/projects', roles: ['Manager', 'Admin'], section: 'PROJECTS' },

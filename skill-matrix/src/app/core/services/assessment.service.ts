@@ -10,9 +10,9 @@ export class AssessmentService {
 
   private get userId(): string {
     try {
-      const raw = localStorage.getItem('session');
+      const raw = localStorage.getItem('skillmatrix_session');
       if (!raw) return '';
-      return (JSON.parse(raw) as { id?: string }).id ?? '';
+      return ((JSON.parse(raw) as { user?: { id?: string } }).user?.id) ?? '';
     } catch {
       return '';
     }
