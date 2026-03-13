@@ -140,7 +140,7 @@
 - [ ] T044 [US4] Create header component in `src/app/shared/components/header/header.component.ts` with logo + page title (left), search placeholder (center, desktop only), notification bell with badge placeholder + avatar component with dropdown (right) per FR-019/FR-020
 - [ ] T045 [US4] Create header component template in `src/app/shared/components/header/header.component.html` with Material toolbar, avatar dropdown showing profile name, role badge, and Logout button that dispatches Logout action per FR-020
 - [ ] T046 [US4] Create header component styles in `src/app/shared/components/header/header.component.scss` with responsive layout per Section 18.2 (desktop: full header; tablet: hidden search; mobile: compact)
-- [ ] T047 [US4] Add logout effect in `src/app/core/store/session/session.effects.ts`: on Logout action, clear localStorage key `skillmatrix_session` and navigate to /login
+- [ ] T047 [US4] Add logout effect in `src/app/core/store/session/session.effects.ts`: on Logout action, clear localStorage keys `skillmatrix_session` and `skillmatrix_last_route`, then navigate to /login using `router.navigate(['/login'], { replaceUrl: true })` to replace browser history and prevent back-button bypass per US4-AC2
 - [ ] T048 [US4] Write unit test for header component in `src/app/shared/components/header/header.component.spec.ts`: verify avatar dropdown renders profile name and role badge, Logout button dispatches Logout action
 
 **Checkpoint**: User Story 4 complete — full logout flow clears session and redirects; avatar dropdown with profile info works.
@@ -173,7 +173,8 @@
 
 ### Implementation for User Story 6
 
-- [ ] T054 [US6] Add Restore Session effect in `src/app/core/store/session/session.effects.ts`: on app init, dispatch Restore Session action; effect reads localStorage key `skillmatrix_session`, validates data integrity (role field exists, required fields present), dispatches Restore Session Success or Failure per research.md Decision 6
+- [ ] T054 [US6] Add Restore Session effect in `src/app/core/store/session/session.effects.ts`: on app init, dispatch Restore Session action; effect reads localStorage key `skillmatrix_session`, validates data integrity (role field exists, required fields present), dispatches Restore Session Success or Failure per research.md Decision 6; on Restore Session Success, read `skillmatrix_last_route` from localStorage and navigate to that route (with /dashboard fallback if absent, invalid path, or role-restricted per FR-009)
+- [ ] T054a [US6] Subscribe to `Router.events` (filtering `NavigationEnd`) in `src/app/app.component.ts` and write `event.urlAfterRedirects` to `localStorage['skillmatrix_last_route']` on each navigation, excluding /login and /unauthorized; persists the last visited route for FR-009 session restore
 - [ ] T055 [US6] Update AuthGuard in `src/app/core/auth/auth.guard.ts` to handle race condition: if store is not yet hydrated, wait for first emission of selectIsAuthenticated before deciding redirect
 - [ ] T056 [US6] Handle corrupted localStorage data: if stored JSON is unparseable or missing required fields (role, id, email), clear localStorage and dispatch Restore Session Failure per spec edge cases
 - [ ] T057 [US6] Write unit test for session hydration meta-reducer in `src/app/core/store/session/session.meta-reducer.spec.ts`: verify rehydration from valid localStorage, graceful handling of corrupted data, clearance on logout
@@ -187,7 +188,7 @@
 **Purpose**: Final wiring, edge cases, and validation across all stories
 
 - [ ] T058 Handle wildcard/404 routes in `src/app/app.routes.ts`: unknown routes redirect to /dashboard (for authenticated users) or /login (for unauthenticated) per spec edge cases
-- [ ] T059 Add toast notification service in `src/app/shared/components/toast/toast.component.ts` for permission-denied scenarios: show "You do not have permission to perform this action." toast per FR-026
+- [ ] T059 Add toast notification service in `src/app/shared/components/toast/toast.component.ts` and wire HTTP 403 responses to trigger it; extend `src/app/core/interceptors/mock-api.interceptor.ts` to detect 403 responses and call the toast service with message "You do not have permission to perform this action." per FR-026 — this is the exclusive trigger for data-layer permission denials; route guard redirects to /unauthorized remain separate per FR-012
 - [ ] T060 Verify all 10+ mock users in `src/assets/mock-data/users.json` are loadable and each role produces correct navigation experience per quickstart.md test credentials
 - [ ] T061 Run quickstart.md verification checklist: login valid/invalid/empty, sidebar per role, guard redirects, session persistence, logout, responsive sidebar at 375px/768px/1280px/1440px
 
