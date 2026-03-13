@@ -739,7 +739,7 @@ function getCurrentUserId(): string | null {
 // ── Skill Exams Handlers ─────────────────────────────────────────────────────
 
 function handleGetAllExams(): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadSkillExams().then((exams) => {
       sub.next(new HttpResponse({ status: 200, body: exams }));
       sub.complete();
@@ -748,7 +748,7 @@ function handleGetAllExams(): Observable<HttpResponse<unknown>> {
 }
 
 function handleGetExamBySkillId(skillId: string): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadSkillExams().then((exams) => {
       const exam = exams.find((e) => e.skillId === skillId);
       if (!exam) {
@@ -764,7 +764,7 @@ function handleGetExamBySkillId(skillId: string): Observable<HttpResponse<unknow
 // ── POST /api/skill-test-attempts ────────────────────────────────────────────
 
 function handlePostSkillTestAttempt(req: HttpRequest<unknown>): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadTestAttempts().then((attempts) => {
       const body = req.body as AssessmentAttempt;
       if (!body?.attemptId || !body.userId || !body.skillId) {
@@ -784,7 +784,7 @@ function handleUpdateEmployeeSkillSystemRating(
   req: HttpRequest<unknown>,
   userId: string
 ): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadEmployeeSkills().then((records) => {
       const body = req.body as { skillId?: string; systemRating?: number; level?: string };
       if (!body?.skillId) {
@@ -827,7 +827,7 @@ function handleGetCertifications(
   userId: string | null,
   skillId: string | null
 ): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadCertifications().then((certs) => {
       let filtered = certs;
       if (userId) filtered = filtered.filter((c) => c.userId === userId);
@@ -841,7 +841,7 @@ function handleGetCertifications(
 // ── Project Assignments Handler ───────────────────────────────────────────────
 
 function handleGetProjectAssignments(userId: string | null): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadProjectAssignments().then((assignments) => {
       const filtered = userId
         ? assignments.filter((a) => a.userId === userId)
@@ -855,7 +855,7 @@ function handleGetProjectAssignments(userId: string | null): Observable<HttpResp
 // ── Projects Handler ──────────────────────────────────────────────────────────
 
 function handleGetProjects(): Observable<HttpResponse<unknown>> {
-  return new Observable((sub) => {
+  return new Observable<HttpResponse<unknown>>((sub) => {
     loadProjects().then((projects) => {
       sub.next(new HttpResponse({ status: 200, body: projects }));
       sub.complete();

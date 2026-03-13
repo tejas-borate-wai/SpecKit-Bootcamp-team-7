@@ -8,6 +8,7 @@ import {
 } from '../../../shared/utils/scoring.util';
 import { ScoreCard } from '../../../shared/models/score-card.model';
 import { SkillProficiencyLevel } from '../../../shared/models/employee-skill.model';
+import { ExamQuestion } from '../../../shared/models/skill-exam.model';
 
 export const selectAssessmentsState =
   createFeatureSelector<AssessmentsState>('assessments');
@@ -48,7 +49,7 @@ export const selectCurrentQuestion = createSelector(
     if (!active) return null;
     const qId =
       active.shuffledQuestionIds[active.currentQuestionIndex];
-    return active.exam.questions.find((q) => q.questionId === qId) ?? null;
+    return active.exam.questions.find((q: ExamQuestion) => q.questionId === qId) ?? null;
   }
 );
 

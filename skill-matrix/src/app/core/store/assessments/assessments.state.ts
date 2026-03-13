@@ -1,5 +1,5 @@
-import { SkillExam } from '../../shared/models/skill-exam.model';
-import { AssessmentAttempt } from '../../shared/models/assessment-attempt.model';
+import { SkillExam } from '../../../shared/models/skill-exam.model';
+import { AssessmentAttempt } from '../../../shared/models/assessment-attempt.model';
 
 export interface ActiveAssessmentState {
   skillId: string;
