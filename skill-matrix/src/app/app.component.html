@@ -1,0 +1,30 @@
+@if (showShell) {
+  <app-header (toggleSidebar)="onToggleSidebar()"></app-header>
+
+  <mat-sidenav-container class="app-sidenav-container">
+    <mat-sidenav
+      #sidenav
+      [mode]="sidebarMode"
+      [opened]="sidebarOpened"
+      [fixedInViewport]="true"
+      [fixedTopGap]="64"
+      [class.collapsed]="sidebarCollapsed"
+    >
+      <app-sidebar
+        [collapsed]="sidebarCollapsed"
+        (closeSidebar)="onCloseSidebar()"
+      ></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content
+      [class.sidebar-expanded]="!sidebarCollapsed && sidebarMode === 'side'"
+      [class.sidebar-collapsed]="sidebarCollapsed && sidebarMode === 'side'"
+    >
+      <main class="app-content">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet></router-outlet>
+}

@@ -1,0 +1,70 @@
+<div class="add-skill-page">
+  <div class="page-header">
+    <button mat-icon-button (click)="onCancel()"><mat-icon>arrow_back</mat-icon></button>
+    <h1 class="page-title">Add Skill</h1>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSave()">
+      <!-- Category -->
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryId">
+          @for (cat of categories; track cat.categoryId) {
+            <mat-option [value]="cat.categoryId">{{ cat.categoryName }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('categoryId')?.touched && form.get('categoryId')?.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Subcategory -->
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Subcategory</mat-label>
+        <mat-select formControlName="subCategoryId" [disabled]="filteredSubCategories.length === 0">
+          @for (sub of filteredSubCategories; track sub.subCategoryId) {
+            <mat-option [value]="sub.subCategoryId">{{ sub.subCategoryName }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('subCategoryId')?.touched && form.get('subCategoryId')?.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Skill -->
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Skill</mat-label>
+        <mat-select formControlName="skillId" [disabled]="filteredDefinitions.length === 0">
+          @for (def of filteredDefinitions; track def.skillId) {
+            <mat-option [value]="def.skillId">{{ def.skillName }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('skillId')?.touched && form.get('skillId')?.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+        @if (duplicateError) {
+          <mat-error>This skill is already in your profile.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Self-rating -->
+      <div class="rating-group">
+        <label class="rating-label">Self-Rating</label>
+        <mat-radio-group formControlName="selfRating" class="radio-group">
+          @for (opt of ratingOptions; track opt.value) {
+            <mat-radio-button [value]="opt.value">{{ opt.label }}</mat-radio-button>
+          }
+        </mat-radio-group>
+        @if (form.get('selfRating')?.touched && form.get('selfRating')?.hasError('required')) {
+          <div class="error-text">This field is required.</div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button mat-stroked-button type="button" (click)="onCancel()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="duplicateError">Save Skill</button>
+      </div>
+    </form>
+  </div>
+</div>

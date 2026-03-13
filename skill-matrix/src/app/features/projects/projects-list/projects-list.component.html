@@ -1,0 +1,143 @@
+<div class="projects-list-page">
+  <header class="page-header">
+    <h1 class="page-title">Projects</h1>
+    <a routerLink="/projects/create" mat-flat-button color="primary" aria-label="Create new project">
+      <mat-icon>add</mat-icon> Create Project
+    </a>
+  </header>
+
+  <!-- Filters -->
+  <section class="filters" aria-label="Project filters">
+    <mat-select
+      [(ngModel)]="statusFilter"
+      class="filter-select"
+      aria-label="Filter by status">
+      @for (opt of statusOptions; track opt) {
+        <mat-option [value]="opt">{{ opt }}</mat-option>
+      }
+    </mat-select>
+
+    <input
+      type="date"
+      [(ngModel)]="startDateFilter"
+      class="filter-date"
+      aria-label="Filter by start date from" />
+
+    <input
+      type="date"
+      [(ngModel)]="endDateFilter"
+      class="filter-date"
+      aria-label="Filter by end date to" />
+  </section>
+
+  @if (loading$ | async) {
+    <div class="loading-container" aria-label="Loading projects">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else {
+    @if (currentUser$ | async; as user) {
+      @if (filteredProjects$ | async; as allProjects) {
+        @let projects = applyFilter(allProjects);
+        @if (projects.length === 0) {
+          <div class="empty-state">
+            <mat-icon class="empty-icon">folder_open</mat-icon>
+            <p>No projects found. <a routerLink="/projects/create">Create the first one.</a></p>
+          </div>
+        } @else {
+          <!-- Desktop table -->
+          <div class="table-wrapper" role="region" aria-label="Projects table">
+            <table class="projects-table">
+              <thead>
+                <tr>
+                  <th scope="col">Project Name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">Deadline</th>
+                  <th scope="col">Skills Required</th>
+                  <th scope="col">Team Size</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (project of projects; track project.projectId) {
+                  <tr>
+                    <td>
+                      <a [routerLink]="['/projects', project.projectId]" class="project-link">
+                        {{ project.name }}
+                      </a>
+                    </td>
+                    <td>
+                      <span class="status-badge" [ngClass]="getStatusClass(project.status)">
+                        {{ project.status }}
+                      </span>
+                    </td>
+                    <td>{{ project.startDate | date:'mediumDate' }}</td>
+                    <td>{{ project.deadline | date:'mediumDate' }}</td>
+                    <td>{{ project.requiredSkills.length }}</td>
+                    <td>{{ project.teamSize }}</td>
+                    <td class="actions-cell">
+                      @if (canEdit(project, user)) {
+                        <button
+                          mat-icon-button
+                          (click)="onEdit(project)"
+                          aria-label="Edit project {{ project.name }}">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          color="warn"
+                          (click)="onDelete(project, user)"
+                          aria-label="Delete project {{ project.name }}">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      }
+                      <a
+                        [routerLink]="['/projects', project.projectId, 'match']"
+                        mat-icon-button
+                        aria-label="Match candidates for {{ project.name }}">
+                        <mat-icon>manage_search</mat-icon>
+                      </a>
+                      <a
+                        [routerLink]="['/projects', project.projectId, 'team-builder']"
+                        mat-icon-button
+                        aria-label="Open team builder for {{ project.name }}">
+                        <mat-icon>engineering</mat-icon>
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile cards -->
+          <div class="mobile-cards" aria-label="Projects cards">
+            @for (project of projects; track project.projectId) {
+              <div class="project-card">
+                <div class="card-header">
+                  <a [routerLink]="['/projects', project.projectId]" class="project-link">
+                    {{ project.name }}
+                  </a>
+                  <span class="status-badge" [ngClass]="getStatusClass(project.status)">
+                    {{ project.status }}
+                  </span>
+                </div>
+                <div class="card-meta">
+                  <span>{{ project.startDate | date:'mediumDate' }} — {{ project.deadline | date:'mediumDate' }}</span>
+                  <span>{{ project.requiredSkills.length }} skills · {{ project.teamSize }} members</span>
+                </div>
+                <div class="card-actions">
+                  @if (canEdit(project, user)) {
+                    <button mat-stroked-button (click)="onEdit(project)" aria-label="Edit project">Edit</button>
+                    <button mat-stroked-button color="warn" (click)="onDelete(project, user)" aria-label="Delete project">Delete</button>
+                  }
+                  <a [routerLink]="['/projects', project.projectId, 'match']" mat-stroked-button aria-label="Find candidates">Match</a>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      }
+    }
+  }
+</div>

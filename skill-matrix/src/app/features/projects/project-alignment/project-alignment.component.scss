@@ -1,0 +1,205 @@
+@use '../../../../styles/variables' as v;
+
+.alignment-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: v.$text-primary;
+  margin: 0 0 4px;
+}
+
+.page-subtitle {
+  color: v.$text-secondary;
+  margin: 0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+/* ── Empty state ─────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px 24px;
+  text-align: center;
+  color: v.$text-secondary;
+
+  .empty-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.4;
+  }
+
+  h2 { margin: 0; font-size: 1.25rem; }
+  p  { margin: 0; }
+  a  { color: v.$primary-color; }
+}
+
+/* ── Desktop table ───────────────────────────────── */
+.table-wrapper {
+  border: 1px solid v.$border-color;
+  border-radius: 8px;
+  overflow: hidden;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.alignment-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  th {
+    background: v.$surface-color;
+    font-weight: 600;
+    color: v.$text-secondary;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid v.$border-color;
+  }
+
+  tr:not(:last-child) td {
+    border-bottom: 1px solid v.$border-color;
+  }
+
+  tr:hover td {
+    background: rgba(0,0,0,0.02);
+  }
+}
+
+/* ── Mobile cards ────────────────────────────────── */
+.mobile-cards {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+
+  @media (max-width: 767px) {
+    display: flex;
+  }
+}
+
+.alignment-card {
+  border: 1px solid v.$border-color;
+  border-radius: 8px;
+  padding: 16px;
+  background: v.$card-background;
+
+  .card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: v.$text-secondary;
+    margin-bottom: 12px;
+  }
+}
+
+/* ── Availability badge ──────────────────────────── */
+.avail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+
+  .avail-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &.avail-available {
+    color: #1b5e20;
+    background: #e8f5e9;
+
+    .avail-icon { color: #2e7d32; }
+  }
+
+  &.avail-partial {
+    color: #bf360c;
+    background: #fbe9e7;
+
+    .avail-icon { color: #e65100; }
+  }
+
+  &.avail-busy {
+    color: #b71c1c;
+    background: #ffebee;
+
+    .avail-icon { color: #c62828; }
+  }
+}
+
+/* ── Override dialog ─────────────────────────────── */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog-box {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  width: min(480px, calc(100vw - 32px));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  h2 {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .dialog-employee {
+    color: v.$text-secondary;
+    margin: 0 0 20px;
+  }
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "levelId": 1,
+    "levelName": "Beginner",
+    "score": 1,
+    "description": "Has foundational knowledge and can perform basic tasks with guidance.",
+    "exampleCriteria": "Understands core concepts; can follow tutorials and documentation to complete simple tasks; requires regular support from more experienced colleagues.",
+    "thresholdMin": 0,
+    "thresholdMax": 40
+  },
+  {
+    "levelId": 2,
+    "levelName": "Intermediate",
+    "score": 2,
+    "description": "Can work independently on standard tasks and is developing deeper expertise.",
+    "exampleCriteria": "Applies skills on real projects with occasional guidance; familiar with common patterns and best practices; can troubleshoot standard issues independently.",
+    "thresholdMin": 41,
+    "thresholdMax": 65
+  },
+  {
+    "levelId": 3,
+    "levelName": "Advanced",
+    "score": 3,
+    "description": "Consistently delivers high-quality work and can lead others in this area.",
+    "exampleCriteria": "Designs and implements complex solutions independently; mentors junior team members; reviews others' work; contributes to best practices and team standards.",
+    "thresholdMin": 66,
+    "thresholdMax": 85
+  },
+  {
+    "levelId": 4,
+    "levelName": "Expert",
+    "score": 4,
+    "description": "Recognised authority with deep mastery; drives innovation and strategic decisions.",
+    "exampleCriteria": "Sets architectural direction; speaks or publishes externally; defines standards across the organisation; solves novel, high-complexity problems others cannot.",
+    "thresholdMin": 86,
+    "thresholdMax": 100
+  }
+]

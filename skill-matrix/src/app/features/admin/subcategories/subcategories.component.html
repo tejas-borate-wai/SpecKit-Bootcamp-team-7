@@ -1,0 +1,51 @@
+<div class="page-header">
+  <h1>Subcategories</h1>
+  <button mat-flat-button color="primary" (click)="openAdd()">
+    <mat-icon>add</mat-icon>
+    Add Subcategory
+  </button>
+</div>
+
+@if (loading$ | async) {
+  <div class="spinner-wrapper">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+} @else {
+  <mat-accordion multi>
+    @for (cat of (categories$ | async) ?? []; track cat.categoryId) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ cat.categoryName }}</mat-panel-title>
+          <mat-panel-description>{{ cat.subCategories.length }} subcategories</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="subcategory-list">
+          @for (sub of cat.subCategories; track sub.subCategoryId) {
+            <div class="subcategory-row">
+              <span class="sub-name">{{ sub.subCategoryName }}</span>
+              <div class="actions">
+                <button mat-icon-button color="primary" (click)="openEdit(cat, sub)" aria-label="Edit">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="confirmDelete(cat, sub)" aria-label="Delete">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (cat.subCategories.length === 0) {
+            <p class="empty-note">No subcategories yet.</p>
+          }
+        </div>
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="openAdd(cat)">
+            <mat-icon>add</mat-icon>
+            Add to {{ cat.categoryName }}
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+}

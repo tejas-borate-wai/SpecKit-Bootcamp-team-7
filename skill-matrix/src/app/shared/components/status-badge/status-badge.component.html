@@ -1,0 +1,9 @@
+<span
+  class="status-badge"
+  [class.status-valid]="status === 'Valid'"
+  [class.status-expiring]="status === 'Expiring Soon'"
+  [class.status-expired]="status === 'Expired'"
+  [attr.aria-label]="ariaLabel"
+  role="status">
+  {{ status }}
+</span>

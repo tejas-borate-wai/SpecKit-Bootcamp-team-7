@@ -1,0 +1,30 @@
+<table class="breakdown-table" role="table" aria-label="Skill breakdown">
+  <thead>
+    <tr>
+      <th scope="col">Skill</th>
+      <th scope="col">Required Level</th>
+      <th scope="col">Candidate Level</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (entry of entries; track entry.skillId) {
+      <tr>
+        <td>
+          {{ entry.skillName }}
+          @if (entry.isStale) {
+            <span class="stale-badge" aria-label="Skill is stale">(stale)</span>
+          }
+        </td>
+        <td>{{ levelLabel(entry.requiredLevel) }}</td>
+        <td>{{ levelLabel(entry.candidateLevel) }}</td>
+        <td>
+          <span class="status-pill" [ngClass]="statusClass(entry.status)"
+                [attr.aria-label]="'Status: ' + entry.status">
+            {{ entry.status }}
+          </span>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

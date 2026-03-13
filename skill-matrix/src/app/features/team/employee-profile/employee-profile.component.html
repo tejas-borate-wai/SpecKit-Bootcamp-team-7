@@ -1,0 +1,114 @@
+<section class="employee-profile">
+  @if (loading$ | async) {
+    <div class="loading-state">Loading profile...</div>
+  }
+
+  @if (error$ | async; as error) {
+    <div class="error-state" role="alert">{{ error }}</div>
+  }
+
+  @if (profile$ | async; as profile) {
+    <!-- Header -->
+    <div class="profile-header">
+      <a routerLink="/team" class="back-link">← Team Overview</a>
+      <div class="employee-info">
+        <app-avatar [avatarUrl]="profile.avatarUrl" [name]="profile.name" [size]="56"></app-avatar>
+        <div>
+          <h1 class="employee-name">{{ profile.name }}</h1>
+          <p class="employee-meta">{{ profile.email }} · {{ profile.department }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Table -->
+    <div class="skills-section">
+      <h2 class="section-title">Skill Ratings</h2>
+
+      @if (profile.skills.length === 0) {
+        <p class="empty-state">This employee has no skills on record.</p>
+      } @else {
+        <!-- Desktop Table -->
+        <div class="table-wrapper">
+          <table class="skills-table" aria-label="Employee skill ratings">
+            <thead>
+              <tr>
+                <th>Skill</th>
+                <th>Category</th>
+                <th>Self</th>
+                <th>Manager</th>
+                <th>Peer</th>
+                <th>System</th>
+                <th>Final</th>
+                <th>Level</th>
+                <th>Confidence</th>
+                <th>Status</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (skill of profile.skills; track skill.skillId) {
+                <tr>
+                  <td class="skill-name">{{ skill.skillName }}</td>
+                  <td>{{ skill.categoryName }}</td>
+                  <td class="rating-cell">{{ skill.selfRating }}</td>
+                  <td class="rating-cell">{{ skill.managerRating ?? '–' }}</td>
+                  <td class="rating-cell">{{ skill.peerRating ?? '–' }}</td>
+                  <td class="rating-cell">{{ skill.systemRating ?? '–' }}</td>
+                  <td class="rating-cell final">
+                    @if (skill.finalRating != null) {
+                      {{ skill.finalRating | number:'1.2-2' }}
+                    } @else {
+                      <span class="no-value">–</span>
+                    }
+                  </td>
+                  <td>
+                    @if (skill.level) {
+                      <span class="level-badge level-{{ skill.level.toLowerCase() }}">{{ skill.level }}</span>
+                    } @else {
+                      <span class="no-value">–</span>
+                    }
+                  </td>
+                  <td>
+                    <app-confidence-indicator [level]="asConfidenceLevel(skill.confidence)"></app-confidence-indicator>
+                  </td>
+                  <td>
+                    <span class="status-pill status-{{ skill.status.toLowerCase() }}">{{ skill.status }}</span>
+                  </td>
+                  <td class="date-cell">{{ skill.lastUpdated }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="skill-cards">
+          @for (skill of profile.skills; track skill.skillId) {
+            <div class="skill-card">
+              <div class="skill-card-header">
+                <span class="skill-name">{{ skill.skillName }}</span>
+                <span class="status-pill status-{{ skill.status.toLowerCase() }}">{{ skill.status }}</span>
+              </div>
+              <p class="category">{{ skill.categoryName }}</p>
+              <div class="ratings-row">
+                <div class="rating-chip"><span class="chip-label">Self</span><span class="chip-value">{{ skill.selfRating }}</span></div>
+                <div class="rating-chip"><span class="chip-label">Manager</span><span class="chip-value">{{ skill.managerRating ?? '–' }}</span></div>
+                <div class="rating-chip"><span class="chip-label">Peer</span><span class="chip-value">{{ skill.peerRating ?? '–' }}</span></div>
+                <div class="rating-chip"><span class="chip-label">System</span><span class="chip-value">{{ skill.systemRating ?? '–' }}</span></div>
+              </div>
+              @if (skill.finalRating != null) {
+                <div class="final-row">
+                  <span class="final-label">Final: <strong>{{ skill.finalRating | number:'1.2-2' }}</strong></span>
+                  @if (skill.level) {
+                    <span class="level-badge level-{{ skill.level.toLowerCase() }}">{{ skill.level }}</span>
+                  }
+                  <app-confidence-indicator [level]="asConfidenceLevel(skill.confidence)"></app-confidence-indicator>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</section>
