@@ -5,6 +5,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ToastService {
   private snackBar = inject(MatSnackBar);
 
+  showSuccess(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: ['toast-success'],
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+  }
+
   showError(message: string): void {
     this.snackBar.open(message, 'Dismiss', {
       duration: 5000,

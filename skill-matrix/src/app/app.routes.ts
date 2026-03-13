@@ -1,6 +1,10 @@
 import { Routes } from '@angular/router';
+import { provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
+import { adminReducer } from './core/store/admin/admin.reducer';
+import * as adminEffects from './core/store/admin/admin.effects';
 
 // Placeholder component for routes not yet implemented
 const placeholder = () =>
@@ -116,11 +120,12 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['Admin'] },
-    children: [
-      { path: 'framework', loadComponent: placeholder },
-      { path: 'rating-config', loadComponent: placeholder },
-      { path: 'employees', loadComponent: placeholder },
+    providers: [
+      provideState('admin', adminReducer),
+      provideEffects(adminEffects),
     ],
+    loadChildren: () =>
+      import('./features/admin/admin.routes').then((m) => m.adminRoutes),
   },
 
   // Redirects

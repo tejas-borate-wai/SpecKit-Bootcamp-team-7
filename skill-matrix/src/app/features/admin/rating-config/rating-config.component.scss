@@ -1,0 +1,103 @@
+@use '../../../../../styles/breakpoints' as bp;
+
+.page-header {
+  margin-bottom: var(--spacing-lg);
+
+  h1 {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+}
+
+.rating-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.weights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+
+  @include bp.mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.weight-card {
+  border-radius: var(--radius-md);
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+  }
+}
+
+.percent-display {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: var(--color-primary) !important;
+}
+
+.weight-slider {
+  width: 100%;
+}
+
+.numeric-field {
+  width: 140px;
+}
+
+.sum-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &.sum-valid {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  &.sum-invalid {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+.sum-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+
+  .save-note {
+    font-size: 0.875rem;
+    color: #15803d;
+  }
+}
