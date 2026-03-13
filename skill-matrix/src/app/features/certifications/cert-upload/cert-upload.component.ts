@@ -29,7 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-import * as CertificationsActions from '../../../core/store/certifications/certifications.actions';
+import { uploadCertification } from '../../../core/store/certifications/certifications.actions';
 import { selectUploadInProgress } from '../../../core/store/certifications/certifications.selectors';
 import { selectSkillDefinitions } from '../../../core/store/skills/skills.selectors';
 import * as SkillsActions from '../../../core/store/skills/skills.actions';
@@ -87,7 +87,7 @@ export class CertUploadComponent implements OnInit {
 
   uploadInProgress$: Observable<boolean> = this.store.select(selectUploadInProgress);
   skillDefinitions$: Observable<SkillDefinition[]> = this.store.select(selectSkillDefinitions);
-  hasSkills$: Observable<boolean> = this.skillDefinitions$.pipe(map((defs) => defs.length > 0));
+  hasSkills$: Observable<boolean> = this.skillDefinitions$.pipe(map((defs: SkillDefinition[]) => defs.length > 0));
 
   form!: FormGroup;
   selectedFileName: string | null = null;
@@ -148,7 +148,7 @@ export class CertUploadComponent implements OnInit {
       filePath: meta.filePath,
     };
 
-    this.store.dispatch(CertificationsActions.uploadCertification({ payload }));
+    this.store.dispatch(uploadCertification({ payload }));
   }
 
   onCancel(): void {

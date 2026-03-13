@@ -21,7 +21,7 @@ import { CertifiedBadgeComponent } from '../../../shared/components/certified-ba
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
 import { BREAKPOINTS } from '../../../core/breakpoints';
 import { isStale } from '../../../shared/utils/skill-utils';
-import * as CertificationsActions from '../../../core/store/certifications/certifications.actions';
+import { loadCertifications } from '../../../core/store/certifications/certifications.actions';
 import { selectHasValidCertForSkill } from '../../../core/store/certifications/certifications.selectors';
 
 @Component({
@@ -72,7 +72,7 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
         this.store.dispatch(SkillsActions.loadMySkills({ userId: user.id }));
         this.store.dispatch(SkillsActions.loadSkillLibrary());
         this.store.dispatch(SkillsActions.loadTestAttempts({ userId: user.id }));
-        this.store.dispatch(CertificationsActions.loadCertifications());
+        this.store.dispatch(loadCertifications());
       }
     });
 

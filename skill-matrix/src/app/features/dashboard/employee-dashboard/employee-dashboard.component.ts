@@ -19,8 +19,9 @@ import { AchievementService } from '../../../core/services/achievement.service';
 import { AchievementBadge } from '../../../shared/models/achievement.model';
 import { EmployeeSkill } from '../../../shared/models/employee-skill.model';
 import { SkillTestAttempt } from '../../../shared/models/skill-test-attempt.model';
-import * as CertificationsActions from '../../../core/store/certifications/certifications.actions';
+import { loadCertifications } from '../../../core/store/certifications/certifications.actions';
 import { selectExpiringSoonCertifications } from '../../../core/store/certifications/certifications.selectors';
+import { CertificationWithStatus } from '../../../shared/models/certification.model';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -62,7 +63,7 @@ export class EmployeeDashboardComponent implements OnInit {
         if (user) {
           this.store.dispatch(SkillsActions.loadMySkills({ userId: user.id }));
           this.store.dispatch(SkillsActions.loadTestAttempts({ userId: user.id }));
-          this.store.dispatch(CertificationsActions.loadCertifications());
+          this.store.dispatch(loadCertifications());
         }
       });
     this.store.dispatch(SkillsActions.loadSkillLibrary());

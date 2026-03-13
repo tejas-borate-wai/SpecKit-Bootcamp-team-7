@@ -7,7 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 import { CertificationWithStatus } from '../../../shared/models/certification.model';
 import { SkillDefinition } from '../../../shared/models/skill-definition.model';
@@ -59,7 +59,7 @@ export class CertificationsListComponent implements OnInit {
     this.store.dispatch(SkillsActions.loadSkillLibrary());
     this.bp
       .observe([BREAKPOINTS.mobile])
-      .subscribe((r) => (this.isMobile = r.matches));
+      .subscribe((result: BreakpointState) => (this.isMobile = result.matches));
   }
 
   getSkillName(

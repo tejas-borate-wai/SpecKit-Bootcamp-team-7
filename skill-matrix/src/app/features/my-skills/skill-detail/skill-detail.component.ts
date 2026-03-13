@@ -20,7 +20,7 @@ import { AchievementBadgeComponent } from '../../../shared/components/achievemen
 import { CertifiedBadgeComponent } from '../../../shared/components/certified-badge/certified-badge.component';
 import { AchievementService } from '../../../core/services/achievement.service';
 import { computeConfidence, ratingToPercentage } from '../../../shared/utils/skill-utils';
-import * as CertificationsActions from '../../../core/store/certifications/certifications.actions';
+import { loadCertifications } from '../../../core/store/certifications/certifications.actions';
 import { selectHasValidCertForSkill } from '../../../core/store/certifications/certifications.selectors';
 
 @Component({
@@ -51,7 +51,7 @@ export class SkillDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.skillId = this.route.snapshot.paramMap.get('skillId') ?? '';
 
-    this.store.dispatch(CertificationsActions.loadCertifications());
+    this.store.dispatch(loadCertifications());
 
     combineLatest([
       this.store.select(selectCurrentUser),
