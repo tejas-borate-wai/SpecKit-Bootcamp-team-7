@@ -1,0 +1,85 @@
+@use '../../../../../styles/breakpoints' as bp;
+
+.page-header {
+  margin-bottom: var(--spacing-lg);
+
+  h1 {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.readonly-cell {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.editable-hint {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.inline-field {
+  width: 100%;
+  min-width: 180px;
+}
+
+.editing-row {
+  background-color: #eff6ff;
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+
+  &[data-level='beginner'] { background: #f3f4f6; color: #6b7280; }
+  &[data-level='intermediate'] { background: #dbeafe; color: #1d4ed8; }
+  &[data-level='advanced'] { background: #ede9fe; color: #6d28d9; }
+  &[data-level='expert'] { background: #fef3c7; color: #92400e; }
+}
+
+// Mobile
+.desktop-only {
+  @include bp.mobile { display: none; }
+}
+
+.mobile-only {
+  display: none;
+  @include bp.mobile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+}
+
+.editing-card {
+  border: 2px solid var(--color-primary);
+}
+
+.mobile-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.full-width { width: 100%; }

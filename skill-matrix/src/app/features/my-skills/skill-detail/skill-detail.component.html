@@ -1,0 +1,80 @@
+<div class="detail-page">
+  <div class="page-header">
+    <button mat-icon-button (click)="onBack()"><mat-icon>arrow_back</mat-icon></button>
+    <div class="header-info">
+      <h1 class="page-title">{{ definition?.skillName ?? skillId }}</h1>
+      @if (skill) {
+        <app-rating-badge [level]="skill.level"/>
+      }
+    </div>
+    <button mat-raised-button color="primary" (click)="onEdit()">
+      <mat-icon>edit</mat-icon>Edit Rating
+    </button>
+  </div>
+
+  @if (skill) {
+    <div class="detail-grid">
+      <!-- Ratings card -->
+      <div class="card ratings-card">
+        <h2 class="card-title">Rating Sources</h2>
+        <div class="ratings-grid">
+          <div class="rating-item">
+            <span class="rating-source">Self</span>
+            <span class="rating-value">{{ formatRating(skill.selfRating) }}</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-source">Manager</span>
+            <span class="rating-value">{{ formatRating(skill.managerRating) }}</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-source">Peer</span>
+            <span class="rating-value">{{ formatRating(skill.peerRating) }}</span>
+          </div>
+          <div class="rating-item">
+            <span class="rating-source">System</span>
+            <span class="rating-value">{{ formatSystemRating(skill.systemRating) }}</span>
+          </div>
+          <div class="rating-item final">
+            <span class="rating-source">Final</span>
+            <span class="rating-value final">{{ skill.finalRating !== null ? skill.finalRating + '%' : '—' }}</span>
+          </div>
+        </div>
+        <div class="confidence-row">
+          <span class="confidence-label">Confidence:</span>
+          <app-confidence-indicator [level]="confidence"/>
+        </div>
+      </div>
+
+      <!-- Status card -->
+      <div class="card status-card">
+        <h2 class="card-title">Status</h2>
+        <div class="status-section">
+          <span class="status-pill" [ngClass]="skill.status.toLowerCase()">{{ skill.status }}</span>
+          <div class="last-updated">Last Updated: {{ skill.lastUpdated | date:'mediumDate' }}</div>
+        </div>
+      </div>
+
+      <!-- Progress chart -->
+      <div class="card chart-card">
+        <app-progress-chart [attempts]="attempts" title="Assessment History"/>
+      </div>
+
+      <!-- Achievements -->
+      @if (achievements.length > 0) {
+        <div class="card achievements-card">
+          <h2 class="card-title">Achievements</h2>
+          <div class="badges-row">
+            @for (badge of achievements; track badge.type) {
+              <app-achievement-badge [badge]="badge"/>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="not-found">
+      <mat-icon>search_off</mat-icon>
+      <p>Skill not found in your profile.</p>
+    </div>
+  }
+</div>

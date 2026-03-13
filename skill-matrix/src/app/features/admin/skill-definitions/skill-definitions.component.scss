@@ -1,0 +1,89 @@
+@use '../../../../../styles/breakpoints' as bp;
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+}
+
+.grouped-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.category-group {
+  .cat-header {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+.subcat-group {
+  margin-bottom: var(--spacing-md);
+
+  .subcat-header {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-sm);
+    border-left: 3px solid #d1d5db;
+  }
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-md);
+  padding-left: var(--spacing-md);
+
+  @include bp.mobile {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+  }
+}
+
+.skill-card {
+  border-radius: var(--radius-md);
+
+  .skill-name {
+    font-size: 0.9375rem;
+  }
+
+  .skill-desc {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: #9ca3af;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--spacing-md);
+  }
+}
