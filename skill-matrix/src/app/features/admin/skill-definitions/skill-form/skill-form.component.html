@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Edit Skill' : 'Add Skill' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="skill-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryId">
+        @for (cat of data.categories; track cat.categoryId) {
+          <mat-option [value]="cat.categoryId">{{ cat.categoryName }}</mat-option>
+        }
+      </mat-select>
+      @if (catControl.hasError('required') && catControl.touched) {
+        <mat-error>Please select a category.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Subcategory</mat-label>
+      <mat-select formControlName="subCategoryId" [disabled]="!catControl.value">
+        @for (sub of filteredSubcategories; track sub.subCategoryId) {
+          <mat-option [value]="sub.subCategoryId">{{ sub.subCategoryName }}</mat-option>
+        }
+      </mat-select>
+      @if (subCatControl.hasError('required') && subCatControl.touched) {
+        <mat-error>Please select a subcategory.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Skill Name</mat-label>
+      <input matInput formControlName="skillName" placeholder="e.g. React" />
+      @if (nameControl.hasError('required') && nameControl.touched) {
+        <mat-error>This field is required.</mat-error>
+      } @else if (nameControl.hasError('maxlength')) {
+        <mat-error>Max 80 characters.</mat-error>
+      } @else if (nameDuplicate && nameControl.touched) {
+        <mat-error>This skill already exists in this subcategory.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"
+        placeholder="Describe the skill…"></textarea>
+      @if (descControl.hasError('required') && descControl.touched) {
+        <mat-error>This field is required.</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary"
+    [disabled]="form.invalid || nameDuplicate"
+    (click)="submit()">
+    {{ isEdit ? 'Save Changes' : 'Add Skill' }}
+  </button>
+</mat-dialog-actions>

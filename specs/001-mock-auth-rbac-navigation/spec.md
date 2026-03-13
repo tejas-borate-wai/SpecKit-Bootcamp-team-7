@@ -101,16 +101,16 @@ When the application initializes, it checks persistent storage for an existing u
 
 **Acceptance Scenarios**:
 
-1. **Given** a user previously logged in and their session exists in persistent storage, **When** the application starts, **Then** the user state is restored and they are directed to their last location or /dashboard — not the login page.
+- **Given** a user previously logged in and their session exists in persistent storage, **When** the application starts, **Then** the user state is restored and they are navigated to the URL in `skillmatrix_last_route` (localStorage); if the key is absent → /dashboard; if the stored path is invalid or not a real route → /dashboard; if the restored user's role is not permitted on that route → /dashboard. The user is never redirected to /login.
 2. **Given** no session exists in persistent storage, **When** the application starts, **Then** the user is directed to /login.
 
 ---
 
 ### Edge Cases
 
-- What happens when a user manually types a URL for a route that doesn't exist? The application should redirect to the dashboard (or show a 404 state) rather than displaying a blank page.
+- What happens when a user manually types a URL for a route that doesn't exist? If the user is authenticated, the application redirects to /dashboard. If the user is unauthenticated, the application redirects to /login. No blank page is displayed.
 - What happens if the persistent storage data is corrupted or incomplete (e.g., a user object missing the role field)? The application should treat it as an invalid session, clear storage, and redirect to /login.
-- What happens if a user modifies the stored role in persistent storage to escalate privileges? Route guards must always re-validate the user's role from the authoritative session state, not solely from client-side storage.
+- What happens if a user modifies the stored role in persistent storage to escalate privileges? Route guards inject the NgRx store and read `selectUserRole` from in-memory state — not from localStorage directly. localStorage is read only once at app startup to hydrate the NgRx store; all subsequent guard checks use the in-memory NgRx state exclusively, making client-side storage tampering ineffective after hydration.
 - What happens when a Manager user tries to access /reports/heatmap (Admin-only)? They should be redirected to /unauthorized even though they can access /reports.
 
 ## Requirements *(mandatory)*
@@ -119,17 +119,19 @@ When the application initializes, it checks persistent storage for an existing u
 
 - **FR-001**: System MUST display a login screen at /login with email and password input fields.
 - **FR-002**: System MUST validate submitted credentials against the users.json mock data file.
-- **FR-003**: Upon successful login, the system MUST store the user object (id, name, email, role, department, avatarUrl) in both application state and persistent storage (localStorage).
+- **FR-003**: Upon successful login, the system MUST store the user object (id, name, email, role, department, avatarUrl) in both application state and persistent storage (localStorage). Application state MUST be managed via NgRx Store — `AuthService` dispatches NgRx login actions; components and guards read session state exclusively via NgRx selectors (`selectIsAuthenticated`, `selectUserRole`, `selectCurrentUser`).
 - **FR-004**: Upon successful login, the system MUST redirect the user to /dashboard regardless of role (Employee, Manager, or Admin).
 - **FR-005**: The /dashboard route MUST render a different dashboard view depending on the logged-in user's role.
 - **FR-006**: If credentials do not match, the system MUST display the error message "Invalid email or password" on the login form.
 - **FR-007**: If the email or password field is empty on submit, the system MUST display inline validation "This field is required" below the empty field(s).
 - **FR-008**: The user session MUST persist in localStorage across page refreshes.
-- **FR-009**: On application initialization, the system MUST check localStorage for an existing session; if found, restore the user state and skip the login page.
-- **FR-010**: Logout MUST clear the user state from both application state and localStorage, then redirect to /login.
+- **FR-009**: On application initialization, the system MUST check localStorage for an existing session; if found, restore the user state, skip the login page, and navigate to the URL stored under the key `skillmatrix_last_route` in localStorage. The application MUST write the current URL to `skillmatrix_last_route` on every successful `NavigationEnd` router event, excluding /login and /unauthorized. If `skillmatrix_last_route` is absent, contains an invalid path, or points to a route the restored user's role cannot access, the system MUST fall back to /dashboard.
+- **FR-010**: Logout MUST clear the user state from both application state and localStorage (both `skillmatrix_session` and `skillmatrix_last_route` keys), then redirect to /login using `replaceUrl: true` to prevent back-button bypass of the logged-out state.
 - **FR-011**: An AuthGuard MUST protect all routes except /login. Unauthenticated users accessing any protected route MUST be redirected to /login.
 - **FR-012**: A RoleGuard MUST accept an array of allowed roles. If the authenticated user's role is not in the allowed list, the user MUST be redirected to /unauthorized.
 - **FR-013**: The route guard matrix MUST be enforced as follows:
+  - /login → no guard (public)
+  - /unauthorized → no guard (public)
   - /dashboard → AuthGuard → Employee, Manager, Admin
   - /my-skills/** → AuthGuard → Employee, Manager, Admin
   - /assessments/** → AuthGuard → Employee, Manager, Admin
@@ -152,7 +154,7 @@ When the application initializes, it checks persistent storage for an existing u
 - **FR-023**: On mobile (<768px), the sidebar MUST be hidden and accessible via a hamburger menu icon in the header, opening as a full-screen drawer from the left with a close button and darkened background overlay.
 - **FR-024**: The users.json mock data file MUST contain a minimum of 10 users: 6 employees, 2 managers, 1 admin, and 1 user with Expert-level skills.
 - **FR-025**: Each user record in users.json MUST include: id, name, email, password, role (Employee/Manager/Admin), department, and avatarUrl.
-- **FR-026**: If a user navigates via URL to a restricted action or resource, the system MUST show a toast notification "You do not have permission to perform this action." and return no data.
+- **FR-026**: When the MockApiInterceptor returns an HTTP 403 response for a request the authenticated user's role is not permitted to perform, the system MUST display a toast notification "You do not have permission to perform this action." This applies to data-layer permission enforcements only (e.g., an Employee calling a Manager-only API endpoint) and is distinct from route-level RBAC (FR-012 redirects to /unauthorized for guard-blocked navigation).
 
 ### Key Entities
 
@@ -174,6 +176,13 @@ When the application initializes, it checks persistent storage for an existing u
 - **SC-007**: 100% of login validation scenarios produce the correct error message without page reload or blank state.
 - **SC-008**: All 10+ mock users are loadable and each role (Employee, Manager, Admin) produces the correct navigation and dashboard experience.
 
+## Clarifications
+
+### Session 2026-03-13
+
+- Q: How should Angular application state be managed for the user session? → A: NgRx Store — `AuthService` dispatches NgRx actions (Login, Logout, RestoreSession); components and guards read session state exclusively via NgRx selectors. `BehaviorSubject` is prohibited for session state per constitution Enforcement Rule #6.
+- Q: Where should the app navigate on session restore at startup? → A: Redirect to last visited route stored in `skillmatrix_last_route` (localStorage), written on each `NavigationEnd` event (excluding /login and /unauthorized). Fallback is /dashboard if key absent, path invalid, or role-restricted.
+
 ## Assumptions
 
 - This is a frontend-only application with no real backend or JWT-based authentication. Credential matching is performed against a local JSON file (users.json).
@@ -182,6 +191,10 @@ When the application initializes, it checks persistent storage for an existing u
 - Session persistence uses localStorage. Data resets only if the user explicitly clears browser storage.
 - The /dashboard route is a shared entry point for all roles; the specific dashboard content (Employee vs Manager vs Admin) is determined by the logged-in user's role and will be implemented in a subsequent phase (Phase 3).
 - Route guard validation relies on the user role stored in application state. The application re-hydrates this state from localStorage on startup.
-- The notification bell in the header displays a count badge but the full notifications feature (data, list screen) will be implemented in a subsequent phase (Phase 9).
+- Application state is managed via NgRx Store. `AuthService` dispatches NgRx actions; components and guards use NgRx selectors exclusively. `BehaviorSubject` is prohibited for globally-shared session state per constitution Enforcement Rule #6. Angular Signals are out of scope for this phase.
+- The notification bell in the header routes to `/notifications` in this phase (the route exists and is protected by AuthGuard). The unread count badge displays a static placeholder value. Full notification data, mark-as-read functionality, and live badge count are deferred to Phase 9.
 - The search bar in the header is a visual placeholder in this phase; search functionality will be implemented in Phase 10.
+- The desktop sidebar breakpoint threshold for this feature is ≥1280px (`xl` token), not ≥1024px (`lg`) as defined in constitution §18.2. This is an intentional override for this SPA's layout design. The 1024px–1279px range (small desktop) renders the sidebar in 64px icon-only (tablet) mode.
+- Animations (sidebar collapse, page transitions, toast slide) and `prefers-reduced-motion` implementation are out of scope for this phase and will be addressed in a subsequent polish phase.
+- A formal accessibility audit is deferred to a subsequent phase. Angular Material components used in this phase provide baseline ARIA support and touch target compliance.
 - Mobile bottom navigation bar is not part of this phase — it will be addressed in Phase 10 (Responsive Design).

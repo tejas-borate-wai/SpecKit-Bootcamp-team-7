@@ -1,0 +1,45 @@
+@if (navItems$ | async; as items) {
+  <nav class="sidebar-nav" [class.collapsed]="collapsed">
+    @for (section of getSections(items); track section) {
+      @if (section) {
+        @if (!collapsed) {
+          <div class="section-header">{{ section }}</div>
+        }
+      }
+      @for (item of getItemsForSection(items, section); track item.route) {
+        @if (item.children && item.children.length > 0) {
+          @if (!collapsed) {
+            <mat-expansion-panel class="nav-expansion" [class.collapsed]="collapsed">
+              <mat-expansion-panel-header>
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span class="nav-label">{{ item.label }}</span>
+              </mat-expansion-panel-header>
+              @for (child of item.children; track child.route) {
+                <a mat-list-item [routerLink]="child.route" routerLinkActive="active"
+                   (click)="onItemClick()">
+                  <mat-icon>{{ child.icon }}</mat-icon>
+                  <span class="nav-label">{{ child.label }}</span>
+                </a>
+              }
+            </mat-expansion-panel>
+          } @else {
+            <a mat-list-item [routerLink]="item.route" routerLinkActive="active"
+               [matTooltip]="item.label" matTooltipPosition="right"
+               (click)="onItemClick()">
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </a>
+          }
+        } @else {
+          <a mat-list-item [routerLink]="item.route" routerLinkActive="active"
+             [matTooltip]="collapsed ? item.label : ''" matTooltipPosition="right"
+             (click)="onItemClick()">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            @if (!collapsed) {
+              <span class="nav-label">{{ item.label }}</span>
+            }
+          </a>
+        }
+      }
+    }
+  </nav>
+}

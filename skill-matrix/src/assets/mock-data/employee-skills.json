@@ -1,0 +1,248 @@
+[
+  {
+    "userId": "u001",
+    "skills": [
+      {
+        "skillId": "skill-001",
+        "selfRating": 3,
+        "managerRating": 3,
+        "peerRating": 2.5,
+        "systemRating": 75,
+        "finalRating": 72,
+        "level": "Advanced",
+        "status": "Approved",
+        "lastUpdated": "2026-01-15T10:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-002",
+        "selfRating": 4,
+        "managerRating": 4,
+        "peerRating": 3.5,
+        "systemRating": 90,
+        "finalRating": 87,
+        "level": "Expert",
+        "status": "Approved",
+        "lastUpdated": "2026-02-10T14:30:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-007",
+        "selfRating": 2,
+        "managerRating": null,
+        "peerRating": null,
+        "systemRating": null,
+        "finalRating": null,
+        "level": "Intermediate",
+        "status": "Draft",
+        "lastUpdated": "2025-07-05T09:00:00Z",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "userId": "u002",
+    "skills": [
+      {
+        "skillId": "skill-008",
+        "selfRating": 2,
+        "managerRating": 2,
+        "peerRating": null,
+        "systemRating": 55,
+        "finalRating": 50,
+        "level": "Intermediate",
+        "status": "Approved",
+        "lastUpdated": "2026-01-20T11:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-012",
+        "selfRating": 3,
+        "managerRating": 3,
+        "peerRating": 3,
+        "systemRating": 70,
+        "finalRating": 68,
+        "level": "Advanced",
+        "status": "Approved",
+        "lastUpdated": "2026-02-05T08:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-009",
+        "selfRating": 1,
+        "managerRating": null,
+        "peerRating": null,
+        "systemRating": null,
+        "finalRating": null,
+        "level": "Beginner",
+        "status": "Stale",
+        "lastUpdated": "2025-06-10T08:00:00Z",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "userId": "u003",
+    "skills": [
+      {
+        "skillId": "skill-013",
+        "selfRating": 4,
+        "managerRating": 4,
+        "peerRating": 4,
+        "systemRating": 92,
+        "finalRating": 90,
+        "level": "Expert",
+        "status": "Approved",
+        "lastUpdated": "2026-01-22T15:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-014",
+        "selfRating": 3,
+        "managerRating": 3,
+        "peerRating": 3,
+        "systemRating": 78,
+        "finalRating": 74,
+        "level": "Advanced",
+        "status": "Approved",
+        "lastUpdated": "2026-02-01T12:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-015",
+        "selfRating": 2,
+        "managerRating": null,
+        "peerRating": null,
+        "systemRating": null,
+        "finalRating": null,
+        "level": "Intermediate",
+        "status": "Pending",
+        "lastUpdated": "2026-02-28T09:30:00Z",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "userId": "u004",
+    "skills": [
+      {
+        "skillId": "skill-015",
+        "selfRating": 4,
+        "managerRating": 4,
+        "peerRating": 3.5,
+        "systemRating": 88,
+        "finalRating": 86,
+        "level": "Expert",
+        "status": "Approved",
+        "lastUpdated": "2026-01-30T10:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-016",
+        "selfRating": 3,
+        "managerRating": 3,
+        "peerRating": null,
+        "systemRating": 72,
+        "finalRating": null,
+        "level": "Advanced",
+        "status": "Pending",
+        "lastUpdated": "2026-02-15T14:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-018",
+        "selfRating": 2,
+        "managerRating": null,
+        "peerRating": null,
+        "systemRating": null,
+        "finalRating": null,
+        "level": "Intermediate",
+        "status": "Stale",
+        "lastUpdated": "2025-06-01T09:00:00Z",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "userId": "u005",
+    "skills": [
+      {
+        "skillId": "skill-019",
+        "selfRating": 3,
+        "managerRating": 3,
+        "peerRating": 3,
+        "systemRating": 77,
+        "finalRating": 74,
+        "level": "Advanced",
+        "status": "Approved",
+        "lastUpdated": "2026-02-08T11:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-020",
+        "selfRating": 4,
+        "managerRating": 4,
+        "peerRating": 4,
+        "systemRating": 93,
+        "finalRating": 91,
+        "level": "Expert",
+        "status": "Approved",
+        "lastUpdated": "2026-02-20T16:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-021",
+        "selfRating": 2,
+        "managerRating": null,
+        "peerRating": null,
+        "systemRating": null,
+        "finalRating": null,
+        "level": "Intermediate",
+        "status": "Draft",
+        "lastUpdated": "2026-03-01T09:00:00Z",
+        "isDeleted": false
+      }
+    ]
+  },
+  {
+    "userId": "u006",
+    "skills": [
+      {
+        "skillId": "skill-001",
+        "selfRating": 2,
+        "managerRating": 2,
+        "peerRating": null,
+        "systemRating": 55,
+        "finalRating": 48,
+        "level": "Intermediate",
+        "status": "Approved",
+        "lastUpdated": "2026-01-10T10:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-006",
+        "selfRating": 3,
+        "managerRating": 3,
+        "peerRating": 2.5,
+        "systemRating": 76,
+        "finalRating": 71,
+        "level": "Advanced",
+        "status": "Approved",
+        "lastUpdated": "2026-02-14T13:00:00Z",
+        "isDeleted": false
+      },
+      {
+        "skillId": "skill-004",
+        "selfRating": 1,
+        "managerRating": null,
+        "peerRating": null,
+        "systemRating": null,
+        "finalRating": null,
+        "level": "Beginner",
+        "status": "Stale",
+        "lastUpdated": "2025-05-20T08:00:00Z",
+        "isDeleted": false
+      }
+    ]
+  }
+]

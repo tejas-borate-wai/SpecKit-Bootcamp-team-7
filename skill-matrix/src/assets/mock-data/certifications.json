@@ -1,0 +1,47 @@
+[
+  {
+    "certificationId": "cert-001",
+    "userId": "u001",
+    "skillId": "skill-002",
+    "certificationName": "Angular Certified Developer",
+    "issuedDate": "2025-01-15",
+    "expiryDate": "2027-01-15",
+    "issuingBody": "Google"
+  },
+  {
+    "certificationId": "cert-002",
+    "userId": "u001",
+    "skillId": "skill-007",
+    "certificationName": "TypeScript Professional",
+    "issuedDate": "2025-03-10",
+    "expiryDate": "2027-03-10",
+    "issuingBody": "Microsoft"
+  },
+  {
+    "certificationId": "cert-003",
+    "userId": "u002",
+    "skillId": "skill-008",
+    "certificationName": "Oracle Certified Java Developer",
+    "issuedDate": "2024-06-20",
+    "expiryDate": "2026-06-20",
+    "issuingBody": "Oracle"
+  },
+  {
+    "certificationId": "cert-004",
+    "userId": "u003",
+    "skillId": "skill-015",
+    "certificationName": "Docker Certified Associate",
+    "issuedDate": "2025-02-01",
+    "expiryDate": "2027-02-01",
+    "issuingBody": "Docker Inc."
+  },
+  {
+    "certificationId": "cert-005",
+    "userId": "u005",
+    "skillId": "skill-019",
+    "certificationName": "SQL Fundamentals Certified",
+    "issuedDate": "2025-05-01",
+    "expiryDate": "2027-05-01",
+    "issuingBody": "w3schools"
+  }
+]
