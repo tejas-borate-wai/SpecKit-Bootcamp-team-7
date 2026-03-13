@@ -32,7 +32,7 @@ export const teamReducer = createReducer(
     loading: false,
     validationQueue: state.validationQueue.filter((s) => s.submissionId !== submissionId),
     selectedSubmission: state.selectedSubmission?.submissionId === submissionId
-      ? { ...state.selectedSubmission, status: 'Approved' as const, managerRating, finalRating, level, confidence: confidence as 'High' | 'Medium' | 'Low' }
+      ? { ...state.selectedSubmission, status: 'Approved' as const, managerRating, finalRating, level: level as any || null, confidence: confidence as 'High' | 'Medium' | 'Low' }
       : state.selectedSubmission,
   })),
   on(TeamActions.approveSubmissionFailure, (state, { error }) => ({ ...state, loading: false, error })),
