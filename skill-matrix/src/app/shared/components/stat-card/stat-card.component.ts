@@ -9,11 +9,13 @@ import { MatIconModule } from '@angular/material/icon';
   template: `
     <div class="stat-card">
       <div class="stat-header">
-        <span class="stat-title">{{ title }}</span>
         @if (icon) {
-          <mat-icon class="stat-icon">{{ icon }}</mat-icon>
+          <span class="stat-icon-wrap">
+            <mat-icon class="stat-icon">{{ icon }}</mat-icon>
+          </span>
         }
       </div>
+      <div class="stat-title">{{ title }}</div>
       <div class="stat-value">{{ value }}</div>
       @if (trend !== null && trend !== undefined) {
         <div class="stat-trend" [class.positive]="trend >= 0" [class.negative]="trend < 0">
@@ -28,25 +30,38 @@ import { MatIconModule } from '@angular/material/icon';
   `,
   styles: [`
     .stat-card {
-      background: var(--color-surface, #fff);
-      border: 1px solid var(--color-border, #e5e7eb);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 20px;
+      transition: box-shadow 0.15s ease;
+    }
+    .stat-card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     .stat-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
-    .stat-title { font-size: 0.875rem; color: var(--color-text-secondary, #6b7280); }
-    .stat-icon { font-size: 1.25rem; color: var(--color-primary, #3b82f6); }
-    .stat-value { font-size: 2rem; font-weight: 700; color: var(--color-text, #111827); }
-    .stat-trend { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; margin-top: 4px; }
-    .stat-trend mat-icon { font-size: 1rem; height: 1rem; width: 1rem; }
-    .positive { color: var(--color-approved, #16a34a); }
-    .negative { color: var(--color-rejected, #ef4444); }
-    .stat-subtitle { font-size: 0.75rem; color: var(--color-text-secondary, #6b7280); margin-top: 4px; }
+    .stat-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(60, 131, 246, 0.1);
+    }
+    .stat-icon { font-size: 1.25rem; color: #3c83f6; }
+    .stat-title { font-size: 0.8125rem; font-weight: 500; color: #64748b; margin-bottom: 4px; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; color: #0f172a; letter-spacing: -0.025em; }
+    .stat-trend { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 600; margin-top: 6px; }
+    .stat-trend mat-icon { font-size: 0.875rem; height: 0.875rem; width: 0.875rem; }
+    .positive { color: #16a34a; }
+    .negative { color: #dc2626; }
+    .stat-subtitle { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
   `],
 })
 export class StatCardComponent {

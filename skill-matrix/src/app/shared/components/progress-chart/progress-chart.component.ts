@@ -48,8 +48,8 @@ import { SkillTestAttempt } from '../../models/skill-test-attempt.model';
   `,
   styles: [`
     .chart-container {
-      background: var(--color-surface, #fff);
-      border: 1px solid var(--color-border, #e5e7eb);
+      background: #fff;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 16px;
     }
@@ -59,12 +59,12 @@ import { SkillTestAttempt } from '../../models/skill-test-attempt.model';
       justify-content: space-between;
       margin-bottom: 12px;
     }
-    .chart-title { font-size: 0.875rem; font-weight: 600; color: var(--color-text, #111827); }
-    .chart-meta { font-size: 0.75rem; color: var(--color-text-secondary, #6b7280); }
+    .chart-title { font-size: 0.875rem; font-weight: 600; color: #0f172a; }
+    .chart-meta { font-size: 0.75rem; color: #64748b; }
     .chart-svg { width: 100%; height: auto; max-height: 220px; display: block; }
-    .empty-state { text-align: center; padding: 32px; color: var(--color-text-secondary, #9ca3af); font-size: 0.875rem; }
-    .chart-stats { display: flex; gap: 16px; margin-top: 8px; font-size: 0.8rem; color: var(--color-text-secondary, #6b7280); }
-    .stat strong { color: var(--color-text, #111827); }
+    .empty-state { text-align: center; padding: 32px; color: #94a3b8; font-size: 0.875rem; }
+    .chart-stats { display: flex; gap: 16px; margin-top: 8px; font-size: 0.8rem; color: #64748b; }
+    .stat strong { color: #0f172a; }
   `],
 })
 export class ProgressChartComponent implements OnChanges {

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg text-primary">
+<span class="material-symbols-outlined block">terminal</span>
+</div>
+<div>
+<h1 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Assessment</h1>
+<h2 class="text-lg font-bold leading-none">Javascript Fundamentals</h2>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-primary text-xl">timer</span>
+<span class="font-mono font-bold text-slate-700 dark:text-slate-200">14:32</span>
+</div>
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-1 bg-slate-100 dark:bg-slate-800">
+<div class="h-full bg-primary transition-all duration-300" style="width: 45%;"></div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-4 py-8 md:py-12 flex flex-col items-center">
+<!-- Question Indicator -->
+<div class="w-full max-w-[720px] mb-6 flex justify-between items-end">
+<div>
+<span class="text-primary font-bold text-sm uppercase tracking-widest">Question 09</span>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Out of 20 questions</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full italic">Medium Difficulty</span>
+</div>
+</div>
+<!-- Question Card -->
+<div class="w-full max-w-[720px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<!-- Optional Visual Context/Image -->
+<div class="w-full aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center relative group" data-alt="JavaScript code snippet showing a type check">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+<code class="z-10 bg-slate-900 text-blue-300 p-6 rounded-lg font-mono text-sm md:text-base shadow-2xl">
+<span class="text-purple-400">console</span>.<span class="text-yellow-200">log</span>(<span class="text-primary">typeof</span> <span class="text-orange-300">null</span>);
+                </code>
+</div>
+<div class="p-6 md:p-8">
+<h3 class="text-xl md:text-2xl font-bold mb-8 leading-tight">
+                    What is the output of 'typeof null' in JavaScript?
+                </h3>
+<!-- Options Grid -->
+<div class="grid grid-cols-1 gap-4">
+<!-- Option A -->
+<label class="group relative flex items-center gap-4 cursor-pointer rounded-xl border-2 border-primary bg-primary/5 p-5 transition-all hover:bg-primary/10">
+<input checked="" class="h-5 w-5 text-primary border-slate-300 focus:ring-primary" name="assessment-option" type="radio" value="a"/>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-slate-100 font-semibold text-lg">"object"</span>
+</div>
+<div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+</label>
+<!-- Option B -->
+<label class="group relative flex items-center gap-4 cursor-pointer rounded-xl border-2 border-slate-200 dark:border-slate-800 p-5 transition-all hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800">
+<input class="h-5 w-5 text-primary border-slate-300 focus:ring-primary" name="assessment-option" type="radio" value="b"/>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-slate-100 font-semibold text-lg">"null"</span>
+</div>
+</label>
+<!-- Option C -->
+<label class="group relative flex items-center gap-4 cursor-pointer rounded-xl border-2 border-slate-200 dark:border-slate-800 p-5 transition-all hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800">
+<input class="h-5 w-5 text-primary border-slate-300 focus:ring-primary" name="assessment-option" type="radio" value="c"/>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-slate-100 font-semibold text-lg">"undefined"</span>
+</div>
+</label>
+<!-- Option D -->
+<label class="group relative flex items-center gap-4 cursor-pointer rounded-xl border-2 border-slate-200 dark:border-slate-800 p-5 transition-all hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-slate-800">
+<input class="h-5 w-5 text-primary border-slate-300 focus:ring-primary" name="assessment-option" type="radio" value="d"/>
+<div class="flex flex-col">
+<span class="text-slate-900 dark:text-slate-100 font-semibold text-lg">"number"</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Navigation Buttons -->
+<div class="w-full max-w-[720px] mt-10 flex justify-between items-center">
+<button class="flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+                Previous
+            </button>
+<div class="flex gap-4">
+<button class="hidden md:flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    Flag for Review
+                </button>
+<button class="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-primary/25 hover:opacity-90 transition-all">
+                    Next Question
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Sidebar Hint (Hidden on mobile) -->
+<aside class="fixed right-8 top-32 hidden xl:flex flex-col gap-4 w-64">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-2 text-primary mb-3">
+<span class="material-symbols-outlined">lightbulb</span>
+<h4 class="font-bold">Pro Tip</h4>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                Remember that in JavaScript, some basic types are considered objects due to legacy implementation details.
+            </p>
+</div>
+<div class="bg-primary/5 p-6 rounded-xl border border-primary/20">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 mb-4">Question Grid</h4>
+<div class="grid grid-cols-5 gap-2">
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">1</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">2</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">3</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">4</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">5</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">6</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">7</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-primary text-white">8</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold ring-2 ring-primary bg-primary/20 text-primary">9</div>
+<div class="w-8 h-8 rounded flex items-center justify-center text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-400">10</div>
+</div>
+</div>
+</aside>
+</body></html>
