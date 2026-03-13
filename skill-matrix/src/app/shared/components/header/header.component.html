@@ -1,0 +1,38 @@
+<mat-toolbar class="header-toolbar">
+  <div class="header-left">
+    <button mat-icon-button class="hamburger-btn" (click)="toggleSidebar.emit()"
+            aria-label="Toggle navigation menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="logo">Skill Matrix</span>
+    <span class="page-title">{{ pageTitle }}</span>
+  </div>
+
+  <div class="header-center">
+    <div class="search-placeholder">
+      <mat-icon>search</mat-icon>
+      <span>Search...</span>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <app-notification-bell></app-notification-bell>
+
+    @if (user$ | async; as user) {
+      <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
+        <app-avatar [avatarUrl]="user.avatarUrl" [name]="user.name" [size]="36"></app-avatar>
+      </button>
+
+      <mat-menu #userMenu="matMenu" xPosition="before">
+        <div class="user-menu-header" mat-menu-item disabled>
+          <strong>{{ user.name }}</strong>
+          <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">{{ user.role }}</span>
+        </div>
+        <button mat-menu-item (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    }
+  </div>
+</mat-toolbar>

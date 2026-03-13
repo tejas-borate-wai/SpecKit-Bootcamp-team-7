@@ -1,0 +1,182 @@
+[
+  {
+    "notificationId": "notif-001",
+    "userId": "u001",
+    "type": "skill_approved",
+    "message": "Your Angular skill has been approved at Intermediate level.",
+    "isRead": false,
+    "date": "2026-03-01T09:15:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-002",
+    "userId": "u001",
+    "type": "assessment_result",
+    "message": "You scored 82% on the TypeScript assessment. Well done!",
+    "isRead": false,
+    "date": "2026-02-28T14:30:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-003",
+    "userId": "u001",
+    "type": "peer_validation_request",
+    "message": "Alex Johnson has requested a peer validation for their RxJS skill.",
+    "isRead": true,
+    "date": "2026-02-25T11:00:00Z",
+    "linkTo": null
+  },
+  {
+    "notificationId": "notif-004",
+    "userId": "u001",
+    "type": "cert_expiry_warning",
+    "message": "Your AWS Certified Developer certificate will expire in 30 days.",
+    "isRead": false,
+    "date": "2026-02-20T08:00:00Z",
+    "linkTo": "/certifications"
+  },
+  {
+    "notificationId": "notif-005",
+    "userId": "u001",
+    "type": "skill_stale",
+    "message": "Your Node.js skill has not been updated in 6 months. Please review it.",
+    "isRead": true,
+    "date": "2026-02-15T10:00:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-006",
+    "userId": "u001",
+    "type": "peer_validation_complete",
+    "message": "Peer validation for your Angular skill is complete. Average rating: 3.5.",
+    "isRead": false,
+    "date": "2026-02-10T16:45:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-007",
+    "userId": "u001",
+    "type": "skill_gap_suggestion",
+    "message": "Based on your role, consider adding Docker to your skill set.",
+    "isRead": true,
+    "date": "2026-02-05T09:00:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-008",
+    "userId": "u001",
+    "type": "skill_pending_approval",
+    "message": "Your Python skill submission is awaiting manager approval.",
+    "isRead": false,
+    "date": "2026-01-30T13:20:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-009",
+    "userId": "u001",
+    "type": "skill_rejected",
+    "message": "Your GraphQL skill submission was rejected. Reason: Insufficient evidence.",
+    "isRead": true,
+    "date": "2026-01-25T11:30:00Z",
+    "linkTo": "/my-skills"
+  },
+  {
+    "notificationId": "notif-010",
+    "userId": "u001",
+    "type": "cert_expired",
+    "message": "Your Azure Fundamentals certificate has expired. Please renew it.",
+    "isRead": false,
+    "date": "2026-01-20T08:00:00Z",
+    "linkTo": "/certifications"
+  },
+  {
+    "notificationId": "notif-011",
+    "userId": "u002",
+    "type": "skill_pending_approval",
+    "message": "Maria Garcia has submitted a React skill for your approval.",
+    "isRead": false,
+    "date": "2026-03-02T10:00:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-012",
+    "userId": "u002",
+    "type": "skill_pending_approval",
+    "message": "Carlos Rivera has submitted a Kubernetes skill for your approval.",
+    "isRead": false,
+    "date": "2026-03-01T15:30:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-013",
+    "userId": "u002",
+    "type": "peer_validation_complete",
+    "message": "Peer validation for Sam Lee's TypeScript skill has been completed.",
+    "isRead": true,
+    "date": "2026-02-27T12:00:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-014",
+    "userId": "u002",
+    "type": "skill_gap_suggestion",
+    "message": "Your team has a gap in Cloud Architecture skills. Consider scheduling training.",
+    "isRead": false,
+    "date": "2026-02-22T09:15:00Z",
+    "linkTo": "/reports"
+  },
+  {
+    "notificationId": "notif-015",
+    "userId": "u002",
+    "type": "cert_expiry_warning",
+    "message": "Sam Lee's PMP certification will expire in 14 days.",
+    "isRead": true,
+    "date": "2026-02-18T08:00:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-016",
+    "userId": "u003",
+    "type": "skill_approved",
+    "message": "Sarah Kim's AWS skill submission has been approved.",
+    "isRead": false,
+    "date": "2026-03-03T11:00:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-017",
+    "userId": "u003",
+    "type": "skill_rejected",
+    "message": "Tom Wilson's Terraform skill has been rejected. Missing certification evidence.",
+    "isRead": false,
+    "date": "2026-03-02T14:00:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-018",
+    "userId": "u003",
+    "type": "cert_expired",
+    "message": "Emily Clark's Google Cloud certification has expired.",
+    "isRead": true,
+    "date": "2026-02-28T08:00:00Z",
+    "linkTo": "/team"
+  },
+  {
+    "notificationId": "notif-019",
+    "userId": "u003",
+    "type": "assessment_result",
+    "message": "The team-wide Angular assessment results are available. Average score: 74%.",
+    "isRead": false,
+    "date": "2026-02-24T16:00:00Z",
+    "linkTo": "/reports"
+  },
+  {
+    "notificationId": "notif-020",
+    "userId": "u003",
+    "type": "skill_stale",
+    "message": "12 employees have skills that have not been updated in over 6 months.",
+    "isRead": true,
+    "date": "2026-02-20T09:00:00Z",
+    "linkTo": "/reports"
+  }
+]

@@ -24,12 +24,12 @@
 
 **Purpose**: Project initialization — models, NgRx store scaffolding, and interceptor registration
 
-- [ ] T001 [P] Define Notification interface, NotificationType enum, and NotificationTypeConfig interface in src/app/shared/models/notification.model.ts
-- [ ] T002 [P] Define NOTIFICATION_TYPE_CONFIGS constant map (type → icon name, icon colour, label) in src/app/shared/models/notification.model.ts
-- [ ] T003 Create NgRx actions (load, loadSuccess, loadFailure, markAsRead, markAllAsRead, addNotification, clear) in src/app/core/store/notifications/notifications.actions.ts
-- [ ] T004 Create NgRx reducer with NotificationsState (notifications[], unreadCount, loading, error) and initial state in src/app/core/store/notifications/notifications.reducer.ts
-- [ ] T005 [P] Create NgRx selectors (selectAllNotifications, selectUnreadNotifications, selectUnreadCount, selectNotificationsLoading) in src/app/core/store/notifications/notifications.selectors.ts
-- [ ] T006 Register notifications store slice at root level via provideState in src/app/app.config.ts
+- [x] T001 [P] Define Notification interface, NotificationType enum, and NotificationTypeConfig interface in src/app/shared/models/notification.model.ts
+- [x] T002 [P] Define NOTIFICATION_TYPE_CONFIGS constant map (type → icon name, icon colour, label) in src/app/shared/models/notification.model.ts
+- [x] T003 Create NgRx actions (load, loadSuccess, loadFailure, markAsRead, markAllAsRead, addNotification, clear) in src/app/core/store/notifications/notifications.actions.ts
+- [x] T004 Create NgRx reducer with NotificationsState (notifications[], unreadCount, loading, error) and initial state in src/app/core/store/notifications/notifications.reducer.ts
+- [x] T005 [P] Create NgRx selectors (selectAllNotifications, selectUnreadNotifications, selectUnreadCount, selectNotificationsLoading) in src/app/core/store/notifications/notifications.selectors.ts
+- [x] T006 Register notifications store slice at root level via provideState in src/app/app.config.ts
 
 ---
 
@@ -39,12 +39,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Add /api/notifications/:userId URL pattern to MockApiInterceptor with userId filtering, date-descending sort, RBAC enforcement (session userId must match), and simulated latency in src/app/core/interceptors/mock-api.interceptor.ts
-- [ ] T008 Create NotificationService with loadNotifications(userId) method calling GET /api/notifications/:userId via HttpClient in src/app/core/services/notification.service.ts
-- [ ] T009 Create NgRx effect loadNotifications$ that listens for load action, calls NotificationService.loadNotifications, and dispatches loadSuccess/loadFailure in src/app/core/store/notifications/notifications.effects.ts
-- [ ] T010 Register NotificationsEffects at root level via provideEffects in src/app/app.config.ts
-- [ ] T011 [P] Populate notifications.json mock data with 15+ entries covering all 10 notification types across Employee, Manager, and Peer users (SC-003) in src/assets/mock-data/notifications.json
-- [ ] T012 Add /notifications route with AuthGuard to app.routes.ts with lazy-loaded NotificationsListComponent in src/app/app.routes.ts
+- [x] T007 Add /api/notifications/:userId URL pattern to MockApiInterceptor with userId filtering, date-descending sort, RBAC enforcement (session userId must match), and simulated latency in src/app/core/interceptors/mock-api.interceptor.ts
+- [x] T008 Create NotificationService with loadNotifications(userId) method calling GET /api/notifications/:userId via HttpClient in src/app/core/services/notification.service.ts
+- [x] T009 Create NgRx effect loadNotifications$ that listens for load action, calls NotificationService.loadNotifications, and dispatches loadSuccess/loadFailure in src/app/core/store/notifications/notifications.effects.ts
+- [x] T010 Register NotificationsEffects at root level via provideEffects in src/app/app.config.ts
+- [x] T011 [P] Populate notifications.json mock data with 15+ entries covering all 10 notification types across Employee, Manager, and Peer users (SC-003) in src/assets/mock-data/notifications.json
+- [x] T012 Add /notifications route with AuthGuard to app.routes.ts with lazy-loaded NotificationsListComponent in src/app/app.routes.ts
 
 **Checkpoint**: Foundation ready — interceptor registered, store connected, mock data populated, route defined
 
@@ -58,11 +58,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T013 [US1] Create NotificationBellComponent (standalone) with bell icon, unread badge via selectUnreadCount signal, click handler navigating to /notifications in src/app/shared/components/notification-bell/notification-bell.component.ts
-- [ ] T014 [US1] Create notification-bell template with mat-icon (or pi icon), @if for badge visibility, aria-label="Notifications", aria-live="polite" on badge in src/app/shared/components/notification-bell/notification-bell.component.html
-- [ ] T015 [P] [US1] Create notification-bell SCSS with badge positioning (absolute top-right), badge colour (--color-rejected), bell button 44×44px touch target, responsive sizing per Section 18.2 in src/app/shared/components/notification-bell/notification-bell.component.scss
-- [ ] T016 [US1] Integrate NotificationBellComponent into the app header template — render inside @if(isAuthenticated()) block in the right section of the header in src/app/app.component.html (or shell/layout component)
-- [ ] T017 [US1] Dispatch NotificationActions.load({ userId }) in AppComponent.ngOnInit after session rehydration from localStorage; skip if not authenticated in src/app/app.component.ts
+- [x] T013 [US1] Create NotificationBellComponent (standalone) with bell icon, unread badge via selectUnreadCount signal, click handler navigating to /notifications in src/app/shared/components/notification-bell/notification-bell.component.ts
+- [x] T014 [US1] Create notification-bell template with mat-icon (or pi icon), @if for badge visibility, aria-label="Notifications", aria-live="polite" on badge in src/app/shared/components/notification-bell/notification-bell.component.html
+- [x] T015 [P] [US1] Create notification-bell SCSS with badge positioning (absolute top-right), badge colour (--color-rejected), bell button 44×44px touch target, responsive sizing per Section 18.2 in src/app/shared/components/notification-bell/notification-bell.component.scss
+- [x] T016 [US1] Integrate NotificationBellComponent into the app header template — render inside @if(isAuthenticated()) block in the right section of the header in src/app/app.component.html (or shell/layout component)
+- [x] T017 [US1] Dispatch NotificationActions.load({ userId }) in AppComponent.ngOnInit after session rehydration from localStorage; skip if not authenticated in src/app/app.component.ts
 
 **Checkpoint**: Bell icon visible in header with correct badge count. Clicking navigates to /notifications. Badge disappears when unread count is 0.
 
@@ -76,14 +76,14 @@
 
 ### Implementation for User Story 2
 
-- [ ] T018 [P] [US2] Create NotificationItemComponent (standalone, presentational) accepting Notification as @Input() and emitting (clicked) @Output() event in src/app/features/notifications/notification-item/notification-item.component.ts
-- [ ] T019 [P] [US2] Create notification-item template displaying type icon (from NOTIFICATION_TYPE_CONFIGS map), message text, relative date (via RelativeDatePipe or date pipe), and unread indicator (bold + dot) in src/app/features/notifications/notification-item/notification-item.component.html
-- [ ] T020 [P] [US2] Create notification-item SCSS with unread styling (bold text, --color-primary dot), read styling (normal weight, no dot), 44×44px min touch target, hover state in src/app/features/notifications/notification-item/notification-item.component.scss
-- [ ] T021 [US2] Create NotificationsListComponent (standalone) with selector for selectAllNotifications, dispatch markAsRead on item click, dispatch markAllAsRead on button click, and route navigation for linkTo in src/app/features/notifications/notifications-list/notifications-list.component.ts
-- [ ] T022 [US2] Create notifications-list template with page header ("Notifications" title + "Mark All as Read" button disabled when no unread), @for loop rendering NotificationItemComponent per notification, @if empty state ("You have no notifications."), loading spinner via selectNotificationsLoading in src/app/features/notifications/notifications-list/notifications-list.component.html
-- [ ] T023 [P] [US2] Create notifications-list SCSS with list layout, empty state centred styling, responsive behaviour (desktop full-width list, mobile compact cards, full-width items per Section 18.3) in src/app/features/notifications/notifications-list/notifications-list.component.scss
-- [ ] T024 [US2] Implement linkTo navigation logic in NotificationsListComponent — on notification click: dispatch markAsRead, then check if linkTo is non-null and user's role can access the route (using route-access-check utility per research.md §5), navigate if accessible, suppress silently if not in src/app/features/notifications/notifications-list/notifications-list.component.ts
-- [ ] T025 [US2] Create route-access-check utility function canAccessRoute(route, userRole) mapping admin-only and manager-admin routes per constitution route guard matrix in src/app/core/utils/route-access.util.ts
+- [x] T018 [P] [US2] Create NotificationItemComponent (standalone, presentational) accepting Notification as @Input() and emitting (clicked) @Output() event in src/app/features/notifications/notification-item/notification-item.component.ts
+- [x] T019 [P] [US2] Create notification-item template displaying type icon (from NOTIFICATION_TYPE_CONFIGS map), message text, relative date (via RelativeDatePipe or date pipe), and unread indicator (bold + dot) in src/app/features/notifications/notification-item/notification-item.component.html
+- [x] T020 [P] [US2] Create notification-item SCSS with unread styling (bold text, --color-primary dot), read styling (normal weight, no dot), 44×44px min touch target, hover state in src/app/features/notifications/notification-item/notification-item.component.scss
+- [x] T021 [US2] Create NotificationsListComponent (standalone) with selector for selectAllNotifications, dispatch markAsRead on item click, dispatch markAllAsRead on button click, and route navigation for linkTo in src/app/features/notifications/notifications-list/notifications-list.component.ts
+- [x] T022 [US2] Create notifications-list template with page header ("Notifications" title + "Mark All as Read" button disabled when no unread), @for loop rendering NotificationItemComponent per notification, @if empty state ("You have no notifications."), loading spinner via selectNotificationsLoading in src/app/features/notifications/notifications-list/notifications-list.component.html
+- [x] T023 [P] [US2] Create notifications-list SCSS with list layout, empty state centred styling, responsive behaviour (desktop full-width list, mobile compact cards, full-width items per Section 18.3) in src/app/features/notifications/notifications-list/notifications-list.component.scss
+- [x] T024 [US2] Implement linkTo navigation logic in NotificationsListComponent — on notification click: dispatch markAsRead, then check if linkTo is non-null and user's role can access the route (using route-access-check utility per research.md §5), navigate if accessible, suppress silently if not in src/app/features/notifications/notifications-list/notifications-list.component.ts
+- [x] T025 [US2] Create route-access-check utility function canAccessRoute(route, userRole) mapping admin-only and manager-admin routes per constitution route guard matrix in src/app/core/utils/route-access.util.ts
 
 **Checkpoint**: /notifications screen shows all user notifications with correct icons, messages, dates, read/unread status. Clicking marks as read and navigates. "Mark All as Read" works. Empty state shown when no notifications.
 
@@ -97,9 +97,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Verify and update notifications.json to ensure all 10 notification types are present with correct message templates matching spec (skill_approved, skill_rejected, assessment_result, cert_expiry_warning, cert_expired, skill_stale, peer_validation_request, peer_validation_complete, skill_gap_suggestion, skill_pending_approval) in src/assets/mock-data/notifications.json
-- [ ] T027 [US3] Verify each notification entry in notifications.json has linkTo set to the correct deep-link route (e.g., skill_approved → /my-skills/:skillId, peer_validation_request → /team/validation, skill_pending_approval → /team/validation) in src/assets/mock-data/notifications.json
-- [ ] T028 [US3] Verify userId filtering in MockApiInterceptor returns only notifications matching the authenticated user's id — test by logging in as Employee user, Manager user, and confirming each sees exclusively their own notifications
+- [x] T026 [US3] Verify and update notifications.json to ensure all 10 notification types are present with correct message templates matching spec (skill_approved, skill_rejected, assessment_result, cert_expiry_warning, cert_expired, skill_stale, peer_validation_request, peer_validation_complete, skill_gap_suggestion, skill_pending_approval) in src/assets/mock-data/notifications.json
+- [x] T027 [US3] Verify each notification entry in notifications.json has linkTo set to the correct deep-link route (e.g., skill_approved → /my-skills/:skillId, peer_validation_request → /team/validation, skill_pending_approval → /team/validation) in src/assets/mock-data/notifications.json
+- [x] T028 [US3] Verify userId filtering in MockApiInterceptor returns only notifications matching the authenticated user's id — test by logging in as Employee user, Manager user, and confirming each sees exclusively their own notifications
 
 **Checkpoint**: All 10 notification types present in mock data. Each user sees only their own notifications. Message templates match spec exactly.
 
@@ -113,12 +113,12 @@
 
 ### Implementation for User Story 4
 
-- [ ] T029 [US4] Add addNotification action handler in notifications.reducer.ts — prepend notification to notifications array and increment unreadCount in src/app/core/store/notifications/notifications.reducer.ts
-- [ ] T030 [US4] Create generateNotificationId() utility function (uuid-like string generator) in src/app/core/utils/notification-id.util.ts
-- [ ] T031 [US4] Add session-generated notification dispatch in assessment completion effect — after assessment score is calculated, dispatch NotificationActions.addNotification with type assessment_result, formatted message, linkTo /assessments/:skillId/result in the assessments feature effects file (Phase 4 integration point)
-- [ ] T032 [US4] Add session-generated notification dispatch in skill approval effect — after manager approves a skill, dispatch NotificationActions.addNotification with type skill_approved, formatted message, linkTo /my-skills/:skillId in the team/validation feature effects file (Phase 6 integration point)
-- [ ] T033 [US4] Add session-generated notification dispatch in skill rejection effect — after manager rejects a skill, dispatch NotificationActions.addNotification with type skill_rejected, formatted message in the team/validation feature effects file (Phase 6 integration point)
-- [ ] T034 [US4] Add session-generated notification dispatch in peer validation request — when employee nominates peers, dispatch NotificationActions.addNotification with type peer_validation_request to each selected peer's userId in the peer validation feature effects file (Phase 6 integration point)
+- [x] T029 [US4] Add addNotification action handler in notifications.reducer.ts — prepend notification to notifications array and increment unreadCount in src/app/core/store/notifications/notifications.reducer.ts
+- [x] T030 [US4] Create generateNotificationId() utility function (uuid-like string generator) in src/app/core/utils/notification-id.util.ts
+- [x] T031 [US4] Add session-generated notification dispatch in assessment completion effect — after assessment score is calculated, dispatch NotificationActions.addNotification with type assessment_result, formatted message, linkTo /assessments/:skillId/result in the assessments feature effects file (Phase 4 integration point)
+- [x] T032 [US4] Add session-generated notification dispatch in skill approval effect — after manager approves a skill, dispatch NotificationActions.addNotification with type skill_approved, formatted message, linkTo /my-skills/:skillId in the team/validation feature effects file (Phase 6 integration point)
+- [x] T033 [US4] Add session-generated notification dispatch in skill rejection effect — after manager rejects a skill, dispatch NotificationActions.addNotification with type skill_rejected, formatted message in the team/validation feature effects file (Phase 6 integration point)
+- [x] T034 [US4] Add session-generated notification dispatch in peer validation request — when employee nominates peers, dispatch NotificationActions.addNotification with type peer_validation_request to each selected peer's userId in the peer validation feature effects file (Phase 6 integration point)
 
 **Checkpoint**: Session-generated notifications appear immediately in bell badge and notification list. No page refresh required. Assessment completion, skill approval/rejection, and peer validation all generate notifications.
 
@@ -128,12 +128,12 @@
 
 **Purpose**: Improvements that affect multiple components; logout handling; accessibility audit
 
-- [ ] T035 Add clearNotifications action dispatch on logout — when user logs out, dispatch NotificationActions.clear to reset notifications state in src/app/core/auth/ (AuthService or logout effect)
-- [ ] T036 Add loadNotifications dispatch on login success — after successful login and session store, dispatch NotificationActions.load({ userId }) in the auth/login effect or AuthService
-- [ ] T037 [P] Verify bell icon accessibility — aria-label="Notifications" on button, aria-live="polite" on badge, keyboard focusable, Enter key triggers navigation
-- [ ] T038 [P] Verify notification list accessibility — each notification item is keyboard navigable (tab + Enter), unread indicator uses bold text + dot (not colour alone), proper heading hierarchy on page
-- [ ] T039 [P] Verify responsive behaviour — notification list renders correctly at 375px (mobile), 768px (tablet), 1280px (desktop) per Section 18.3/18.2; bell icon adapts to header responsive rules
-- [ ] T040 Run quickstart.md validation — confirm all files exist, routes registered, store slice active, bell component integrated, mock data complete
+- [x] T035 Add clearNotifications action dispatch on logout — when user logs out, dispatch NotificationActions.clear to reset notifications state in src/app/core/auth/ (AuthService or logout effect)
+- [x] T036 Add loadNotifications dispatch on login success — after successful login and session store, dispatch NotificationActions.load({ userId }) in the auth/login effect or AuthService
+- [x] T037 [P] Verify bell icon accessibility — aria-label="Notifications" on button, aria-live="polite" on badge, keyboard focusable, Enter key triggers navigation
+- [x] T038 [P] Verify notification list accessibility — each notification item is keyboard navigable (tab + Enter), unread indicator uses bold text + dot (not colour alone), proper heading hierarchy on page
+- [x] T039 [P] Verify responsive behaviour — notification list renders correctly at 375px (mobile), 768px (tablet), 1280px (desktop) per Section 18.3/18.2; bell icon adapts to header responsive rules
+- [x] T040 Run quickstart.md validation — confirm all files exist, routes registered, store slice active, bell component integrated, mock data complete
 
 ---
 

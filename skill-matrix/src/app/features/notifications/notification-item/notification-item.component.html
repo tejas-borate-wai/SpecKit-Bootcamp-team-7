@@ -1,0 +1,22 @@
+<div
+  class="notification-item"
+  [class.notification-item--unread]="!notification.isRead"
+  matRipple
+  (click)="onItemClick()"
+  [attr.aria-label]="config.label + ': ' + notification.message + (notification.isRead ? '' : ' (unread)')"
+>
+  <div class="notification-item__icon" [style.color]="config.iconColor">
+    <mat-icon [attr.aria-hidden]="true">{{ config.icon }}</mat-icon>
+  </div>
+
+  <div class="notification-item__content">
+    <p class="notification-item__message">{{ notification.message }}</p>
+    <time class="notification-item__date" [dateTime]="notification.date">
+      {{ notification.date | date: 'MMM d, y, h:mm a' }}
+    </time>
+  </div>
+
+  @if (!notification.isRead) {
+    <span class="notification-item__unread-dot" aria-hidden="true"></span>
+  }
+</div>

@@ -1,0 +1,47 @@
+<div class="notifications-page">
+  <header class="notifications-header">
+    <div class="notifications-header__title">
+      <mat-icon aria-hidden="true">notifications</mat-icon>
+      <h1>Notifications</h1>
+      @if (unreadCount$ | async; as count) {
+        @if (count > 0) {
+          <span class="unread-badge" aria-label="{{ count }} unread notifications">{{ count }}</span>
+        }
+      }
+    </div>
+
+    @if (unreadCount$ | async; as count) {
+      @if (count > 0) {
+        <button mat-stroked-button color="primary" (click)="onMarkAllAsRead()">
+          <mat-icon>done_all</mat-icon>
+          Mark all as read
+        </button>
+      }
+    }
+  </header>
+
+  @if (loading$ | async) {
+    <div class="notifications-loading" role="status" aria-label="Loading notifications">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading notifications...</p>
+    </div>
+  } @else {
+    @if (notifications$ | async; as notifications) {
+      @if (notifications.length > 0) {
+        <section class="notifications-list" role="list" aria-label="Notifications">
+          @for (notification of notifications; track notification.notificationId) {
+            <app-notification-item
+              [notification]="notification"
+              (clicked)="onNotificationClicked($event)"
+            ></app-notification-item>
+          }
+        </section>
+      } @else {
+        <div class="notifications-empty" role="status">
+          <mat-icon aria-hidden="true">notifications_none</mat-icon>
+          <p>You're all caught up! No notifications yet.</p>
+        </div>
+      }
+    }
+  }
+</div>
