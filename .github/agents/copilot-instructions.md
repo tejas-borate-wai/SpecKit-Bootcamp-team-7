@@ -9,6 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-12
 - In-memory via MockApiInterceptor; JSON files in `/assets/mock-data/` (skill-exams.json, skill-test-attempts.json, employee-skills.json, certifications.json, projects.json, project-assignments.json) (004-skill-assessments)
 - TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Reactive Forms (005-certifications-module)
 - In-memory via MockApiInterceptor; JSON files in `/assets/mock-data/` (certifications.json, employee-skills.json) (005-certifications-module)
+- TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Animations, Angular Router (AuthGuard + RoleGuard) (006-peer-validation-manager-controls)
+- In-memory via MockApiInterceptor; JSON files in `/assets/mock-data/` (employee-skills.json, users.json, notifications.json, skill-definitions.json, certifications.json) (006-peer-validation-manager-controls)
 
 - TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular Router, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors (001-mock-auth-rbac-navigation)
 
@@ -28,9 +30,9 @@ npm test; npm run lint
 TypeScript 5.x (strict mode), Angular 17+: Follow standard conventions
 
 ## Recent Changes
+- 006-peer-validation-manager-controls: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material or PrimeNG, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Animations, Angular Router (AuthGuard + RoleGuard)
 - 005-certifications-module: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Reactive Forms
 - 005-certifications-module: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Reactive Forms
-- 004-skill-assessments: Added TypeScript 5.x (strict mode), Angular 17+ + Angular 17, NgRx 17+, Angular Material, Angular CDK (BreakpointObserver), Angular HttpClient + HTTP Interceptors, Angular Animations
 
 
 <!-- MANUAL ADDITIONS START -->
