@@ -1,0 +1,114 @@
+<div class="settings-page">
+  <h1 class="page-title">Settings</h1>
+
+  @if (user$ | async; as user) {
+    <!-- Profile Card -->
+    <section class="section">
+      <h2 class="section-title">Profile</h2>
+      <div class="profile-card">
+        <div class="avatar" [attr.aria-label]="user.name">
+          {{ user.name.charAt(0).toUpperCase() }}
+        </div>
+        <div class="profile-info">
+          <p class="profile-name">{{ user.name }}</p>
+          <p class="profile-email">{{ user.email }}</p>
+          <span class="role-badge role-{{ user.role.toLowerCase() }}">{{ user.role }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Account Details -->
+    <section class="section">
+      <h2 class="section-title">Account Details</h2>
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Full Name</span>
+          <span class="detail-value">{{ user.name }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email</span>
+          <span class="detail-value">{{ user.email }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Role</span>
+          <span class="detail-value">{{ user.role }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Department</span>
+          <span class="detail-value">{{ user.department }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Preferences -->
+    <section class="section">
+      <h2 class="section-title">Preferences</h2>
+      <div class="pref-list">
+        <div class="pref-item">
+          <div class="pref-text">
+            <span class="pref-label">Email Notifications</span>
+            <span class="pref-desc">Receive email alerts for skill validations and approvals</span>
+          </div>
+          <label class="toggle" aria-label="Toggle email notifications">
+            <input type="checkbox" checked disabled />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="pref-item">
+          <div class="pref-text">
+            <span class="pref-label">Assessment Reminders</span>
+            <span class="pref-desc">Get reminded when skills are due for reassessment</span>
+          </div>
+          <label class="toggle" aria-label="Toggle assessment reminders">
+            <input type="checkbox" checked disabled />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="pref-item">
+          <div class="pref-text">
+            <span class="pref-label">Peer Validation Requests</span>
+            <span class="pref-desc">Notify when you are selected as a peer validator</span>
+          </div>
+          <label class="toggle" aria-label="Toggle peer validation notifications">
+            <input type="checkbox" checked disabled />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <p class="coming-soon">Preference management coming soon.</p>
+    </section>
+
+    <!-- Security -->
+    <section class="section">
+      <h2 class="section-title">Security</h2>
+      <div class="security-list">
+        <div class="security-item">
+          <div class="security-text">
+            <span class="security-label">Password</span>
+            <span class="security-desc">Last changed: Never (demo environment)</span>
+          </div>
+          <button class="btn btn-secondary" disabled>Change Password</button>
+        </div>
+        <div class="security-item">
+          <div class="security-text">
+            <span class="security-label">Two-Factor Authentication</span>
+            <span class="security-desc">Not enabled in the demo environment</span>
+          </div>
+          <button class="btn btn-secondary" disabled>Enable 2FA</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Danger Zone -->
+    <section class="section danger-section">
+      <h2 class="section-title danger-title">Session</h2>
+      <div class="danger-item">
+        <div class="danger-text">
+          <span class="danger-label">Sign Out</span>
+          <span class="danger-desc">You are currently signed in as {{ user.email }}</span>
+        </div>
+        <button class="btn btn-danger" (click)="onLogout()">Sign Out</button>
+      </div>
+    </section>
+  }
+</div>

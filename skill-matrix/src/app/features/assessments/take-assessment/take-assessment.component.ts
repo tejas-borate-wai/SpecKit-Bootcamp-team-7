@@ -73,9 +73,9 @@ export class TakeAssessmentComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Listen for timer expiry toast
+    // Listen for timer expiry toast — only trigger when an active assessment actually hits 0
     this.timerRemaining$.pipe(takeUntil(this.destroy$)).subscribe((rem) => {
-      if (rem === 0 && !this.timedOutMessage) {
+      if (rem !== null && rem === 0 && !this.timedOutMessage) {
         this.timedOutMessage = "Time's up! Your test has been auto-submitted.";
       }
     });

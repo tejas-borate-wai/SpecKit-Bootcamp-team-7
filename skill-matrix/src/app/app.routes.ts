@@ -89,11 +89,10 @@ export const routes: Routes = [
   {
     path: 'settings',
     canActivate: [authGuard],
-    providers: [
-      provideState('skills', skillsReducer),
-      provideEffects(skillsEffects),
-    ],
-    loadComponent: placeholder,
+    loadComponent: () =>
+      import('./features/settings/settings.component').then(
+        (m) => m.SettingsComponent
+      ),
   },
 
   // AuthGuard + RoleGuard — Manager, Admin

@@ -76,7 +76,7 @@ export const selectProgress = createSelector(
 
 export const selectTimerRemaining = createSelector(
   selectActiveAssessment,
-  (active) => active?.timerRemaining ?? 0
+  (active) => active?.timerRemaining ?? null
 );
 
 // Returns AssessmentStatus for a given skill

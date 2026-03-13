@@ -185,9 +185,9 @@ function submitAssessmentObs(
   service: AssessmentService,
   http: HttpClient
 ): Observable<import('@ngrx/store').Action> {
-  const sessionRaw = localStorage.getItem('session');
+  const sessionRaw = localStorage.getItem('skillmatrix_session');
   const userId: string = sessionRaw
-    ? (JSON.parse(sessionRaw) as { id?: string }).id ?? 'unknown'
+    ? (JSON.parse(sessionRaw) as { user?: { id?: string } }).user?.id ?? 'unknown'
     : 'unknown';
 
   const { skillId, exam, answers, timerDeadline } = active;
