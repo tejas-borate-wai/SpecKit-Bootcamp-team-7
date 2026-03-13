@@ -1,0 +1,391 @@
+[
+  {
+    "skillId": "skill-001",
+    "questions": [
+      {
+        "questionId": "s001-q1",
+        "questionText": "Which hook is used to manage local state in a React functional component?",
+        "options": ["useEffect", "useState", "useContext", "useReducer"],
+        "correctAnswer": "useState",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s001-q2",
+        "questionText": "What does the useEffect hook with an empty dependency array do?",
+        "options": [
+          "Runs on every render",
+          "Runs only when specific state changes",
+          "Runs once after initial mount",
+          "Runs before every render"
+        ],
+        "correctAnswer": "Runs once after initial mount",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s001-q3",
+        "questionText": "Which method is called when a class component is removed from the DOM?",
+        "options": ["componentWillUnmount", "componentDidUnmount", "componentWillUpdate", "componentDidUpdate"],
+        "correctAnswer": "componentWillUnmount",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s001-q4",
+        "questionText": "What is the purpose of React.memo?",
+        "options": [
+          "To cache HTTP responses",
+          "To memoize expensive computations",
+          "To prevent re-rendering of a component when props haven't changed",
+          "To manage global state"
+        ],
+        "correctAnswer": "To prevent re-rendering of a component when props haven't changed",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s001-q5",
+        "questionText": "What is the difference between useCallback and useMemo?",
+        "options": [
+          "useCallback memoizes a function; useMemo memoizes a computed value",
+          "useCallback memoizes values; useMemo memoizes functions",
+          "They are identical in behaviour",
+          "useMemo is only for class components"
+        ],
+        "correctAnswer": "useCallback memoizes a function; useMemo memoizes a computed value",
+        "difficultyLevel": "Hard"
+      },
+      {
+        "questionId": "s001-q6",
+        "questionText": "In the React reconciliation process, what key prop is used to help React identify list items?",
+        "options": ["id", "key", "index", "ref"],
+        "correctAnswer": "key",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s001-q7",
+        "questionText": "Which pattern allows components to share stateful logic without changing the component hierarchy?",
+        "options": ["HOC", "Render Props", "Custom Hooks", "All of the above"],
+        "correctAnswer": "All of the above",
+        "difficultyLevel": "Hard"
+      }
+    ]
+  },
+  {
+    "skillId": "skill-002",
+    "questions": [
+      {
+        "questionId": "s002-q1",
+        "questionText": "Which decorator is used to define an Angular component?",
+        "options": ["@Component", "@Injectable", "@NgModule", "@Directive"],
+        "correctAnswer": "@Component",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s002-q2",
+        "questionText": "What is the Angular CLI command to generate a new component?",
+        "options": [
+          "ng create component",
+          "ng generate component",
+          "ng new component",
+          "ng add component"
+        ],
+        "correctAnswer": "ng generate component",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s002-q3",
+        "questionText": "What type of binding is used with [(ngModel)]?",
+        "options": [
+          "One-way property binding",
+          "Event binding",
+          "Two-way data binding",
+          "Template reference"
+        ],
+        "correctAnswer": "Two-way data binding",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s002-q4",
+        "questionText": "Which Angular feature is responsible for intercepting HTTP requests and responses?",
+        "options": ["HttpGuard", "HttpInterceptor", "HttpPipe", "HttpFilter"],
+        "correctAnswer": "HttpInterceptor",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s002-q5",
+        "questionText": "What is the purpose of the ChangeDetectionStrategy.OnPush in Angular?",
+        "options": [
+          "To trigger change detection on every cycle",
+          "To only run change detection when inputs change or events are fired",
+          "To disable change detection entirely",
+          "To schedule change detection for the next microtask"
+        ],
+        "correctAnswer": "To only run change detection when inputs change or events are fired",
+        "difficultyLevel": "Hard"
+      },
+      {
+        "questionId": "s002-q6",
+        "questionText": "In Angular 17 standalone components, which function is used to lazy-load a component in routing?",
+        "options": ["loadModule", "loadComponent", "importComponent", "lazyLoad"],
+        "correctAnswer": "loadComponent",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s002-q7",
+        "questionText": "What is the role of NgRx Effects in an Angular application?",
+        "options": [
+          "To manage component templates",
+          "To handle side effects like HTTP calls triggered by actions",
+          "To validate form inputs reactively",
+          "To register reducers in the store"
+        ],
+        "correctAnswer": "To handle side effects like HTTP calls triggered by actions",
+        "difficultyLevel": "Hard"
+      }
+    ]
+  },
+  {
+    "skillId": "skill-006",
+    "questions": [
+      {
+        "questionId": "s006-q1",
+        "questionText": "Which keyword declares a variable that cannot be reassigned?",
+        "options": ["var", "let", "const", "static"],
+        "correctAnswer": "const",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s006-q2",
+        "questionText": "What does the spread operator (...) do when used with arrays?",
+        "options": [
+          "Removes duplicates from an array",
+          "Creates a shallow copy or expands elements",
+          "Reverses the array",
+          "Converts an array to a string"
+        ],
+        "correctAnswer": "Creates a shallow copy or expands elements",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s006-q3",
+        "questionText": "What is the output of: typeof null?",
+        "options": ["null", "undefined", "object", "string"],
+        "correctAnswer": "object",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s006-q4",
+        "questionText": "What does Promise.all() do when one of the promises rejects?",
+        "options": [
+          "Continues with the remaining promises",
+          "Returns undefined for the rejected promise",
+          "Immediately rejects the entire Promise.all",
+          "Waits for all promises to settle"
+        ],
+        "correctAnswer": "Immediately rejects the entire Promise.all",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s006-q5",
+        "questionText": "What is the event loop's microtask queue used for?",
+        "options": [
+          "setTimeout callbacks",
+          "setInterval callbacks",
+          "Promise .then() callbacks and queueMicrotask callbacks",
+          "DOM event handlers"
+        ],
+        "correctAnswer": "Promise .then() callbacks and queueMicrotask callbacks",
+        "difficultyLevel": "Hard"
+      },
+      {
+        "questionId": "s006-q6",
+        "questionText": "What does the logical nullish assignment operator (??=) do?",
+        "options": [
+          "Assigns only if the left operand is falsy",
+          "Assigns only if the left operand is null or undefined",
+          "Always assigns the right value",
+          "Compares two values for null"
+        ],
+        "correctAnswer": "Assigns only if the left operand is null or undefined",
+        "difficultyLevel": "Hard"
+      }
+    ]
+  },
+  {
+    "skillId": "skill-008",
+    "questions": [
+      {
+        "questionId": "s008-q1",
+        "questionText": "Which access modifier in Java makes a member accessible only within the same class?",
+        "options": ["public", "protected", "private", "default"],
+        "correctAnswer": "private",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s008-q2",
+        "questionText": "What is the difference between an interface and an abstract class in Java?",
+        "options": [
+          "An interface can have concrete methods; an abstract class cannot",
+          "An abstract class can have state and concrete methods; an interface only has abstract methods (prior to Java 8)",
+          "They are identical in Java 17",
+          "Abstract class allows multiple inheritance"
+        ],
+        "correctAnswer": "An abstract class can have state and concrete methods; an interface only has abstract methods (prior to Java 8)",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s008-q3",
+        "questionText": "Which Java collection maintains insertion order and allows duplicates?",
+        "options": ["HashSet", "TreeSet", "ArrayList", "HashMap"],
+        "correctAnswer": "ArrayList",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s008-q4",
+        "questionText": "What is the result of Integer.parseInt(\"abc\") in Java?",
+        "options": [
+          "Returns 0",
+          "Returns null",
+          "Throws NumberFormatException",
+          "Throws ClassCastException"
+        ],
+        "correctAnswer": "Throws NumberFormatException",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s008-q5",
+        "questionText": "Which garbage collection algorithm divides heap into Young and Old generations?",
+        "options": ["Mark-and-Sweep", "Reference Counting", "Generational GC", "Concurrent Mark Sweep"],
+        "correctAnswer": "Generational GC",
+        "difficultyLevel": "Hard"
+      },
+      {
+        "questionId": "s008-q6",
+        "questionText": "What is the difference between == and .equals() for String comparison in Java?",
+        "options": [
+          "== checks reference equality; .equals() checks value equality",
+          "== checks value equality; .equals() checks reference equality",
+          "They are interchangeable for String",
+          ".equals() is deprecated in Java 17"
+        ],
+        "correctAnswer": "== checks reference equality; .equals() checks value equality",
+        "difficultyLevel": "Easy"
+      }
+    ]
+  },
+  {
+    "skillId": "skill-019",
+    "questions": [
+      {
+        "questionId": "s019-q1",
+        "questionText": "Which SQL clause filters rows after aggregation?",
+        "options": ["WHERE", "HAVING", "GROUP BY", "ORDER BY"],
+        "correctAnswer": "HAVING",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s019-q2",
+        "questionText": "What type of JOIN returns all rows from the left table and matching rows from the right?",
+        "options": ["INNER JOIN", "RIGHT OUTER JOIN", "LEFT OUTER JOIN", "CROSS JOIN"],
+        "correctAnswer": "LEFT OUTER JOIN",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s019-q3",
+        "questionText": "Which SQL statement is used to prevent reading uncommitted data in a transaction?",
+        "options": [
+          "SET ISOLATION LEVEL READ COMMITTED",
+          "SET TRANSACTION READ ONLY",
+          "LOCK TABLE IN SHARE MODE",
+          "BEGIN EXCLUSIVE TRANSACTION"
+        ],
+        "correctAnswer": "SET ISOLATION LEVEL READ COMMITTED",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s019-q4",
+        "questionText": "What is a covering index?",
+        "options": [
+          "An index on a foreign key",
+          "An index that includes all columns needed by a query, avoiding a table lookup",
+          "A composite index on all table columns",
+          "An index that covers NULL values"
+        ],
+        "correctAnswer": "An index that includes all columns needed by a query, avoiding a table lookup",
+        "difficultyLevel": "Hard"
+      },
+      {
+        "questionId": "s019-q5",
+        "questionText": "What does the COALESCE function do in SQL?",
+        "options": [
+          "Returns the maximum value in a column",
+          "Concatenates two strings",
+          "Returns the first non-NULL value from a list of arguments",
+          "Converts data types"
+        ],
+        "correctAnswer": "Returns the first non-NULL value from a list of arguments",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s019-q6",
+        "questionText": "Which SQL window function assigns a unique sequential integer to each row within a partition?",
+        "options": ["RANK()", "ROW_NUMBER()", "DENSE_RANK()", "NTILE()"],
+        "correctAnswer": "ROW_NUMBER()",
+        "difficultyLevel": "Hard"
+      }
+    ]
+  },
+  {
+    "skillId": "skill-007",
+    "questions": [
+      {
+        "questionId": "s007-q1",
+        "questionText": "Which keyword enables strict type checking in TypeScript?",
+        "options": ["'use strict'", "strict: true in tsconfig.json", "@StrictMode", "enableStrict()"],
+        "correctAnswer": "strict: true in tsconfig.json",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s007-q2",
+        "questionText": "What is the TypeScript utility type that makes all properties optional?",
+        "options": ["Optional<T>", "Nullable<T>", "Partial<T>", "Readonly<T>"],
+        "correctAnswer": "Partial<T>",
+        "difficultyLevel": "Easy"
+      },
+      {
+        "questionId": "s007-q3",
+        "questionText": "What does the 'keyof' operator do in TypeScript?",
+        "options": [
+          "Returns all values of an object",
+          "Creates a union type of all property keys of a type",
+          "Validates object keys at runtime",
+          "Removes keys from a type"
+        ],
+        "correctAnswer": "Creates a union type of all property keys of a type",
+        "difficultyLevel": "Medium"
+      },
+      {
+        "questionId": "s007-q4",
+        "questionText": "What is a discriminated union in TypeScript?",
+        "options": [
+          "A union type with no common properties",
+          "A union type where each member has a common literal property used to narrow the type",
+          "A type that combines multiple interfaces",
+          "An enum-based type"
+        ],
+        "correctAnswer": "A union type where each member has a common literal property used to narrow the type",
+        "difficultyLevel": "Hard"
+      },
+      {
+        "questionId": "s007-q5",
+        "questionText": "What is the difference between 'interface' and 'type' in TypeScript?",
+        "options": [
+          "They are completely identical",
+          "Interfaces can be extended; types cannot",
+          "Interfaces support declaration merging; type aliases do not",
+          "Types are preferred for object shapes; interfaces for primitives"
+        ],
+        "correctAnswer": "Interfaces support declaration merging; type aliases do not",
+        "difficultyLevel": "Medium"
+      }
+    ]
+  }
+]

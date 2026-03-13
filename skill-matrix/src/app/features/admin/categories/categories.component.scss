@@ -1,0 +1,69 @@
+@use '../../../../styles/breakpoints' as bp;
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.description-cell {
+  max-width: 320px;
+  white-space: normal;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.category-card {
+  border-radius: var(--radius-md);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: #9ca3af;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+// Responsive visibility
+.desktop-only {
+  @include bp.mobile {
+    display: none;
+  }
+}
+
+.mobile-only {
+  display: none;
+  @include bp.mobile {
+    display: flex;
+    flex-direction: column;
+  }
+}

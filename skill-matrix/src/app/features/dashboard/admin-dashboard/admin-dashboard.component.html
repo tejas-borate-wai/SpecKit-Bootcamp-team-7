@@ -1,0 +1,29 @@
+@if (user$ | async; as user) {
+  <div class="dashboard">
+    <h1 class="page-title">Admin Dashboard</h1>
+
+    <div class="stat-grid">
+      <app-stat-card title="Org Skill Health" [value]="(orgSkillHealthScore$ | async)?.toString() + '%'" icon="health_and_safety"/>
+      <app-stat-card title="Skills Tracked" [value]="(totalSkillsTracked$ | async)?.toString() ?? '0'" icon="school"/>
+      <app-stat-card title="Total Users" [value]="(totalUsers$ | async)?.toString() ?? '0'" icon="people"/>
+      <app-stat-card title="Pending Approvals" [value]="(pendingCount$ | async)?.toString() ?? '0'" icon="pending_actions"/>
+    </div>
+
+    <div class="stat-grid">
+      <app-stat-card title="Stale Skills" [value]="(staleCount$ | async)?.toString() ?? '0'" icon="warning" subtitle="> 6 months"/>
+      <app-stat-card title="Skill Categories" [value]="(totalCategories$ | async)?.toString() ?? '0'" icon="category"/>
+    </div>
+
+    <!-- Compliance section -->
+    <section class="section">
+      <h2 class="section-title">Skill Gap Summary</h2>
+      <p class="placeholder-text">Skill gap heatmap by department will appear here.</p>
+      <a routerLink="/admin" class="section-link">Go to Admin Panel →</a>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Certification Compliance</h2>
+      <p class="placeholder-text">Certification compliance rates across the org will appear here.</p>
+    </section>
+  </div>
+}

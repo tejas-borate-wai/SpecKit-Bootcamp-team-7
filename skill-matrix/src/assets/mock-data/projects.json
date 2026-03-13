@@ -1,0 +1,32 @@
+[
+  {
+    "projectId": "proj-001",
+    "projectName": "E-Commerce Platform",
+    "status": "Completed",
+    "requiredSkills": ["skill-001", "skill-006", "skill-007"]
+  },
+  {
+    "projectId": "proj-002",
+    "projectName": "Internal HR System",
+    "status": "Completed",
+    "requiredSkills": ["skill-002", "skill-008", "skill-019"]
+  },
+  {
+    "projectId": "proj-003",
+    "projectName": "Mobile Banking App",
+    "status": "Completed",
+    "requiredSkills": ["skill-013", "skill-014"]
+  },
+  {
+    "projectId": "proj-004",
+    "projectName": "DevOps Pipeline",
+    "status": "Completed",
+    "requiredSkills": ["skill-015", "skill-016", "skill-018"]
+  },
+  {
+    "projectId": "proj-005",
+    "projectName": "Data Analytics Dashboard",
+    "status": "In Progress",
+    "requiredSkills": ["skill-019", "skill-020", "skill-021"]
+  }
+]
