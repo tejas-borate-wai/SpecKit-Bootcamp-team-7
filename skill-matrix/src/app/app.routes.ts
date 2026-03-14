@@ -9,6 +9,8 @@ import { skillsReducer } from './core/store/skills/skills.reducer';
 import * as skillsEffects from './core/store/skills/skills.effects';
 import { assessmentsReducer } from './core/store/assessments/assessments.reducer';
 import * as assessmentsEffects from './core/store/assessments/assessments.effects';
+import { certificationsReducer } from './core/store/certifications/certifications.reducer';
+import * as certificationsEffects from './core/store/certifications/certifications.effects';
 
 // Placeholder component for routes not yet implemented
 const placeholder = () =>
@@ -52,6 +54,8 @@ export const routes: Routes = [
     providers: [
       provideState('skills', skillsReducer),
       provideEffects(skillsEffects),
+      provideState('certifications', certificationsReducer),
+      provideEffects(certificationsEffects),
     ],
     loadChildren: () =>
       import('./features/my-skills/my-skills.routes').then(

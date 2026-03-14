@@ -12,6 +12,17 @@ import { SkillTestAttempt } from '../../shared/models/skill-test-attempt.model';
 import { SkillExam } from '../../shared/models/skill-exam.model';
 import { AssessmentAttempt } from '../../shared/models/assessment-attempt.model';
 
+// ── LocalStorage persistence helpers ────────────────────────────────────────
+function persist(key: string, data: unknown): void {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* quota exceeded */ }
+}
+function hydrate<T>(key: string): T | null {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  } catch { return null; }
+}
+
 // ── In-memory caches with mutable copies for CRUD operations ───────────────
 let usersCache: User[] | null = null;
 let categoriesCache: SkillCategory[] | null = null;
@@ -103,6 +114,10 @@ let peerValidationsStore: SeedPeerValidation[] = [
 
 let adminOverridesStore: AdminOverrideRecord[] = [];
 
+// ── Hydrate mutable stores from localStorage on first load ───────────────────
+submissionsStore = hydrate<SeedSubmission[]>('skillmatrix_submissions') ?? submissionsStore;
+peerValidationsStore = hydrate<SeedPeerValidation[]>('skillmatrix_peer_validations') ?? peerValidationsStore;
+
 async function loadUsers(): Promise<User[]> {
   if (usersCache) return usersCache;
   const response = await fetch('/assets/mock-data/users.json');
@@ -112,6 +127,8 @@ async function loadUsers(): Promise<User[]> {
 
 async function loadCategories(): Promise<SkillCategory[]> {
   if (categoriesCache) return categoriesCache;
+  const stored = hydrate<SkillCategory[]>('skillmatrix_categories');
+  if (stored) { categoriesCache = stored; return categoriesCache; }
   const response = await fetch('/assets/mock-data/skill-categories.json');
   categoriesCache = await response.json();
   return categoriesCache!;
@@ -119,6 +136,8 @@ async function loadCategories(): Promise<SkillCategory[]> {
 
 async function loadSkillDefinitions(): Promise<SkillDefinition[]> {
   if (skillDefinitionsCache) return skillDefinitionsCache;
+  const stored = hydrate<SkillDefinition[]>('skillmatrix_skill_definitions');
+  if (stored) { skillDefinitionsCache = stored; return skillDefinitionsCache; }
   const response = await fetch('/assets/mock-data/skill-definitions.json');
   skillDefinitionsCache = await response.json();
   return skillDefinitionsCache!;
@@ -126,6 +145,8 @@ async function loadSkillDefinitions(): Promise<SkillDefinition[]> {
 
 async function loadProficiencyLevels(): Promise<ProficiencyLevel[]> {
   if (proficiencyLevelsCache) return proficiencyLevelsCache;
+  const stored = hydrate<ProficiencyLevel[]>('skillmatrix_proficiency_levels');
+  if (stored) { proficiencyLevelsCache = stored; return proficiencyLevelsCache; }
   const response = await fetch('/assets/mock-data/proficiency-levels.json');
   proficiencyLevelsCache = await response.json();
   return proficiencyLevelsCache!;
@@ -133,6 +154,8 @@ async function loadProficiencyLevels(): Promise<ProficiencyLevel[]> {
 
 async function loadRatingWeights(): Promise<RatingWeightConfig> {
   if (ratingWeightsCache) return ratingWeightsCache;
+  const stored = hydrate<RatingWeightConfig>('skillmatrix_rating_weights');
+  if (stored) { ratingWeightsCache = stored; return ratingWeightsCache; }
   const response = await fetch('/assets/mock-data/rating-weights.json');
   ratingWeightsCache = await response.json();
   return ratingWeightsCache!;
@@ -140,6 +163,8 @@ async function loadRatingWeights(): Promise<RatingWeightConfig> {
 
 async function loadEmployeeSkills(): Promise<EmployeeSkillRecord[]> {
   if (employeeSkillsCache) return employeeSkillsCache;
+  const stored = hydrate<EmployeeSkillRecord[]>('skillmatrix_employee_skills');
+  if (stored) { employeeSkillsCache = stored; return employeeSkillsCache; }
   const response = await fetch('/assets/mock-data/employee-skills.json');
   employeeSkillsCache = await response.json();
   return employeeSkillsCache!;
@@ -147,6 +172,8 @@ async function loadEmployeeSkills(): Promise<EmployeeSkillRecord[]> {
 
 async function loadTestAttempts(): Promise<SkillTestAttempt[]> {
   if (testAttemptsCache) return testAttemptsCache;
+  const stored = hydrate<SkillTestAttempt[]>('skillmatrix_test_attempts');
+  if (stored) { testAttemptsCache = stored; return testAttemptsCache; }
   const response = await fetch('/assets/mock-data/skill-test-attempts.json');
   testAttemptsCache = await response.json();
   return testAttemptsCache!;
@@ -161,6 +188,8 @@ async function loadSkillExams(): Promise<SkillExam[]> {
 
 async function loadCertifications(): Promise<NonNullable<typeof certificationsCache>> {
   if (certificationsCache) return certificationsCache;
+  const stored = hydrate<NonNullable<typeof certificationsCache>>('skillmatrix_certifications');
+  if (stored) { certificationsCache = stored; return certificationsCache; }
   try {
     const response = await fetch('/assets/mock-data/certifications.json');
     certificationsCache = await response.json();
@@ -172,6 +201,8 @@ async function loadCertifications(): Promise<NonNullable<typeof certificationsCa
 
 async function loadProjects(): Promise<NonNullable<typeof projectsCache>> {
   if (projectsCache) return projectsCache;
+  const stored = hydrate<NonNullable<typeof projectsCache>>('skillmatrix_projects');
+  if (stored) { projectsCache = stored; return projectsCache; }
   try {
     const response = await fetch('/assets/mock-data/projects.json');
     projectsCache = await response.json();
@@ -183,6 +214,8 @@ async function loadProjects(): Promise<NonNullable<typeof projectsCache>> {
 
 async function loadProjectAssignments(): Promise<NonNullable<typeof projectAssignmentsCache>> {
   if (projectAssignmentsCache) return projectAssignmentsCache;
+  const stored = hydrate<NonNullable<typeof projectAssignmentsCache>>('skillmatrix_project_assignments');
+  if (stored) { projectAssignmentsCache = stored; return projectAssignmentsCache; }
   try {
     const response = await fetch('/assets/mock-data/project-assignments.json');
     projectAssignmentsCache = await response.json();
@@ -601,6 +634,7 @@ function handleAddCategory(body: Partial<SkillCategory>): Observable<HttpRespons
         subCategories: [],
       };
       categoriesCache = [...cats, newCat];
+      persist('skillmatrix_categories', categoriesCache);
       sub.next(new HttpResponse({ status: 200, body: newCat }));
       sub.complete();
     });
@@ -620,6 +654,7 @@ function handleCategoryDetail(req: HttpRequest<unknown>, categoryId: string): Ob
         if (duplicate) { sub.error(new HttpErrorResponse({ status: 409, error: { message: 'A category with this name already exists.' } })); return; }
         const updated = { ...cats[idx], categoryName: name, description: body.description ?? cats[idx].description };
         categoriesCache = cats.map((c) => (c.categoryId === categoryId ? updated : c));
+        persist('skillmatrix_categories', categoriesCache);
         sub.next(new HttpResponse({ status: 200, body: updated }));
         sub.complete();
       } else if (req.method === 'DELETE') {
@@ -630,6 +665,7 @@ function handleCategoryDetail(req: HttpRequest<unknown>, categoryId: string): Ob
         const hasLinked = empSkills.some((e) => e.skills.some((s) => catSkillIds.includes(s.skillId)));
         if (hasLinked) { sub.error(new HttpErrorResponse({ status: 409, error: { message: 'Cannot delete: skills are linked to this category.' } })); return; }
         categoriesCache = cats.filter((c) => c.categoryId !== categoryId);
+        persist('skillmatrix_categories', categoriesCache);
         sub.next(new HttpResponse({ status: 200, body: null }));
         sub.complete();
       }
@@ -649,6 +685,7 @@ function handleSubcategories(req: HttpRequest<unknown>, categoryId: string): Obs
         if (!name) { sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Subcategory name is required.' } })); return; }
         const newSub: SubCategory = { subCategoryId: `sub-${Date.now()}`, subCategoryName: name };
         categoriesCache = cats.map((c) => c.categoryId === categoryId ? { ...c, subCategories: [...c.subCategories, newSub] } : c);
+        persist('skillmatrix_categories', categoriesCache);
         sub.next(new HttpResponse({ status: 200, body: { categoryId, subCategory: newSub } }));
         sub.complete();
       }
@@ -671,6 +708,7 @@ function handleSubcategoryDetail(req: HttpRequest<unknown>, categoryId: string, 
           ? { ...c, subCategories: c.subCategories.map((s) => s.subCategoryId === subCategoryId ? updated : s) }
           : c
         );
+        persist('skillmatrix_categories', categoriesCache);
         sub.next(new HttpResponse({ status: 200, body: { categoryId, subCategory: updated } }));
         sub.complete();
       } else if (req.method === 'DELETE') {
@@ -681,6 +719,7 @@ function handleSubcategoryDetail(req: HttpRequest<unknown>, categoryId: string, 
           ? { ...c, subCategories: c.subCategories.filter((s) => s.subCategoryId !== subCategoryId) }
           : c
         );
+        persist('skillmatrix_categories', categoriesCache);
         sub.next(new HttpResponse({ status: 200, body: null }));
         sub.complete();
       }
@@ -716,6 +755,7 @@ function handleAddSkillDefinition(body: Partial<SkillDefinition>): Observable<Ht
         description: body.description ?? '',
       };
       skillDefinitionsCache = [...skills, newSkill];
+      persist('skillmatrix_skill_definitions', skillDefinitionsCache);
       sub.next(new HttpResponse({ status: 200, body: newSkill }));
       sub.complete();
     });
@@ -734,6 +774,7 @@ function handleSkillDefinitionDetail(req: HttpRequest<unknown>, skillId: string)
         const duplicate = skills.some((s) => s.skillId !== skillId && s.subCategoryId === updated.subCategoryId && s.skillName.toLowerCase() === updated.skillName.toLowerCase());
         if (duplicate) { sub.error(new HttpErrorResponse({ status: 409, error: { message: 'This skill already exists in this subcategory.' } })); return; }
         skillDefinitionsCache = skills.map((s) => s.skillId === skillId ? updated : s);
+        persist('skillmatrix_skill_definitions', skillDefinitionsCache);
         sub.next(new HttpResponse({ status: 200, body: updated }));
         sub.complete();
       }
@@ -759,6 +800,7 @@ function handleUpdateProficiencyLevel(body: ProficiencyLevel): Observable<HttpRe
       // Level name and score are read-only — preserve from original
       const updated: ProficiencyLevel = { ...levels[idx], description: body.description, exampleCriteria: body.exampleCriteria };
       proficiencyLevelsCache = levels.map((l) => l.levelId === body.levelId ? updated : l);
+      persist('skillmatrix_proficiency_levels', proficiencyLevelsCache);
       sub.next(new HttpResponse({ status: 200, body: updated }));
       sub.complete();
     });
@@ -783,6 +825,7 @@ function handleUpdateRatingWeights(body: RatingWeightConfig): Observable<HttpRes
       return;
     }
     ratingWeightsCache = { ...body };
+    persist('skillmatrix_rating_weights', ratingWeightsCache);
     sub.next(new HttpResponse({ status: 200, body: ratingWeightsCache }));
     sub.complete();
   }).pipe(delay(getSimulatedDelay()));
@@ -806,11 +849,21 @@ function handleGetAllEmployeeSkills(): Observable<HttpResponse<unknown>> {
 function handleGetEmployeeSkills(userId: string): Observable<HttpResponse<unknown>> {
   const role = getCurrentUserRole();
   const currentUserId = getCurrentUserId();
-  if (role !== 'Admin' && currentUserId !== userId) {
+  // Allow Admin, the user themselves, or a Manager in the same department
+  if (role !== 'Admin' && role !== 'Manager' && currentUserId !== userId) {
     return makeError(403, 'You do not have permission to perform this action.');
   }
   return new Observable<HttpResponse<unknown>>((sub) => {
-    loadEmployeeSkills().then((records) => {
+    Promise.all([loadEmployeeSkills(), loadUsers()]).then(([records, users]) => {
+      // If Manager, verify the target user is in their department
+      if (role === 'Manager' && currentUserId !== userId) {
+        const currentDept = getCurrentUserDepartment();
+        const targetUser = users.find((u) => u.id === userId);
+        if (targetUser?.department !== currentDept) {
+          sub.error(new HttpErrorResponse({ status: 403, error: { message: 'You do not have permission to perform this action.' } }));
+          return;
+        }
+      }
       const record = records.find((r) => r.userId === userId);
       if (!record) {
         sub.next(new HttpResponse({ status: 200, body: { userId, skills: [] } }));
@@ -866,6 +919,7 @@ function handleAddEmployeeSkill(req: HttpRequest<unknown>, userId: string): Obse
       if (employeeSkillsCache) {
         employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === userId ? record! : r);
       }
+      persist('skillmatrix_employee_skills', employeeSkillsCache);
       sub.next(new HttpResponse({ status: 201, body: newSkill }));
       sub.complete();
     });
@@ -902,6 +956,7 @@ function handleEmployeeSkillDetail(req: HttpRequest<unknown>, userId: string, sk
         if (employeeSkillsCache) {
           employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === userId ? record! : r);
         }
+        persist('skillmatrix_employee_skills', employeeSkillsCache);
         sub.next(new HttpResponse({ status: 200, body: updated }));
         sub.complete();
       } else if (req.method === 'DELETE') {
@@ -911,6 +966,7 @@ function handleEmployeeSkillDetail(req: HttpRequest<unknown>, userId: string, sk
         if (employeeSkillsCache) {
           employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === userId ? record! : r);
         }
+        persist('skillmatrix_employee_skills', employeeSkillsCache);
         sub.next(new HttpResponse({ status: 200, body: { message: 'Skill removed from active profile.', skillId: skill.skillId } }));
         sub.complete();
       }
@@ -1043,6 +1099,7 @@ function handlePostSkillTestAttempt(req: HttpRequest<unknown>): Observable<HttpR
         return;
       }
       testAttemptsCache = [...attempts, body];
+      persist('skillmatrix_test_attempts', testAttemptsCache);
       sub.next(new HttpResponse({ status: 201, body }));
       sub.complete();
     });
@@ -1086,6 +1143,7 @@ function handleUpdateEmployeeSkillSystemRating(
           r.userId === userId ? record! : r
         );
       }
+      persist('skillmatrix_employee_skills', employeeSkillsCache);
       sub.next(new HttpResponse({ status: 200, body: updated }));
       sub.complete();
     });
@@ -1114,11 +1172,11 @@ function handleGetCertificationById(certId: string): Observable<HttpResponse<unk
     loadCertifications().then((certs) => {
       const cert = certs.find((c) => c.certId === certId);
       if (!cert) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Certification not found.' } }));
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Certification not found.' } }));
       } else {
         sub.next(new HttpResponse({ status: 200, body: cert }));
+        sub.complete();
       }
-      sub.complete();
     });
   }).pipe(delay(getSimulatedDelay()));
 }
@@ -1141,6 +1199,7 @@ function handlePostCertification(
         filePath: String(body['filePath'] ?? ''),
       };
       certs.push(newCert);
+      persist('skillmatrix_certifications', certs);
       sub.next(new HttpResponse({ status: 201, body: newCert }));
       sub.complete();
     });
@@ -1152,12 +1211,13 @@ function handleDeleteCertification(certId: string): Observable<HttpResponse<unkn
     loadCertifications().then((certs) => {
       const idx = certs.findIndex((c) => c.certId === certId);
       if (idx === -1) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Certification not found.' } }));
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Certification not found.' } }));
       } else {
         certs.splice(idx, 1);
+        persist('skillmatrix_certifications', certs);
         sub.next(new HttpResponse({ status: 204, body: null }));
+        sub.complete();
       }
-      sub.complete();
     });
   }).pipe(delay(getSimulatedDelay()));
 }
@@ -1192,11 +1252,11 @@ function handleGetProjectById(projectId: string): Observable<HttpResponse<unknow
     loadProjects().then((projects) => {
       const project = projects.find((p) => p['projectId'] === projectId);
       if (!project) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Project not found.' } }));
       } else {
         sub.next(new HttpResponse({ status: 200, body: project }));
+        sub.complete();
       }
-      sub.complete();
     });
   }).pipe(delay(getSimulatedDelay()));
 }
@@ -1216,24 +1276,20 @@ function handleCreateProject(req: HttpRequest<unknown>): Observable<HttpResponse
       const requiredSkills = body['requiredSkills'] as unknown[];
 
       if (!name.trim()) {
-        sub.next(new HttpResponse({ status: 400, body: { error: 'Project name is required.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Project name is required.' } }));
         return;
       }
       const duplicate = projects.some((p) => (p['name'] as string).toLowerCase() === name.toLowerCase().trim());
       if (duplicate) {
-        sub.next(new HttpResponse({ status: 409, body: { error: 'A project with this name already exists.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 409, error: { message: 'A project with this name already exists.' } }));
         return;
       }
       if (startDate && deadline && new Date(startDate) >= new Date(deadline)) {
-        sub.next(new HttpResponse({ status: 400, body: { error: 'Start date must be before deadline.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Start date must be before deadline.' } }));
         return;
       }
       if (!requiredSkills || (requiredSkills as unknown[]).length === 0) {
-        sub.next(new HttpResponse({ status: 400, body: { error: 'Add at least one required skill to create a project.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Add at least one required skill to create a project.' } }));
         return;
       }
       const newProject = {
@@ -1243,6 +1299,7 @@ function handleCreateProject(req: HttpRequest<unknown>): Observable<HttpResponse
         createdDate: new Date().toISOString().split('T')[0],
       };
       projects.push(newProject as unknown as typeof projects[0]);
+      persist('skillmatrix_projects', projects);
       sub.next(new HttpResponse({ status: 201, body: newProject }));
       sub.complete();
     });
@@ -1259,33 +1316,30 @@ function handleUpdateProject(req: HttpRequest<unknown>, projectId: string): Obse
     Promise.all([loadProjects(), loadProjectAssignments()]).then(([projects, assignments]) => {
       const idx = projects.findIndex((p) => p['projectId'] === projectId);
       if (idx === -1) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Project not found.' } }));
         return;
       }
       const existing = projects[idx];
       if (role === 'Manager' && existing['createdBy'] !== userId) {
-        sub.next(new HttpResponse({ status: 403, body: { error: 'You do not have permission to perform this action.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 403, error: { message: 'You do not have permission to perform this action.' } }));
         return;
       }
       const body = req.body as Record<string, unknown>;
       const newName = (body['name'] as string) ?? existing['name'];
       const notSelf = projects.filter((_, i) => i !== idx);
       if (notSelf.some((p) => (p['name'] as string).toLowerCase() === newName.toLowerCase().trim())) {
-        sub.next(new HttpResponse({ status: 409, body: { error: 'A project with this name already exists.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 409, error: { message: 'A project with this name already exists.' } }));
         return;
       }
       const startDate = (body['startDate'] as string) ?? existing['startDate'];
       const deadline = (body['deadline'] as string) ?? existing['deadline'];
       if (startDate && deadline && new Date(startDate) >= new Date(deadline)) {
-        sub.next(new HttpResponse({ status: 400, body: { error: 'Start date must be before deadline.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 400, error: { message: 'Start date must be before deadline.' } }));
         return;
       }
       const updated = { ...existing, ...body };
       projects[idx] = updated;
+      persist('skillmatrix_projects', projects);
       // If project completed, note it (availability handled by effect)
       sub.next(new HttpResponse({ status: 200, body: updated }));
       sub.complete();
@@ -1300,19 +1354,21 @@ function handleDeleteProject(req: HttpRequest<unknown>, projectId: string): Obse
     return makeError(403, 'You do not have permission to perform this action.');
   }
   return new Observable<HttpResponse<unknown>>((sub) => {
-    loadProjects().then((projects) => {
+    Promise.all([loadProjects(), loadProjectAssignments()]).then(([projects, assignments]) => {
       const idx = projects.findIndex((p) => p['projectId'] === projectId);
       if (idx === -1) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Project not found.' } }));
         return;
       }
       if (role === 'Manager' && projects[idx]['createdBy'] !== userId) {
-        sub.next(new HttpResponse({ status: 403, body: { error: 'You do not have permission to perform this action.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 403, error: { message: 'You do not have permission to perform this action.' } }));
         return;
       }
       projects.splice(idx, 1);
+      // Clean up assignments for the deleted project
+      projectAssignmentsCache = assignments.filter((a) => a.projectId !== projectId);
+      persist('skillmatrix_projects', projects);
+      persist('skillmatrix_project_assignments', projectAssignmentsCache);
       sub.next(new HttpResponse({ status: 200, body: { projectId } }));
       sub.complete();
     });
@@ -1329,8 +1385,7 @@ function handleCreateProjectAssignment(req: HttpRequest<unknown>): Observable<Ht
       const body = req.body as { projectId: string; userId: string; role: string };
       const project = projects.find((p) => p['projectId'] === body.projectId) as Record<string, unknown> | undefined;
       if (!project) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Project not found.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Project not found.' } }));
         return;
       }
       // Check if user is already assigned to an active project
@@ -1341,8 +1396,7 @@ function handleCreateProjectAssignment(req: HttpRequest<unknown>): Observable<Ht
         (a) => a.userId === body.userId && activeProjects.includes(a.projectId)
       );
       if (alreadyBusy) {
-        sub.next(new HttpResponse({ status: 409, body: { error: 'Employee is already assigned to an active project.' } }));
-        sub.complete();
+        sub.error(new HttpErrorResponse({ status: 409, error: { message: 'Employee is already assigned to an active project.' } }));
         return;
       }
       // Check role slot headcount
@@ -1351,8 +1405,7 @@ function handleCreateProjectAssignment(req: HttpRequest<unknown>): Observable<Ht
       if (slot) {
         const filled = assignments.filter((a) => a.projectId === body.projectId && a['role'] === body.role).length;
         if (filled >= slot.headcount) {
-          sub.next(new HttpResponse({ status: 409, body: { error: 'Role slot is already full.' } }));
-          sub.complete();
+          sub.error(new HttpErrorResponse({ status: 409, error: { message: 'Role slot is already full.' } }));
           return;
         }
       }
@@ -1364,6 +1417,7 @@ function handleCreateProjectAssignment(req: HttpRequest<unknown>): Observable<Ht
         assignedDate: new Date().toISOString().split('T')[0],
       };
       assignments.push(newAssignment);
+      persist('skillmatrix_project_assignments', assignments);
       sub.next(new HttpResponse({ status: 201, body: newAssignment }));
       sub.complete();
     });
@@ -1379,12 +1433,13 @@ function handleDeleteProjectAssignment(assignmentId: string): Observable<HttpRes
     loadProjectAssignments().then((assignments) => {
       const idx = assignments.findIndex((a) => a.assignmentId === assignmentId);
       if (idx === -1) {
-        sub.next(new HttpResponse({ status: 404, body: { error: 'Assignment not found.' } }));
+        sub.error(new HttpErrorResponse({ status: 404, error: { message: 'Assignment not found.' } }));
       } else {
         assignments.splice(idx, 1);
+        persist('skillmatrix_project_assignments', assignments);
         sub.next(new HttpResponse({ status: 200, body: { assignmentId } }));
+        sub.complete();
       }
-      sub.complete();
     });
   }).pipe(delay(getSimulatedDelay()));
 }
@@ -1570,7 +1625,7 @@ function handleGetSubmissionDetail(submissionId: string): Observable<HttpRespons
         : null;
       const projectExperience = submission.projectExperience.map((pid) => {
         const p = projects.find((pr) => pr['projectId'] === pid);
-        return { projectId: pid, projectName: (p?.['projectName'] as string) ?? pid, role: 'Contributor', status: (p?.['status'] as string) ?? 'Unknown' };
+        return { projectId: pid, projectName: (p?.['name'] as string) ?? pid, role: 'Contributor', status: (p?.['status'] as string) ?? 'Unknown' };
       });
       sub.next(new HttpResponse({
         status: 200,
@@ -1620,7 +1675,7 @@ function handleApproveSubmission(req: HttpRequest<unknown>, submissionId: string
     return makeError(400, 'Manager rating must be between 1 and 4');
   }
   return new Observable<HttpResponse<unknown>>((sub) => {
-    loadUsers().then((users) => {
+    Promise.all([loadUsers(), loadEmployeeSkills()]).then(([users, empSkills]) => {
       const employee = users.find((u) => u.id === submission.userId);
       if (role === 'Manager' && employee?.department !== currentDept) {
         sub.error(new HttpErrorResponse({ status: 403, error: { error: 'You do not have permission to perform this action.' } }));
@@ -1632,6 +1687,29 @@ function handleApproveSubmission(req: HttpRequest<unknown>, submissionId: string
       const calc = computeFinalRatingValue(submission.selfRating, submission.managerRating, submission.peerRating, submission.systemRating);
       submission.finalRating = calc.finalRating;
       submission.level = calc.level;
+
+      // Sync approved data back to employee skills cache
+      const empRecord = empSkills.find((r) => r.userId === submission.userId);
+      if (empRecord) {
+        const skillIdx = empRecord.skills.findIndex((s) => s.skillId === submission.skillId && !s.isDeleted);
+        if (skillIdx !== -1) {
+          empRecord.skills[skillIdx] = {
+            ...empRecord.skills[skillIdx],
+            managerRating: submission.managerRating,
+            peerRating: submission.peerRating,
+            finalRating: calc.finalRating,
+            level: calc.level as EmployeeSkill['level'],
+            status: 'Approved',
+            lastUpdated: new Date().toISOString(),
+          };
+          if (employeeSkillsCache) {
+            employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === submission.userId ? empRecord : r);
+          }
+        }
+      }
+      persist('skillmatrix_submissions', submissionsStore);
+      persist('skillmatrix_employee_skills', employeeSkillsCache);
+
       const currentUserName = getCurrentUserName();
       const skillDefs = skillDefinitionsCache ?? [];
       const skillName = skillDefs.find((d) => d.skillId === submission.skillId)?.skillName ?? submission.skillId;
@@ -1679,6 +1757,7 @@ function handleRejectSubmission(req: HttpRequest<unknown>, submissionId: string)
       submission.status = 'Rejected';
       submission.rejectionReason = body.rejectionReason!;
       submission.lastUpdated = new Date().toISOString().split('T')[0];
+      persist('skillmatrix_submissions', submissionsStore);
       const skillDefs = skillDefinitionsCache ?? [];
       const skillName = skillDefs.find((d) => d.skillId === submission.skillId)?.skillName ?? submission.skillId;
       console.info(`[006 Notification] "${employee?.name ?? 'Employee'}": Your ${skillName} was rejected. Reason: ${body.rejectionReason}.`);
@@ -1707,26 +1786,48 @@ function handleAdminOverride(req: HttpRequest<unknown>, submissionId: string): O
     return makeError(400, 'Override justification is required.');
   }
   return new Observable<HttpResponse<unknown>>((sub) => {
-    const previousFinalRating = submission.finalRating;
-    const overrideDate = new Date().toISOString();
-    const pct = (body.overriddenRating! / 4.0) * 100;
-    const level = pct <= 40 ? 'Beginner' : pct <= 65 ? 'Intermediate' : pct <= 85 ? 'Advanced' : 'Expert';
-    submission.finalRating = body.overriddenRating!;
-    submission.level = level;
-    submission.lastUpdated = overrideDate.split('T')[0];
-    adminOverridesStore.push({
-      submissionId,
-      adminId: currentUserId ?? 'unknown',
-      overriddenRating: body.overriddenRating!,
-      justification: body.justification!,
-      overrideDate,
-      previousFinalRating,
+    loadEmployeeSkills().then((empSkills) => {
+      const previousFinalRating = submission.finalRating;
+      const overrideDate = new Date().toISOString();
+      const pct = (body.overriddenRating! / 4.0) * 100;
+      const level = pct <= 40 ? 'Beginner' : pct <= 65 ? 'Intermediate' : pct <= 85 ? 'Advanced' : 'Expert';
+      submission.finalRating = body.overriddenRating!;
+      submission.level = level;
+      submission.lastUpdated = overrideDate.split('T')[0];
+      adminOverridesStore.push({
+        submissionId,
+        adminId: currentUserId ?? 'unknown',
+        overriddenRating: body.overriddenRating!,
+        justification: body.justification!,
+        overrideDate,
+        previousFinalRating,
+      });
+
+      // Sync override back to employee skills cache
+      const empRecord = empSkills.find((r) => r.userId === submission.userId);
+      if (empRecord) {
+        const skillIdx = empRecord.skills.findIndex((s) => s.skillId === submission.skillId && !s.isDeleted);
+        if (skillIdx !== -1) {
+          empRecord.skills[skillIdx] = {
+            ...empRecord.skills[skillIdx],
+            finalRating: body.overriddenRating!,
+            level: level as EmployeeSkill['level'],
+            lastUpdated: overrideDate,
+          };
+          if (employeeSkillsCache) {
+            employeeSkillsCache = employeeSkillsCache.map((r) => r.userId === submission.userId ? empRecord : r);
+          }
+        }
+      }
+      persist('skillmatrix_submissions', submissionsStore);
+      persist('skillmatrix_employee_skills', employeeSkillsCache);
+
+      sub.next(new HttpResponse({
+        status: 200,
+        body: { data: { submissionId, overriddenRating: body.overriddenRating, previousFinalRating, justification: body.justification, level, overrideDate } },
+      }));
+      sub.complete();
     });
-    sub.next(new HttpResponse({
-      status: 200,
-      body: { data: { submissionId, overriddenRating: body.overriddenRating, previousFinalRating, justification: body.justification, level, overrideDate } },
-    }));
-    sub.complete();
   }).pipe(delay(getSimulatedDelay()));
 }
 
@@ -1791,6 +1892,7 @@ function handleCreatePeerValidationRequest(req: HttpRequest<unknown>): Observabl
         responses: [],
       };
       peerValidationsStore.push(newRequest);
+      persist('skillmatrix_peer_validations', peerValidationsStore);
       const requesterUser = users.find((u) => u.id === currentUserId);
       const skillDefs = skillDefinitionsCache ?? [];
       const skillName = skillDefs.find((d) => d.skillId === body.skillId)?.skillName ?? body.skillId;
@@ -1830,6 +1932,8 @@ function handlePeerRespond(req: HttpRequest<unknown>, requestId: string): Observ
       const peerRating = parseFloat((pvRequest.responses.reduce((a, r) => a + r.rating, 0) / pvRequest.responses.length).toFixed(1));
       const submission = submissionsStore.find((s) => s.submissionId === pvRequest.submissionId);
       if (submission && pvRequest.status === 'completed') submission.peerRating = peerRating;
+      persist('skillmatrix_peer_validations', peerValidationsStore);
+      persist('skillmatrix_submissions', submissionsStore);
       const requester = users.find((u) => u.id === pvRequest.requesterId);
       const currentUser = users.find((u) => u.id === currentUserId);
       const skillDefs = skillDefinitionsCache ?? [];

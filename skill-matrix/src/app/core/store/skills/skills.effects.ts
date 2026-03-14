@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { of, forkJoin } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SkillService } from '../../services/skill.service';
@@ -76,7 +76,7 @@ export const addSkillEffect = createEffect(
     const toast = inject(ToastService);
     return actions$.pipe(
       ofType(SkillsActions.addSkill),
-      switchMap(({ userId, skillId, selfRating }) =>
+      exhaustMap(({ userId, skillId, selfRating }) =>
         skillService.addSkill(userId, skillId, selfRating).pipe(
           map((skill) => SkillsActions.addSkillSuccess({ skill })),
           tap(() => toast.showSuccess('Skill saved successfully.')),

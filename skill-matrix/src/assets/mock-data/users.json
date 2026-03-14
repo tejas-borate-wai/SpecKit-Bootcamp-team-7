@@ -6,7 +6,7 @@
     "password": "password123",
     "role": "Employee",
     "department": "Frontend Development",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Priya+Sharma&background=3B82F6&color=fff"
+    "avatarUrl": "assets/avatars/u001.svg"
   },
   {
     "id": "u002",
@@ -15,7 +15,7 @@
     "password": "password123",
     "role": "Employee",
     "department": "Backend Development",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Arjun+Patel&background=8B5CF6&color=fff"
+    "avatarUrl": "assets/avatars/u002.svg"
   },
   {
     "id": "u003",
@@ -24,7 +24,7 @@
     "password": "password123",
     "role": "Employee",
     "department": "QA Engineering",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Sneha+Reddy&background=22C55E&color=fff"
+    "avatarUrl": "assets/avatars/u003.svg"
   },
   {
     "id": "u004",
@@ -33,7 +33,7 @@
     "password": "password123",
     "role": "Employee",
     "department": "DevOps",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Vikram+Singh&background=F59E0B&color=fff"
+    "avatarUrl": "assets/avatars/u004.svg"
   },
   {
     "id": "u005",
@@ -42,7 +42,7 @@
     "password": "password123",
     "role": "Employee",
     "department": "Data Engineering",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Ananya+Gupta&background=EF4444&color=fff"
+    "avatarUrl": "assets/avatars/u005.svg"
   },
   {
     "id": "u006",
@@ -51,7 +51,7 @@
     "password": "password123",
     "role": "Employee",
     "department": "Frontend Development",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Rahul+Nair&background=6B7280&color=fff"
+    "avatarUrl": "assets/avatars/u006.svg"
   },
   {
     "id": "u007",
@@ -60,7 +60,7 @@
     "password": "password123",
     "role": "Manager",
     "department": "Frontend Development",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Kavitha+Menon&background=3B82F6&color=fff"
+    "avatarUrl": "assets/avatars/u007.svg"
   },
   {
     "id": "u008",
@@ -69,7 +69,7 @@
     "password": "password123",
     "role": "Manager",
     "department": "Backend Development",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Amit+Kulkarni&background=8B5CF6&color=fff"
+    "avatarUrl": "assets/avatars/u008.svg"
   },
   {
     "id": "u009",
@@ -78,7 +78,7 @@
     "password": "password123",
     "role": "Admin",
     "department": "Platform Engineering",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Deepak+Joshi&background=EF4444&color=fff"
+    "avatarUrl": "assets/avatars/u009.svg"
   },
   {
     "id": "u010",
@@ -87,6 +87,6 @@
     "password": "password123",
     "role": "Employee",
     "department": "AI/ML",
-    "avatarUrl": "https://ui-avatars.com/api/?name=Meera+Iyer&background=F59E0B&color=fff"
+    "avatarUrl": "assets/avatars/u010.svg"
   }
 ]

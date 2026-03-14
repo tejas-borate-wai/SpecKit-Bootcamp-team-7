@@ -119,7 +119,7 @@ export class CertUploadComponent implements OnInit {
       fileName: file.name,
       fileSize: file.size,
       fileType: file.type,
-      filePath: `uploads/${Date.now()}-${file.name}`,
+      filePath: `assets/uploads/${Date.now()}-${file.name}`,
     };
     this.form.get('fileMetadata')!.setValue(meta);
     this.form.get('fileMetadata')!.markAsTouched();

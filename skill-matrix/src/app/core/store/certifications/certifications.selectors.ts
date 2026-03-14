@@ -12,22 +12,22 @@ export const selectCertificationsState =
 
 export const selectAllCertifications = createSelector(
   selectCertificationsState,
-  (s) => s.certifications
+  (s) => s?.certifications ?? []
 );
 
 export const selectCertificationsLoading = createSelector(
   selectCertificationsState,
-  (s) => s.loading
+  (s) => s?.loading ?? false
 );
 
 export const selectCertificationsError = createSelector(
   selectCertificationsState,
-  (s) => s.error
+  (s) => s?.error ?? null
 );
 
 export const selectUploadInProgress = createSelector(
   selectCertificationsState,
-  (s) => s.uploadInProgress
+  (s) => s?.uploadInProgress ?? false
 );
 
 export const selectCertificationsWithStatus = createSelector(

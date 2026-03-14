@@ -13,12 +13,13 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Subject, takeUntil, filter, Observable } from 'rxjs';
-import { selectMyActiveSkills, selectMyStaleSkills, selectSkillDefinitions, selectSkillsError, selectSkillsLoading } from '../../../core/store/skills/skills.selectors';
+import { selectMyActiveSkills, selectMyStaleSkills, selectSkillCategories, selectSkillDefinitions, selectSkillsError, selectSkillsLoading } from '../../../core/store/skills/skills.selectors';
 import { SkeletonLoaderComponent } from '../../../shared/components/skeleton-loader/skeleton-loader.component';
 import * as SkillsActions from '../../../core/store/skills/skills.actions';
 import { selectCurrentUser } from '../../../core/store/session/session.selectors';
 import { EmployeeSkill } from '../../../shared/models/employee-skill.model';
 import { SkillDefinition } from '../../../shared/models/skill-definition.model';
+import { SkillCategory } from '../../../shared/models/skill-category.model';
 import { RatingBadgeComponent } from '../../../shared/components/rating-badge/rating-badge.component';
 import { CertifiedBadgeComponent } from '../../../shared/components/certified-badge/certified-badge.component';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
@@ -50,6 +51,7 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
   activeSkills$ = this.store.select(selectMyActiveSkills);
   staleSkills$ = this.store.select(selectMyStaleSkills);
   definitions$ = this.store.select(selectSkillDefinitions);
+  categories$ = this.store.select(selectSkillCategories);
   user$ = this.store.select(selectCurrentUser);
   error$ = this.store.select(selectSkillsError);
   loading$ = this.store.select(selectSkillsLoading);
@@ -147,7 +149,16 @@ export class MySkillsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getCategories(defs: SkillDefinition[]): string[] {
-    return [...new Set(defs.map((d) => d.categoryId))].sort();
+  getCategoryName(categoryId: string | undefined, categories: SkillCategory[]): string {
+    if (!categoryId) return '—';
+    return categories.find((c) => c.categoryId === categoryId)?.categoryName ?? categoryId;
+  }
+
+  getCategories(defs: SkillDefinition[], categories: SkillCategory[]): { id: string; name: string }[] {
+    const ids = [...new Set(defs.map((d) => d.categoryId))];
+    return ids.map((id) => ({
+      id,
+      name: categories.find((c) => c.categoryId === id)?.categoryName ?? id,
+    })).sort((a, b) => a.name.localeCompare(b.name));
   }
 }
