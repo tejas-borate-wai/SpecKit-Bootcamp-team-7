@@ -1,0 +1,106 @@
+@use '../../../../styles/breakpoints' as bp;
+
+.page-header {
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+.rating-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.weights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  @include bp.mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.weight-card {
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+  }
+}
+
+.percent-display {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: var(--color-primary) !important;
+}
+
+.weight-slider {
+  width: 100%;
+}
+
+.numeric-field {
+  width: 140px;
+}
+
+.sum-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &.sum-valid {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  &.sum-invalid {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+.sum-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .save-note {
+    font-size: 0.875rem;
+    color: #15803d;
+  }
+}

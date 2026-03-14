@@ -1,0 +1,60 @@
+<div class="page-header">
+  <h1>Rating Weight Configuration</h1>
+  <p class="subtitle">Adjust the contribution of each rating source. Weights must sum to 100%.</p>
+</div>
+
+@if (loading$ | async) {
+  <div class="spinner-wrapper">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+} @else {
+  <form [formGroup]="form" class="rating-form">
+    <div class="weights-grid">
+      @for (field of fields; track field.key) {
+        <mat-card class="weight-card">
+          <mat-card-header>
+            <mat-card-title>{{ field.label }}</mat-card-title>
+            <mat-card-subtitle class="percent-display">
+              {{ asPercent(form.get(field.key)?.value) }}%
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-slider min="0" max="1" step="0.01" class="weight-slider">
+              <input matSliderThumb [formControlName]="field.key" />
+            </mat-slider>
+            <mat-form-field appearance="outline" class="numeric-field">
+              <mat-label>Weight (0–1)</mat-label>
+              <input matInput type="number" [formControlName]="field.key" min="0" max="1" step="0.01" />
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <!-- Sum indicator -->
+    <div class="sum-indicator" [class.sum-valid]="sumValid" [class.sum-invalid]="!sumValid">
+      <mat-icon>{{ sumValid ? 'check_circle' : 'warning' }}</mat-icon>
+      <span>Total: {{ asPercent(currentSum) }}%
+        @if (!sumValid) {
+          — must equal 100%
+        }
+      </span>
+    </div>
+
+    @if (form.hasError('sumNot100') && form.touched) {
+      <p class="sum-error">Weights must sum to 1.00 (100%).</p>
+    }
+
+    <div class="form-actions">
+      <button mat-flat-button color="primary"
+        [disabled]="form.invalid || !sumValid"
+        (click)="save()">
+        <mat-icon>save</mat-icon>
+        Save Configuration
+      </button>
+      @if (saved && sumValid) {
+        <span class="save-note">Configuration saved for this session.</span>
+      }
+    </div>
+  </form>
+}

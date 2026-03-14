@@ -1,0 +1,120 @@
+<div class="alignment-page">
+  <header class="page-header">
+    <h1 class="page-title">Project Alignment View</h1>
+    <p class="page-subtitle">Overview of all employee-to-project assignments</p>
+  </header>
+
+  @if (loading$ | async) {
+    <div class="loading"><mat-spinner diameter="48"></mat-spinner></div>
+  } @else {
+    @if (entries$ | async; as entries) {
+      @if (entries.length === 0) {
+        <div class="empty-state" role="status">
+          <mat-icon class="empty-icon">assignment_ind</mat-icon>
+          <h2>No assignments yet</h2>
+          <p>Assign employees to projects via the <a routerLink="/projects">Team Builder</a>.</p>
+        </div>
+      } @else {
+        <!-- Desktop table -->
+        <div class="table-wrapper" role="region" aria-label="Project alignment table">
+          <table class="alignment-table">
+            <thead>
+              <tr>
+                <th scope="col">Employee</th>
+                <th scope="col">Role</th>
+                <th scope="col">Current Project</th>
+                <th scope="col">Status</th>
+                <th scope="col">Since</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (entry of entries; track entry.userId + entry.currentProject) {
+                <tr>
+                  <td>{{ entry.employeeName }}</td>
+                  <td>{{ entry.role }}</td>
+                  <td>{{ entry.currentProject }}</td>
+                  <td>
+                    <span class="avail-badge" [ngClass]="getStatusClass(entry.status)"
+                          [attr.aria-label]="'Availability: ' + entry.status">
+                      <mat-icon class="avail-icon">{{ getStatusIcon(entry.status) }}</mat-icon>
+                      {{ entry.status }}
+                    </span>
+                  </td>
+                  <td>{{ entry.since | date:'mediumDate' }}</td>
+                  <td>
+                    <button mat-stroked-button
+                            (click)="openOverride(entry)"
+                            [attr.aria-label]="'Override availability for ' + entry.employeeName">
+                      Override
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile cards -->
+        <div class="mobile-cards" aria-label="Project alignment cards">
+          @for (entry of entries; track entry.userId + entry.currentProject) {
+            <div class="alignment-card">
+              <div class="card-header-row">
+                <strong>{{ entry.employeeName }}</strong>
+                <span class="avail-badge" [ngClass]="getStatusClass(entry.status)"
+                      [attr.aria-label]="'Availability: ' + entry.status">
+                  <mat-icon class="avail-icon">{{ getStatusIcon(entry.status) }}</mat-icon>
+                  {{ entry.status }}
+                </span>
+              </div>
+              <div class="card-meta">
+                <span>{{ entry.role }}</span>
+                <span>{{ entry.currentProject }}</span>
+                <span>Since {{ entry.since | date:'mediumDate' }}</span>
+              </div>
+              <button mat-stroked-button (click)="openOverride(entry)"
+                      aria-label="Override availability">Override</button>
+            </div>
+          }
+        </div>
+      }
+    }
+  }
+
+  <!-- Override Dialog -->
+  @if (overrideTarget) {
+    <div class="dialog-overlay" role="dialog"
+         aria-modal="true"
+         [attr.aria-label]="'Override availability for ' + overrideTarget.employeeName"
+         (keydown.escape)="closeOverride()">
+      <div class="dialog-box">
+        <h2>Override Availability</h2>
+        <p class="dialog-employee">{{ overrideTarget.employeeName }}</p>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>New Status</mat-label>
+          <mat-select [(ngModel)]="overrideStatus" aria-label="New availability status">
+            @for (opt of availabilityOptions; track opt) {
+              <mat-option [value]="opt">{{ opt }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Reason (required)</mat-label>
+          <textarea matInput [(ngModel)]="overrideReason" rows="3"
+                    aria-label="Reason for availability override"
+                    placeholder="Enter reason for this override..."></textarea>
+        </mat-form-field>
+
+        <div class="dialog-actions">
+          <button mat-stroked-button (click)="closeOverride()" aria-label="Cancel override">Cancel</button>
+          <button mat-flat-button color="primary"
+                  [disabled]="!overrideReason.trim()"
+                  (click)="submitOverride()"
+                  aria-label="Confirm availability override">Save Override</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

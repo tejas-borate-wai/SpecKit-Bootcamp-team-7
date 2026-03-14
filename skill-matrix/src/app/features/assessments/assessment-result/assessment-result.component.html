@@ -1,0 +1,137 @@
+<div class="result-page">
+  <!-- Navigation -->
+  <div class="result-nav">
+    <button class="btn btn-ghost" (click)="backToList()">← Back to Assessments</button>
+  </div>
+
+  <!-- Loading state -->
+  <ng-container *ngIf="attemptsLoading$ | async">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading results...</p>
+    </div>
+  </ng-container>
+
+  <!-- Score Card -->
+  <ng-container *ngIf="scoreCard$ | async as card">
+    <div class="score-card" [@revealCard]>
+      <div class="card-header">
+        <h1>Assessment Result</h1>
+        <p class="card-subtitle">Here's how you did</p>
+      </div>
+
+      <!-- Test Score -->
+      <div class="score-section">
+        <div class="score-circle" [class.pass]="card.testScore >= 50" [class.fail]="card.testScore < 50">
+          <span class="score-value">{{ card.testScore | number:'1.0-0' }}%</span>
+          <span class="score-label">Test Score</span>
+        </div>
+        <div class="points-breakdown">
+          <span class="points-earned">{{ card.earnedPoints }}</span>
+          <span class="points-sep"> / </span>
+          <span class="points-max">{{ card.maxPoints }}</span>
+          <span class="points-label"> points earned</span>
+        </div>
+      </div>
+
+      <!-- Bonus Details -->
+      <div class="bonuses-section">
+        <div class="bonus-row" [class.active]="card.certificationBonus">
+          <span class="bonus-icon">{{ card.certificationBonus ? '✅' : '❌' }}</span>
+          <span class="bonus-text">
+            {{ card.certificationBonus ? '+20% Certification Bonus' : 'No Certification' }}
+          </span>
+        </div>
+        <div class="bonus-row" [class.active]="card.projectExperienceBonus">
+          <span class="bonus-icon">{{ card.projectExperienceBonus ? '✅' : '❌' }}</span>
+          <span class="bonus-text">
+            {{ card.projectExperienceBonus ? '+20% Project Experience Bonus' : 'No Project Tagged' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- System Rating -->
+      <div class="rating-section">
+        <div class="rating-item">
+          <span class="rating-label">System Rating</span>
+          <span class="rating-value">{{ card.systemRating | number:'1.0-0' }}%</span>
+        </div>
+        <div class="rating-item">
+          <span class="rating-label">Final Rating</span>
+          <span class="rating-value awaiting" *ngIf="card.finalRating === null">
+            Awaiting manager review
+          </span>
+          <span class="rating-value" *ngIf="card.finalRating !== null">
+            {{ card.finalRating | number:'1.0-0' }}%
+          </span>
+        </div>
+      </div>
+
+      <!-- Proficiency Level -->
+      <div class="level-section">
+        <span class="level-label">Proficiency Level</span>
+        <app-rating-badge [level]="card.level"></app-rating-badge>
+        <!-- Level change indicator -->
+        <div *ngIf="card.levelChanged" class="level-change">
+          <span class="level-arrow">{{ card.levelDirection === 'up' ? '⬆' : '⬇' }}</span>
+          <span class="level-change-text">
+            {{ card.previousLevel }} → {{ card.level }}
+          </span>
+        </div>
+        <div *ngIf="!card.levelChanged && card.previousLevel" class="level-nochange">
+          Level unchanged: {{ card.level }}
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="result-actions">
+        <button class="btn btn-primary" (click)="backToList()">View All Assessments</button>
+        <a [routerLink]="['/assessments', skillId, 'result']" class="btn btn-ghost">Refresh</a>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- No score card (from history view without a recent attempt) -->
+  <ng-container *ngIf="!(scoreCard$ | async)">
+    <div class="history-only-header" *ngIf="!(attemptsLoading$ | async)">
+      <h1>Assessment History</h1>
+      <p>View past attempt results for this skill.</p>
+    </div>
+  </ng-container>
+
+  <!-- Test History -->
+  <div class="history-section">
+    <h2>Test History</h2>
+    <ng-container *ngIf="skillAttempts$ | async as attempts">
+      <div *ngIf="attempts.length === 0" class="empty-history">
+        <span>📭</span>
+        <p>No attempts have been made</p>
+      </div>
+
+      <div *ngIf="attempts.length > 0" class="history-table-container">
+        <table class="history-table" aria-label="Attempt history">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Score</th>
+              <th>Points</th>
+              <th>Time Taken</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let attempt of attempts; let i = index">
+              <td class="attempt-num">{{ attempts.length - i }}</td>
+              <td class="attempt-date">{{ formatDate(attempt.date) }}</td>
+              <td class="attempt-score" [class.high]="attempt.score >= 66" [class.low]="attempt.score < 41">
+                {{ attempt.score }}%
+              </td>
+              <td class="attempt-points">{{ attempt.earnedPoints }} / {{ attempt.maxPoints }}</td>
+              <td class="attempt-time">{{ formatTime(attempt.timeTaken) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>

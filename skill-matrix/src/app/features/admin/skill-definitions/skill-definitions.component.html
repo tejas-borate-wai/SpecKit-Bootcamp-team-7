@@ -1,0 +1,52 @@
+<div class="page-header">
+  <h1>Skill Definitions</h1>
+  <button mat-flat-button color="primary" (click)="openAdd()">
+    <mat-icon>add</mat-icon>
+    Add Skill
+  </button>
+</div>
+
+@if (loading$ | async) {
+  <div class="spinner-wrapper">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+} @else {
+  <div class="grouped-list">
+    @for (catGroup of (grouped$ | async) ?? []; track catGroup.category.categoryId) {
+      <div class="category-group">
+        <h2 class="cat-header">{{ catGroup.category.categoryName }}</h2>
+
+        @for (subGroup of catGroup.subGroups; track subGroup.subCategory.subCategoryId) {
+          <div class="subcat-group">
+            <h3 class="subcat-header">{{ subGroup.subCategory.subCategoryName }}</h3>
+            <div class="skill-grid">
+              @for (skill of subGroup.skills; track skill.skillId) {
+                <mat-card class="skill-card">
+                  <mat-card-header>
+                    <mat-card-title class="skill-name">{{ skill.skillName }}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <p class="skill-desc">{{ skill.description }}</p>
+                  </mat-card-content>
+                  <mat-card-actions align="end">
+                    <button mat-icon-button color="primary" (click)="openEdit(skill)"
+                      matTooltip="Edit skill">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (((grouped$ | async) ?? []).length === 0) {
+      <div class="empty-state">
+        <mat-icon>psychology</mat-icon>
+        <p>No skills defined yet. Add your first skill.</p>
+      </div>
+    }
+  </div>
+}

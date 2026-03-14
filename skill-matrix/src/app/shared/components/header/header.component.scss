@@ -1,0 +1,111 @@
+@use 'breakpoints' as bp;
+
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
+  height: var(--header-height);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .hamburger-btn {
+    display: none;
+
+    @include bp.mobile {
+      display: inline-flex;
+    }
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.025em;
+  }
+
+  .page-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-left: 8px;
+
+    @include bp.mobile {
+      display: none;
+    }
+  }
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 400px;
+  margin: 0 var(--spacing-lg);
+
+  @include bp.mobile {
+    display: none;
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.avatar-btn {
+  min-width: auto;
+  padding: 0;
+  line-height: 1;
+}
+
+.user-menu-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 16px;
+  pointer-events: none;
+
+  strong {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: fit-content;
+
+  &.role-employee {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  &.role-manager {
+    background-color: #ede9fe;
+    color: #6d28d9;
+  }
+
+  &.role-admin {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+}

@@ -1,0 +1,57 @@
+// Global animation keyframes
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+// Route transition keyframes (View Transitions API)
+@keyframes slide-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes slide-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: slide-fade-out 200ms ease-in;
+}
+
+::view-transition-new(root) {
+  animation: slide-fade-in 200ms ease-out;
+}
+
+// Reduced motion overrides
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: #e0e0e0;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

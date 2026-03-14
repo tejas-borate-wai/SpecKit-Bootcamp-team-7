@@ -1,0 +1,21 @@
+<div
+  class="chart-wrapper-container"
+  [class]="breakpointClass"
+  [attr.aria-label]="ariaLabel"
+  role="figure"
+>
+  @if (breakpointClass === 'chart-mobile') {
+    <button
+      class="legend-toggle-btn"
+      type="button"
+      (click)="toggleLegend()"
+      aria-label="Toggle chart legend"
+    >
+      {{ legendVisible ? 'Hide Legend' : 'Show Legend' }}
+    </button>
+  }
+
+  <div class="chart-content" [class.legend-hidden]="!legendVisible">
+    <ng-content></ng-content>
+  </div>
+</div>

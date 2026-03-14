@@ -1,0 +1,54 @@
+.chart-wrapper-container {
+  width: 100%;
+  position: relative;
+}
+
+// Desktop: natural size, full legend beside chart
+.chart-desktop {
+  .chart-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+// Tablet: 100% width, legend below chart
+.chart-tablet {
+  .chart-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    ::ng-deep .legend-wrap {
+      margin-top: 16px;
+    }
+  }
+}
+
+// Mobile: max-height 250px, horizontal scroll, legend hidden by default
+.chart-mobile {
+  .chart-content {
+    max-height: 250px;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &.legend-hidden ::ng-deep .legend-wrap {
+      display: none;
+    }
+  }
+}
+
+.legend-toggle-btn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-bottom: 8px;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

@@ -1,0 +1,128 @@
+<section class="peer-validation-form">
+  @if (loading$ | async) {
+    <div class="loading-state">Loading...</div>
+  }
+
+  @if (successMessage) {
+    <div class="success-message" role="alert">{{ successMessage }}</div>
+  }
+
+  @if (error$ | async; as error) {
+    <div class="error-state" role="alert">{{ error }}</div>
+  }
+
+  <!-- ── INITIATION MODE ─────────────────────────────────────────────── -->
+  @if (mode === 'initiate' && !successMessage) {
+    <div class="form-card">
+      <h2 class="form-title">Request Peer Validation</h2>
+      <p class="form-description">
+        Select 2–3 peers from your department who have experience with this skill.
+        They will be notified to review and rate your submission.
+      </p>
+
+      @if (peers.length === 0 && !(loading$ | async)) {
+        <p class="no-peers">No eligible peers found for this skill in your department.</p>
+      }
+
+      @if (peers.length > 0) {
+        <form [formGroup]="initiateForm" (ngSubmit)="submitInitiation()">
+          <fieldset class="peers-fieldset">
+            <legend class="fieldset-legend">Available Peers</legend>
+            <div class="peers-list" formArrayName="peerSelections">
+              @for (peer of peers; track peer.userId; let i = $index) {
+                <label class="peer-item" [class.selected]="peerSelections.at(i).value">
+                  <input
+                    type="checkbox"
+                    [formControlName]="i"
+                    class="peer-checkbox"
+                  />
+                  <div class="peer-info">
+                    <span class="peer-name">{{ peer.name }}</span>
+                    <span class="peer-dept">{{ peer.department }}</span>
+                  </div>
+                  <span class="peer-proficiency">{{ peer.skillLevel }}</span>
+                </label>
+              }
+            </div>
+
+            @if (submitted && initiateForm.get('peerSelections')?.errors?.['minPeers']) {
+              <span class="field-error" role="alert">Select at least 2 peers.</span>
+            }
+            @if (submitted && initiateForm.get('peerSelections')?.errors?.['maxPeers']) {
+              <span class="field-error" role="alert">Maximum 3 peers allowed.</span>
+            }
+          </fieldset>
+
+          <div class="selection-count">
+            {{ selectedCount }} / 3 peers selected
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="(loading$ | async) ?? false">
+              Send Validation Request
+            </button>
+            <a routerLink=".." class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      }
+    </div>
+  }
+
+  <!-- ── RESPONSE MODE ───────────────────────────────────────────────── -->
+  @if (mode === 'respond' && !successMessage) {
+    <div class="form-card">
+      <h2 class="form-title">Submit Peer Validation Rating</h2>
+      <p class="form-description">
+        A colleague has requested your validation of their skill.
+        Please rate their proficiency level (1–4) based on your direct experience working with them.
+      </p>
+
+      <form [formGroup]="respondForm" (ngSubmit)="submitResponse()">
+        <div class="form-group">
+          <fieldset class="ratings-fieldset">
+            <legend class="fieldset-legend">Proficiency Rating <span class="required">*</span></legend>
+
+            <div class="rating-options">
+              @for (option of [1, 2, 3, 4]; track option) {
+                <label class="rating-option" [class.active]="respondForm.get('rating')?.value === option">
+                  <input
+                    type="radio"
+                    formControlName="rating"
+                    [value]="option"
+                    class="rating-radio"
+                  />
+                  <div class="rating-option-content">
+                    <span class="rating-number">{{ option }}</span>
+                    <span class="rating-name">{{ ['Beginner', 'Intermediate', 'Advanced', 'Expert'][option - 1] }}</span>
+                  </div>
+                </label>
+              }
+            </div>
+
+            @if (submitted && respondForm.get('rating')?.errors?.['required']) {
+              <span class="field-error" role="alert">Proficiency rating is required.</span>
+            }
+          </fieldset>
+        </div>
+
+        <div class="form-group">
+          <label for="comment" class="form-label">Comment (optional)</label>
+          <textarea
+            id="comment"
+            formControlName="comment"
+            class="form-control"
+            rows="4"
+            placeholder="Describe specific examples of this person's skill level..."
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="(loading$ | async) ?? false">
+            Submit Rating
+          </button>
+          <a routerLink=".." class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  }
+</section>

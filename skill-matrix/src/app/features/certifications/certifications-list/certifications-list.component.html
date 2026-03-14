@@ -1,0 +1,112 @@
+<div class="certs-page">
+  <div class="page-header">
+    <h1>My Certifications</h1>
+    <button mat-raised-button color="primary" (click)="onUpload()" aria-label="Upload a new certification">
+      <mat-icon>upload_file</mat-icon>
+      Upload Certification
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading$ | async" class="loading-state" aria-live="polite" aria-label="Loading certifications">
+    <app-skeleton-loader type="table-row" [count]="4" [columns]="6"></app-skeleton-loader>
+  </div>
+
+  <!-- Table -->
+  <ng-container *ngIf="!(loading$ | async)">
+    <ng-container *ngIf="definitions$ | async as defs">
+      <ng-container *ngIf="certifications$ | async as certs">
+
+        <!-- Empty state -->
+        <div *ngIf="certs.length === 0" class="empty-state">
+          <mat-icon aria-hidden="true">workspace_premium</mat-icon>
+          <p>No certifications uploaded yet.</p>
+          <button mat-stroked-button color="primary" (click)="onUpload()">
+            Upload your first certification
+          </button>
+        </div>
+
+        <!-- Desktop / Tablet table -->
+        <div *ngIf="certs.length > 0 && !isMobile" class="table-container">
+          <table mat-table [dataSource]="certs" class="certs-table" aria-label="Certifications table">
+
+            <ng-container matColumnDef="certName">
+              <th mat-header-cell *matHeaderCellDef>Certification Name</th>
+              <td mat-cell *matCellDef="let row">{{ row.certName }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="skill">
+              <th mat-header-cell *matHeaderCellDef>Skill</th>
+              <td mat-cell *matCellDef="let row">{{ getSkillName(row.skillId, defs) }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="issuingOrg">
+              <th mat-header-cell *matHeaderCellDef>Issuing Organization</th>
+              <td mat-cell *matCellDef="let row">{{ row.issuingOrg }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="issueDate">
+              <th mat-header-cell *matHeaderCellDef>Issue Date</th>
+              <td mat-cell *matCellDef="let row">{{ row.issueDate }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="expiryDate">
+              <th mat-header-cell *matHeaderCellDef>Expiry Date</th>
+              <td mat-cell *matCellDef="let row">{{ row.expiryDate }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let row">
+                <app-status-badge [status]="row.status"></app-status-badge>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onDelete(row.certId)"
+                  [attr.aria-label]="'Delete ' + row.certName">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <!-- Mobile card list -->
+        <div *ngIf="certs.length > 0 && isMobile" class="mobile-cards">
+          <div *ngFor="let cert of certs" class="cert-card">
+            <div class="cert-card__header">
+              <span class="cert-card__name">{{ cert.certName }}</span>
+              <app-status-badge [status]="cert.status"></app-status-badge>
+            </div>
+            <div class="cert-card__meta">
+              <span>{{ getSkillName(cert.skillId, defs) }}</span> ·
+              <span>{{ cert.issuingOrg }}</span>
+            </div>
+            <div class="cert-card__dates">
+              Issued {{ cert.issueDate }} · Expires {{ cert.expiryDate }}
+            </div>
+            <div class="cert-card__actions">
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="onDelete(cert.certId)"
+                [attr.aria-label]="'Delete ' + cert.certName">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>

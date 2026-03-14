@@ -1,0 +1,74 @@
+@use 'breakpoints' as bp;
+
+:root {
+  --font-h1: 1.25rem;
+  --font-h2: 0.95rem;
+  --font-card-title: 0.8125rem;
+  --font-body: 0.875rem;
+  --font-label: 0.6875rem;
+}
+
+@include bp.tablet {
+  :root {
+    --font-h1: 1.5rem;
+    --font-h2: 1.125rem;
+    --font-card-title: 0.9375rem;
+    --font-body: 0.875rem;
+    --font-label: 0.75rem;
+  }
+}
+
+@include bp.desktop {
+  :root {
+    --font-h1: 1.75rem;
+    --font-h2: 1.25rem;
+    --font-card-title: 1rem;
+    --font-body: 0.875rem;
+    --font-label: 0.75rem;
+  }
+}
+
+h1 {
+  font-size: var(--font-h1);
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: var(--font-h2);
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.card-title {
+  font-size: var(--font-card-title);
+  font-weight: 600;
+  color: #1e293b;
+}
+
+body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #334155;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64748b;
+
+  @include bp.mobile {
+    font-size: 0.6875rem;
+  }
+}

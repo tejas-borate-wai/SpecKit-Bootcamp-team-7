@@ -1,0 +1,222 @@
+<section class="validation-detail">
+  @if (loading$ | async) {
+    <div class="loading-state">Loading submission details...</div>
+  }
+
+  @if (error$ | async; as error) {
+    <div class="error-state">{{ error }}</div>
+  }
+
+  @if (submission$ | async; as submission) {
+    <div class="detail-layout">
+      <!-- Header -->
+      <div class="detail-header">
+        <a routerLink="/team/validation" class="back-link">← Validation Queue</a>
+        <div class="header-info">
+          <app-avatar [avatarUrl]="submission.avatarUrl" [name]="submission.employeeName" [size]="48"></app-avatar>
+          <div>
+            <h1 class="page-title">{{ submission.skillName }} — Review</h1>
+            <p class="subtitle">{{ submission.employeeName }} · {{ submission.department }}</p>
+          </div>
+        </div>
+        <span class="status-badge status-{{ submission.status.toLowerCase() }}">{{ submission.status }}</span>
+      </div>
+
+      <div class="detail-grid">
+        <!-- Employee Skill Data -->
+        <div class="card">
+          <h2 class="card-title">Skill Ratings</h2>
+          <div class="ratings-grid">
+            <div class="rating-item">
+              <span class="rating-label">Self Rating</span>
+              <span class="rating-value">{{ ratingLabel(submission.selfRating) }}</span>
+            </div>
+            <div class="rating-item">
+              <span class="rating-label">System Rating</span>
+              <span class="rating-value">{{ ratingLabel(submission.systemRating) }}</span>
+            </div>
+            @if (submission.peerValidation) {
+              <div class="rating-item">
+                <span class="rating-label">Peer Rating</span>
+                <span class="rating-value">{{ ratingLabel(submission.peerValidation.averageRating) }}</span>
+              </div>
+            }
+          </div>
+          <p class="submitted-date">Submitted: {{ submission.submittedDate }}</p>
+        </div>
+
+        <!-- Evidence -->
+        <div class="card">
+          <h2 class="card-title">Evidence</h2>
+
+          @if (submission.certification) {
+            <div class="evidence-block">
+              <h3 class="evidence-title">🏅 Certification</h3>
+              <p><strong>{{ submission.certification.certName }}</strong></p>
+              <p>{{ submission.certification.issuingOrg }}</p>
+              <p>Issued: {{ submission.certification.issueDate }} · Expires: {{ submission.certification.expiryDate }}</p>
+              <span class="cert-status">{{ submission.certification.status }}</span>
+            </div>
+          } @else {
+            <p class="no-evidence">No certification</p>
+          }
+
+          @if (submission.projectExperience.length > 0) {
+            <div class="evidence-block">
+              <h3 class="evidence-title">💼 Project Experience</h3>
+              @for (project of submission.projectExperience; track project.projectId) {
+                <div class="project-item">
+                  <span class="project-name">{{ project.projectName }}</span>
+                  <span class="project-role">{{ project.role }}</span>
+                  <span class="project-status">{{ project.status }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="no-evidence">No project experience</p>
+          }
+        </div>
+
+        <!-- Peer Validation -->
+        @if (submission.peerValidation) {
+          <div class="card">
+            <h2 class="card-title">
+              Peer Validation
+              <span class="peer-status-badge">{{ peerStatusLabel(submission.peerValidation.status) }}</span>
+            </h2>
+            @if (submission.peerValidation.responses.length > 0) {
+              <div class="peer-responses">
+                @for (resp of submission.peerValidation.responses; track resp.peerId) {
+                  <div class="peer-response-item">
+                    <span class="peer-name">{{ resp.peerName }}</span>
+                    <span class="peer-rating">{{ resp.rating }}/4</span>
+                    @if (resp.comment) {
+                      <p class="peer-comment">{{ resp.comment }}</p>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="peer-average">
+                Average: <strong>{{ submission.peerValidation.averageRating }}</strong>
+              </div>
+            } @else {
+              <p class="no-evidence">No responses yet</p>
+            }
+          </div>
+        }
+
+        <!-- Final Rating (post-approval) -->
+        @if (submission.finalRating != null) {
+          <div class="card final-rating-card">
+            <h2 class="card-title">Final Rating</h2>
+            <div class="final-rating-display">
+              <span class="final-rating-value">{{ submission.finalRating | number:'1.2-2' }}</span>
+              <span class="final-rating-max">/ 4.0</span>
+            </div>
+            <p class="proficiency-level">{{ submission.level }}</p>
+            @if (submission.confidence) {
+              <app-confidence-indicator [level]="submission.confidence"></app-confidence-indicator>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Action Panel -->
+      @if (session$ | async; as user) {
+        @if (submission.status === 'Pending') {
+          <div class="action-panel">
+            @if (activeAction === null) {
+              <div class="action-buttons">
+                <button class="btn btn-approve" (click)="showApproveForm()">Approve</button>
+                <button class="btn btn-reject" (click)="showRejectForm()">Reject</button>
+                @if (user.role === 'Admin') {
+                  <button class="btn btn-override" (click)="showOverrideForm()">Override Rating</button>
+                }
+              </div>
+            }
+
+            @if (activeAction === 'approve') {
+              <div class="action-form">
+                <h3>Approve Submission</h3>
+                <form [formGroup]="approveForm" (ngSubmit)="submitApproval()">
+                  <div class="form-group">
+                    <label for="managerRating">Manager Rating (1–4) <span class="required">*</span></label>
+                    <select id="managerRating" formControlName="managerRating" class="form-control">
+                      <option [ngValue]="null" disabled>Select rating</option>
+                      <option [ngValue]="1">1 – Beginner</option>
+                      <option [ngValue]="2">2 – Intermediate</option>
+                      <option [ngValue]="3">3 – Advanced</option>
+                      <option [ngValue]="4">4 – Expert</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="comment">Comment (optional)</label>
+                    <textarea id="comment" formControlName="comment" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-approve" [disabled]="!approveForm.valid">Confirm Approval</button>
+                    <button type="button" class="btn btn-cancel" (click)="cancelAction()">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            }
+
+            @if (activeAction === 'reject') {
+              <div class="action-form">
+                <h3>Reject Submission</h3>
+                <form [formGroup]="rejectForm" (ngSubmit)="submitRejection()">
+                  <div class="form-group">
+                    <label for="rejectionReason">Rejection Reason <span class="required">*</span></label>
+                    <textarea id="rejectionReason" formControlName="rejectionReason" class="form-control" rows="3" placeholder="Explain why this submission is being rejected..."></textarea>
+                    @if (rejectForm.get('rejectionReason')?.invalid && rejectForm.get('rejectionReason')?.touched) {
+                      <span class="field-error">Rejection reason is required.</span>
+                    }
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-reject" [disabled]="!rejectForm.valid">Confirm Rejection</button>
+                    <button type="button" class="btn btn-cancel" (click)="cancelAction()">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            }
+          </div>
+        }
+
+        @if (user.role === 'Admin') {
+          <div class="admin-section">
+            @if (activeAction === 'override') {
+              <div class="action-form">
+                <h3>Override Rating</h3>
+                <form [formGroup]="overrideForm" (ngSubmit)="submitOverride()">
+                  <div class="form-group">
+                    <label for="overriddenRating">Override Rating (1–4) <span class="required">*</span></label>
+                    <select id="overriddenRating" formControlName="overriddenRating" class="form-control">
+                      <option [ngValue]="null" disabled>Select rating</option>
+                      <option [ngValue]="1">1 – Beginner</option>
+                      <option [ngValue]="2">2 – Intermediate</option>
+                      <option [ngValue]="3">3 – Advanced</option>
+                      <option [ngValue]="4">4 – Expert</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="justification">Justification <span class="required">*</span></label>
+                    <textarea id="justification" formControlName="justification" class="form-control" rows="3" placeholder="Provide mandatory justification for this override..."></textarea>
+                    @if (overrideForm.get('justification')?.invalid && overrideForm.get('justification')?.touched) {
+                      <span class="field-error">Justification is required.</span>
+                    }
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-override" [disabled]="!overrideForm.valid">Apply Override</button>
+                    <button type="button" class="btn btn-cancel" (click)="cancelAction()">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            } @else if (activeAction === null && submission.status !== 'Pending') {
+              <button class="btn btn-override" (click)="showOverrideForm()">Override Rating</button>
+            }
+          </div>
+        }
+      }
+    </div>
+  }
+</section>

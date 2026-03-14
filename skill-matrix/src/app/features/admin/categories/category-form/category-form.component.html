@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Edit Category' : 'Add Category' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="category-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category Name</mat-label>
+      <input matInput formControlName="categoryName" placeholder="e.g. Cloud Engineering" />
+      @if (nameControl.hasError('required') && nameControl.touched) {
+        <mat-error>This field is required.</mat-error>
+      } @else if (nameControl.hasError('maxlength')) {
+        <mat-error>Max 60 characters.</mat-error>
+      } @else if (nameDuplicate && nameControl.touched) {
+        <mat-error>A category with this name already exists.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"
+        placeholder="Describe the skill category…"></textarea>
+      @if (descControl.hasError('required') && descControl.touched) {
+        <mat-error>This field is required.</mat-error>
+      } @else if (descControl.hasError('maxlength')) {
+        <mat-error>Max 200 characters.</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary"
+    [disabled]="form.invalid || nameDuplicate"
+    (click)="submit()">
+    {{ isEdit ? 'Save Changes' : 'Add Category' }}
+  </button>
+</mat-dialog-actions>

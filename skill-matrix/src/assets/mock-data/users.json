@@ -1,0 +1,92 @@
+[
+  {
+    "id": "u001",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "Frontend Development",
+    "avatarUrl": "assets/avatars/u001.svg"
+  },
+  {
+    "id": "u002",
+    "name": "Arjun Patel",
+    "email": "arjun.patel@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "Backend Development",
+    "avatarUrl": "assets/avatars/u002.svg"
+  },
+  {
+    "id": "u003",
+    "name": "Sneha Reddy",
+    "email": "sneha.reddy@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "QA Engineering",
+    "avatarUrl": "assets/avatars/u003.svg"
+  },
+  {
+    "id": "u004",
+    "name": "Vikram Singh",
+    "email": "vikram.singh@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "DevOps",
+    "avatarUrl": "assets/avatars/u004.svg"
+  },
+  {
+    "id": "u005",
+    "name": "Ananya Gupta",
+    "email": "ananya.gupta@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "Data Engineering",
+    "avatarUrl": "assets/avatars/u005.svg"
+  },
+  {
+    "id": "u006",
+    "name": "Rahul Nair",
+    "email": "rahul.nair@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "Frontend Development",
+    "avatarUrl": "assets/avatars/u006.svg"
+  },
+  {
+    "id": "u007",
+    "name": "Kavitha Menon",
+    "email": "kavitha.menon@skillmatrix.com",
+    "password": "password123",
+    "role": "Manager",
+    "department": "Frontend Development",
+    "avatarUrl": "assets/avatars/u007.svg"
+  },
+  {
+    "id": "u008",
+    "name": "Amit Kulkarni",
+    "email": "amit.kulkarni@skillmatrix.com",
+    "password": "password123",
+    "role": "Manager",
+    "department": "Backend Development",
+    "avatarUrl": "assets/avatars/u008.svg"
+  },
+  {
+    "id": "u009",
+    "name": "Deepak Joshi",
+    "email": "deepak.joshi@skillmatrix.com",
+    "password": "password123",
+    "role": "Admin",
+    "department": "Platform Engineering",
+    "avatarUrl": "assets/avatars/u009.svg"
+  },
+  {
+    "id": "u010",
+    "name": "Meera Iyer",
+    "email": "meera.iyer@skillmatrix.com",
+    "password": "password123",
+    "role": "Employee",
+    "department": "AI/ML",
+    "avatarUrl": "assets/avatars/u010.svg"
+  }
+]

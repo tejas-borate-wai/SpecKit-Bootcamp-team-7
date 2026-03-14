@@ -1,0 +1,149 @@
+.detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+
+  .header-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: #0f172a;
+}
+
+.chart-card,
+.achievements-card {
+  grid-column: 1 / -1;
+}
+
+.ratings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.rating-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &.final {
+    grid-column: 1 / -1;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 10px;
+    margin-top: 4px;
+  }
+}
+
+.rating-source {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rating-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+
+  &.final {
+    font-size: 1.25rem;
+    color: #3c83f6;
+  }
+}
+
+.confidence-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.confidence-label {
+  font-size: 0.8125rem;
+  color: #475569;
+}
+
+.status-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.approved { background: #dcfce7; color: #15803d; }
+  &.pending  { background: #fff7ed; color: #c2410c; }
+  &.draft    { background: #f3e8ff; color: #7c3aed; }
+  &.stale    { background: #fefce8; color: #a16207; }
+}
+
+.last-updated {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: #94a3b8;
+
+  mat-icon { font-size: 48px; width: 48px; height: 48px; color: #cbd5e1; }
+  p { margin: 0; font-size: 1rem; }
+}

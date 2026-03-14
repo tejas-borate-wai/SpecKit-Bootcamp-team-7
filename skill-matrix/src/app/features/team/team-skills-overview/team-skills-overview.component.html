@@ -1,0 +1,108 @@
+<section class="team-overview">
+  <div class="page-header">
+    <h1 class="page-title">Team Skills Overview</h1>
+    <a routerLink="/team/validation" class="btn btn-primary">
+      View Validation Queue
+    </a>
+  </div>
+
+  @if (loading$ | async) {
+    <app-skeleton-loader type="table-row" [count]="5" [columns]="6" />
+  }
+
+  @if (error$ | async; as error) {
+    <div class="error-state">{{ error }}</div>
+  }
+
+  @if (!(loading$ | async) && !(error$ | async)) {
+    <div class="filters">
+      <mat-select [(ngModel)]="filterDepartment" (ngModelChange)="applyFilter()" placeholder="All Departments" class="filter-select" aria-label="Filter by department">
+        <mat-option value="">All Departments</mat-option>
+        @for (dept of departments; track dept) {
+          <mat-option [value]="dept">{{ dept }}</mat-option>
+        }
+      </mat-select>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" (click)="sort('name')">
+              Name
+              <span class="sort-icon" [class.active]="sortColumn === 'name'">
+                {{ sortColumn === 'name' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th class="sortable" (click)="sort('department')">
+              Department
+              <span class="sort-icon" [class.active]="sortColumn === 'department'">
+                {{ sortColumn === 'department' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th class="sortable" (click)="sort('skillsCount')">
+              Skills
+              <span class="sort-icon" [class.active]="sortColumn === 'skillsCount'">
+                {{ sortColumn === 'skillsCount' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th class="sortable" (click)="sort('avgRating')">
+              Avg Rating
+              <span class="sort-icon" [class.active]="sortColumn === 'avgRating'">
+                {{ sortColumn === 'avgRating' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th>Profile</th>
+            <th class="sortable" (click)="sort('pendingSubmissions')">
+              Pending
+              <span class="sort-icon" [class.active]="sortColumn === 'pendingSubmissions'">
+                {{ sortColumn === 'pendingSubmissions' ? (sortDirection === 'asc' ? '↑' : '↓') : '↕' }}
+              </span>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (member of sortedEmployees; track member.userId) {
+            <tr class="data-row">
+              <td class="name-cell">
+                <app-avatar [avatarUrl]="member.avatarUrl" [name]="member.name" [size]="36"></app-avatar>
+                <span class="member-name">{{ member.name }}</span>
+              </td>
+              <td>{{ member.department }}</td>
+              <td class="number-cell">{{ member.skillsCount }}</td>
+              <td class="number-cell">
+                <span class="rating-chip">{{ formatRating(member.avgRating) }}</span>
+              </td>
+              <td>
+                <div class="progress-wrap">
+                  <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="member.profileCompletion"></div>
+                  </div>
+                  <span class="progress-label">{{ member.profileCompletion }}%</span>
+                </div>
+              </td>
+              <td class="number-cell">
+                @if (member.pendingSubmissions > 0) {
+                  <span class="pending-badge">{{ member.pendingSubmissions }}</span>
+                } @else {
+                  <span class="none-label">—</span>
+                }
+              </td>
+              <td>
+                <a [routerLink]="['/team/skills', member.userId]" class="btn btn-sm btn-secondary">
+                  View Profile
+                </a>
+              </td>
+            </tr>
+          }
+          @empty {
+            <tr>
+              <td colspan="7" class="empty-state">No team members found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

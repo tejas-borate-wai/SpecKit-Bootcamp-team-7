@@ -1,0 +1,89 @@
+<div class="gap-analysis">
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Skill Gap Analysis</h1>
+      <p class="subtitle">Comparing project-required skills against team proficiency averages.</p>
+    </div>
+    <div class="header-actions">
+      @if (currentUser$ | async; as user) {
+        @if (gapRecords$ | async; as records) {
+          @if (records.length > 0) {
+            <button mat-stroked-button (click)="exportPdf(filterRecords(records, selectedProjectId), user)">
+              <mat-icon>picture_as_pdf</mat-icon> Export PDF
+            </button>
+            <button mat-stroked-button color="primary" (click)="exportExcel(filterRecords(records, selectedProjectId), user)">
+              <mat-icon>table_chart</mat-icon> Export Excel
+            </button>
+          }
+        }
+      }
+    </div>
+  </header>
+
+  @if (loading$ | async) {
+    <app-skeleton-loader type="chart" />
+    <app-skeleton-loader type="table-row" [count]="4" [columns]="5" />
+  } @else {
+    @if (error$ | async; as err) {
+      <div class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ err }}</p>
+        <button mat-button color="primary" (click)="reload()">Retry</button>
+      </div>
+    } @else {
+      @if (gapRecords$ | async; as records) {
+        @if (records.length === 0) {
+          <div class="empty-state">
+            <mat-icon>manage_search</mat-icon>
+            <p>No skill gap data available. Create a project with required skills to see gap analysis.</p>
+          </div>
+        } @else {
+          <!-- Project filter -->
+          <div class="filter-bar">
+            <mat-form-field appearance="outline" class="project-filter">
+              <mat-label>Filter by Project</mat-label>
+              <mat-select [(ngModel)]="selectedProjectId">
+                <mat-option [value]="null">All Projects</mat-option>
+                @for (projectId of getProjectIds(records); track projectId) {
+                  <mat-option [value]="projectId">{{ getProjectName(records, projectId) }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Data table -->
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Project</th>
+                  <th>Skill</th>
+                  <th>Required Level</th>
+                  <th>Team Average</th>
+                  <th>Gap %</th>
+                  <th>Severity</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (record of filterRecords(records, selectedProjectId); track record.skillId + record.projectId) {
+                  <tr [class]="getSeverityClass(record.gapSeverity)">
+                    <td>{{ record.projectName }}</td>
+                    <td>{{ record.skillName }}</td>
+                    <td>{{ formatPercent(record.requiredLevelPercent) }}</td>
+                    <td>{{ formatPercent(record.teamAverageLevelPercent) }}</td>
+                    <td class="gap-value">{{ formatPercent(record.gapPercent) }}</td>
+                    <td>
+                      <span class="severity-badge" [class]="'badge-' + record.gapSeverity">
+                        {{ record.gapSeverity | titlecase }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      }
+    }
+  }
+</div>
